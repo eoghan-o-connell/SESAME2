@@ -28,19 +28,19 @@
           <div id="navbar" class="navbar-collapse collapse">
               {% if user.is_authenticated %}
               <ul class="nav navbar-nav">
-                  <a class="navbar-brand" href="{% url 'home' %}">SESAME</a>
-                  <li><a href="{% url 'view_profile' %}">Account</a></li>
+                  <a class="navbar-brand" href="{% url 'accounts:home' %}">SESAME</a>
+                  <li><a href="{% url 'accounts:view_profile' %}">Account</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                  <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
               </ul>
             {% else %}
                 <ul class="nav navbar-nav">
                     <a class="navbar-brand">SESAME</a>
                 </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li><a href="{% url 'accounts:register' %}">Register</a></li>
               </ul>
               {% endif %}
           </div><!--/.nav-collapse -->
