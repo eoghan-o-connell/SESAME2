@@ -1,0 +1,6 @@
+@author Eoghan/nadehh
+
+This currently handles N pdf files being sent to it & processes them.
+It stores them in an 'uploads' directory on the server currently.
+
+Is also easily configurable to accept html input tags.
