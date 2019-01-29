@@ -1,0 +1,8 @@
+@author Eoghan/nadehh
+
+This will upload pdf files to server-side script through drag and drop, can also upload the normal way ( clicking & display file system )
+
+Setup to be easily configured to pull html form elements (ie name, address) &
+package it up and send to server along with files in one request.
+
+This "setup" feature will be implemented when we have the forms ready.
