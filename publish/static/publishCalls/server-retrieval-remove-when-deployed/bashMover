@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 0 ]; then
+    case $1 in
+      to ) 
+	     $(cat transToServer)
+        ;;
+      from ) $(cat getFromServer)
+        ;;
+    esac
+ fi
+

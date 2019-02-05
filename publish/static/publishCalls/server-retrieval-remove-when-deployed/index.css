@@ -1,0 +1,22 @@
+h1 {
+    text-align: center;
+    border-bottom: 10em;
+}
+
+#dropbox {
+    display:block;
+    margin: auto;
+    width: 650px;
+    height: 400px;
+    border-style: solid;
+    border-width: 0.0625em;
+}
+
+.hover{
+    background-color: lightgrey;
+}
+
+button{
+    position:relative;
+    left:50%;
+}
