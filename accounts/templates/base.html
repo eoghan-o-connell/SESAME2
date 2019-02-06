@@ -28,6 +28,7 @@
             {% if user.is_authenticated %}
             <a class="nav-item nav-link" href="{% url 'accounts:view_profile' %}">Account</a>
             <a class="nav-item nav-link" href="{% url 'publish:publish' %}">Publish</a></a>
+            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></a>
 
 
             {% else %}
@@ -35,11 +36,6 @@
             <a class="nav-item nav-link" href="{% url 'accounts:register' %}">Register</a></a>
 
             {% endif %}
-            <ul class="nav navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></a>
-              </li>
-            </ul>
           </div>
         </div>
       </nav>
@@ -76,7 +72,7 @@
               </ul>
               {% endif %}
           </div><!--/.nav-collapse -->
-        <!-- </div><!--/.container-fluid --> 
+        <!-- </div><!--/.container-fluid -->
       <!-- </nav> -->
   <!-- </div> -->
 
