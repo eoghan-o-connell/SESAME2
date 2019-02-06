@@ -4,15 +4,16 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True),
+    job_title = forms.CharField(required=True)
 
     class Meta:
         model = User
         fields = (
-            'username',
             'first_name',
             'last_name',
             'email',
+            'job_title',
             'password1',
             'password2'
         )
@@ -22,6 +23,7 @@ class RegistrationForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
+        user.job_title = self.cleaned_data['job_title']
 
         if commit:
             user.save()
