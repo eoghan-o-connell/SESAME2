@@ -1,7 +1,427 @@
 {% extends 'base.html' %}
 
-<title>{full_name}</title>
+<title>{{researcher.user.full_name}}</title>
 
 {% block body %}
-Some HTML
+  <h1>{{researcher.user.full_name}}</h1>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                     <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Education
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <ul>
+                        {% for education in researcher.educations %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Employment
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                      <ul>
+                        {% for employment in researcher.employments %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Professional societies
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for scoiety in researcher.societies %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFour">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Distinctions & awards
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for award in researcher.awards %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFive">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Funding diversification
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for funding in researcher.fundings %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSix">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Team members
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for team_member in researcher.team_members %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSeven">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Impacts
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for impact in researcher.impacts %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingEight">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Innovation & Commercialisation
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for innovation in researcher.innovations %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingNine">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Publications
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for publication in researcher.publications %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTen">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Presentations
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for presentation in researcher.presentations %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingEleven">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Academic collaborations
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseEleven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for acedemic_collab in researcher.acedemic_collabs %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwelve">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Non-academic collaborations
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseTwelve" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for non_acedemic_collab in researcher.non_acedemic_collabs %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThirteen">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Conferences / workshops / seminars organised
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseThirteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for conference in researcher.conferences %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFourteen">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Communications overview
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseForuteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for comms_overview in researcher.comms_overviews %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFifteen">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  SFI Funding ratio
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseFifteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for funding_ratio in researcher.funding_ratios %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSixteen">
+                     <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Education & Public Engagement
+                </a>
+              </h4>
+
+                </div>
+                <div id="collapseSixteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                      <ul>
+                        {% for project in researcher.projects %}
+                          <li class="list-group-item">
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 {% endblock %}

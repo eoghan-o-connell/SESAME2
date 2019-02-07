@@ -17,15 +17,15 @@ def pub (request):
     l = []
 
     if request.method == "POST":
-        #successfully writes it
-        #we should validate form
+        print(request.POST)
+
         print(request.FILES)
-        for key in request.FILES:
-            file = request.FILES[key]
-            with open("/home/users/nadehh/django-uploads/%s"%(file.name),"wb+") as saveFile:
-                for line in file:
-                    saveFile.write(line)
-                print("File has been saved")
+            # for key in request.FILES:
+            #     file = request.FILES[key]
+            #     with open("/home/users/nadehh/django-uploads/%s"%(file.name),"wb+") as saveFile:
+            #         for line in file:
+            #             saveFile.write(line)
+            #         print("File has been saved")
 
 
     if request.method == 'GET':
@@ -47,7 +47,8 @@ def pub (request):
             cursor = connection.cursor()
             cursor.execute("""
 
-                SELECT username FROM auth_user;
+                SELECT category FROM categories;
+
 
             """)
 

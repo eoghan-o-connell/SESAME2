@@ -7,7 +7,6 @@
         {% load staticfiles %}
         <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
         <link rel="stylesheet" href="{% static 'publishCalls/dist/dropzone.css' %}">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -26,38 +25,33 @@
             <button id="collapsingButton" class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapser" aria-expanded="false" aria-controls="collapseExample">
                 Publishing a call? click here!
             </button>
-            <button id="collapsingButton" class="btn btn-danger" type="button" data-toggle="collapse" data-target="#pdfcollapser" aria-expanded="false" aria-controls="collapseExample">
-              Download a call template here!
-            </button>
-            <section id="pdfTemplate">
-<!--
-              THIS WILL BE CHANGED TO GETTING PDF DROPDOWN INSTEAD WHICH WHEN CLICKED WILL
-              USE AJAX TO PULL A DOWNLOAD LINK AND DISPLAY IT ON THE PAGE -->
 
-            </section>
             <section id="form" class="form-container">
                 <div class="collapse" id="collapser">
                   <div class="well" >
-                    <form>
+                    <form id="checkForm">
                         <label for="eligibility">Select target audience</label>
                         <select class="custom-select" id="tag" name="eligibility">
-                            <option value="global">Global</option>
+                            <!-- <option value="global">Global</option> -->
                             {% for eligibility in db %}
-                              <option value={{ eligibility }}>{{ eligibility }}</option>
+                              <option value="{{ eligibility }}">{{ eligibility }}</option>
                             {% endfor %}
                         </select>
                         <label for="fname">First name</label>
-                        <input id="fname" name="fname" type="text" placeholder="enter first name here.." class="form-control is-invalid" value={{ user.first_name }}>
-                        <label for="sname">Family name</label>
-                        <input id ="sname" name="sname" type="text" placeholder="enter family name here.." class="form-control is-invalid" value={{ user.last_name }}>
+                        <input id="fname" name="fname" type="text" placeholder="enter first name here.." class="form-control is-valid" value="{{ user.first_name }}" required>
+                        <label for="sname">Family name (optional)</label>
+                        <input id ="sname" name="sname" type="text" placeholder="enter family name here.." class="form-control is-valid" value="{{ user.last_name }}">
+                        <label for="title">Call title</label>
+                        <input id ="title" name="title" type="text" placeholder="enter call title here.." class="form-control is-invalid" required>
+                        <label for="description">Create a description for the call</label>
+                        <textarea id="description" class="form-control" placeholder="Write brief call description here.. (optional)" rows="4" cols="50" name="description"  form="checkForm"></textarea>
                     <!-- {{ form }} -->
                         <label for="deadline">Select deadline date </label>
                         <input id="date" type="date" class="custom-select" name="deadline" required>
+                        <label for="grant">Grant value</label>
+                        <input id="grant" name="grant" class="form-control is-invalid" type="number" placeholder="0">
                     </form>
                   </div>
-
-                <!-- <p id="fileno"></p> -->
-
                   <section id="dz">
                       <div id="dropbox" class="dropzone "></div>
                   </section>
@@ -68,7 +62,27 @@
                   </div>
 
               </div>
-          </section>
+        </section>
+        <section id="summary" style="visibility:hidden">
+            <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
+            <p> Here is a quick summary of your publication. </p>
+            <table class="table">
+                <tr>
+                  <th> Title of call </th>
+                  <th> Description </th>
+                  <th> Grant amount </th>
+                  <th> Deadline </th>
+                  <th> Files uploaded </th>
+              </tr>
+              <tr>
+                  <td id="s_title"> </td>
+                  <td id="s_desc"> </td>
+                  <td id="s_amount"> </td>
+                  <td id="s_deadline"> </td>
+                  <td id="s_call_pdf"> </td>
+              </tr>
+            </table>
+        </section>
         </main>
         {% endblock %}
     </body>

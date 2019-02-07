@@ -9,6 +9,7 @@ from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 def register(request):
@@ -63,3 +64,12 @@ def change_password(request):
 
     args = {'form': form}
     return render(request, 'accounts/change_password.html', args)
+
+def view_researcher(request, user_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseForbidden
+    researcher = Researcher(user_id)
+    args = {'researcher', researcher}
+    args['editing'] = (user.id == user_id)
+    return render(request, 'accounts/view_researcher.html', args)
