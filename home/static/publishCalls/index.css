@@ -9,14 +9,9 @@ dz:hover{
     background-color: lightgrey;
 }
 
-/* .progress{
+.progress{
    width:70%;
    margin:auto;
-} */
-
-html{
-    margin: auto;
-    width:75%;
 }
 
 #form{
