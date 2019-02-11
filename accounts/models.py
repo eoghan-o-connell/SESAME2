@@ -56,15 +56,21 @@ class Researcher(models.Model):
         return "%s %s %s %s" % (self.prefix, self.user.first_name, self.user.surname, self.suffix)
 
 class Reviewer(models.Model):
-    id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     field = models.CharField(max_length=1, choices = CATEGORIES)
+    @property
+    def id(self):
+        return self.user.id
 
     class Meta:
         db_table = "reviewers"
 
 class Funder(models.Model):
-    id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     organisation = models.CharField(max_length=100)
+    @property
+    def id(self):
+        return self.user.id
 
     class Meta:
         db_table = "funders"
