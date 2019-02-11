@@ -36,7 +36,7 @@ class CallForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = '__all__'
-        exclude = ('created')
+        exclude = ('created', 'funder')
 
 class ProposalForm(forms.ModelForm):
     class Meta:
