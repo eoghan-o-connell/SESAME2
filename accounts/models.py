@@ -36,7 +36,7 @@ class Researcher(models.Model):
         ("dr", "Dr"),
         ("pr", "Prof"),
     )
-    used.id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    used = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     job_title = models.CharField(max_length=100)
     prefix = models.CharField(max_length=2, choices=PREFIX_CHOICES)
     suffix = models.CharField(max_length=10, blank=True)
