@@ -65,11 +65,10 @@ def change_password(request):
     args = {'form': form}
     return render(request, 'accounts/change_password.html', args)
 
-def view_researcher(request, user_id):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseForbidden
-    researcher = Researcher(user_id)
-    args = {'researcher', researcher}
-    args['editing'] = (user.id == user_id)
-    return render(request, 'accounts/view_researcher.html', args)
+def view_researcher(request, researcher_id):
+    editing = request.user.id == researcher_id
+    if editing:
+        researcher = request.user
+    else:
+        researcher = get_user_model().objects.get(pk=researcher_id)
+    return render(request, 'accounts/view_researcher.html', args={'researcher': researcher, 'editing': editing})

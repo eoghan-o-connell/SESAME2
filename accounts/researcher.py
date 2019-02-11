@@ -1,20 +1,19 @@
 from django.core.files.storage import default_storage
 
-class Researcher():
+class ResearcherProfile():
 
-    def __init__(self, user_id):
-        self.user = User.objects.get(id=user_id)
-        self._filename = "/researcher_profiles/%i" % user_id
-        self._values = dict()
+    def __init__(self, researcher):
+        self.filename = "/researcher_profiles/%i" % researcher
+        self.values = dict()
         if default_storage.exists(filename):
-            file = default_storage.open(self._filename, "r")
-            researcher = file.read()
+            file = default_storage.open(self.filename, "r")
+            researcher = self.file.read()
             file.close()
             researcher = researcher.split(";\n")
             for attribute in researcher:
                 key, values = attribute.split(":", 2)
-                self._values[key] = values.split(":")
-        educations = self._get_objects("edu", "degree", "field", "institution", "location", "year")
+                self.values[key] = values.split(":")
+        educations = self._get_objects("edu_", "degree", "field", "institution", "location", "year")
         employments = self._get_objects("emp", "company", "location", "years")
         societies = self._get_objects("soc", "start", "end", "name", "type")
         awards = self._get_objects("award", "year", "awarding_body", "details", "team")
@@ -121,30 +120,24 @@ class Researcher():
         return objects
 
     def _get_value(self, key, index):
-        return self._values[key][index]
+        return self.values[key][index]
 
     def _set_value(self, key, value, index):
         if ":" in value or ";\n" in value:
             raise ValueError
-        self._values[key].insert(index, value)
+        self.values[key].insert(index, value)
 
     def _get_num(self, key):
-        return len(self._values[key]))
+        return len(self.values[key]))
 
     def save(self):
         file = default_storage.open(filename, "w")
-        for key, values in self._values:
+        for key, values in self.values:
             file.write(key)
             for value in values:
                 file.write(":%s" % value)
             file.write(";\n")
         file.close()
-
-    def delete(self):
-        default_storage.delete(self._filename)
-        del self._filename
-        del self._values
-        del self
 
 class ResearcherObject():
 
