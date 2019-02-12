@@ -9,6 +9,24 @@ class RegistrationForm(UserCreationForm):
 class EditProfileForm(UserChangeForm):
     pass
 
+class ResearcherForm(forms.ModelForm):
+    class Meta:
+        model = Researcher
+        fields = '__all__'
+        exclude = ('user')
+
+class ReviewerForm(forms.ModelForm):
+    class Meta:
+        model = Reviewer
+        fields = '__all__'
+        exclude = ('user')
+
+class FunderForm(forms.ModelForm):
+    class Meta:
+        model = Funder
+        fields = '__all__'
+        exclude = ('user')
+
 class CenterForm(forms.ModelForm):
     class Meta:
         model = Center

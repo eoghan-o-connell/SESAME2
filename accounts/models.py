@@ -36,7 +36,7 @@ class Researcher(models.Model):
         ("dr", "Dr"),
         ("pr", "Prof"),
     )
-    used = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     job_title = models.CharField(max_length=100)
     prefix = models.CharField(max_length=2, choices=PREFIX_CHOICES)
     suffix = models.CharField(max_length=10, blank=True)
@@ -114,7 +114,7 @@ class Proposal(models.Model):
         return "calls/%d/proposals/%s" % (instance.call.id, filename)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     call = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    reviewer = models.CharField("Name of reviewer", max_length=200)
+    reviewer = models.OneToOneField(Reviewer, on_delete=models.SET_NULL, null=True)
     details = TextField("Details of proposal")
     proposal_document = FileField(upload_to=get_upload_filename)
     status = CharField(max_length=1, choices=PROPOSAL_CHOICES)
@@ -123,8 +123,8 @@ class Proposal(models.Model):
         db_table='proposals'
 
 class Project(models.Model):
-    researcher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)
-    center = models.ForeignKey(Center, on_delete=models.SET_NULL)
+    researcher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    center = models.ForeignKey(Center, on_delete=models.SET_NULL, null=True)
     delivery_date = DateField"Expected date of completion")
     budget = PositiveIntegerField("Project budget")
     title = CharField(max_length=100)
