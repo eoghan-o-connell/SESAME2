@@ -4,28 +4,10 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class RegistrationForm(UserCreationForm):
-
-    class Meta(UserCreationForm.Meta):
-        model = MyUser
-        fields = UserCreationForm.Meta.fields + (
-            'job_title',
-            'prefix',
-            'suffix',
-            'phone',
-            'orcid'
-        )
+    pass
 
 class EditProfileForm(UserChangeForm):
-
-    class Meta(UserChangeForm.Meta):
-        model = MyUser
-        fields = UserChangeForm.Meta.fields + (
-            'job_title',
-            'prefix',
-            'suffix',
-            'phone',
-            'orcid'
-        )
+    pass
 
 class CenterForm(forms.ModelForm):
     class Meta:
