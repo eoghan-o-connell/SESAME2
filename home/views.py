@@ -34,11 +34,10 @@ def get_call_view(request):
     return render(request, 'home/call_view.html', context)
 
 def get_my_calls(request):
-    # call_id = request.GET.get('call_id', '')
-    # call_obj = Call.objects.filter(pk=call_id).values()
-    # context = {'call_obj':call_obj}
-    return render(request, 'home/my_calls.html')
-
+    call_id = request.GET.get('call_id', '')
+    my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+    context = {'my_call_table_data':my_call_table_data}
+    return render(request, 'home/my_calls.html', context)
 
 def pub (request):
     l = []
