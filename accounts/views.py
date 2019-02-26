@@ -203,6 +203,7 @@ def edit_presentation(request, researcher_id, index):
 
 
 def add_acedemic_collab(request, researcher_id):
+    researcher_id = int(researcher_id)
     if request.user.id != researcher_id:
         return HttpResponseForbidden
     if request.method == 'GET':
@@ -218,7 +219,7 @@ def add_acedemic_collab(request, researcher_id):
             'frequency' : '',
             'attribution' : ''
         }
-        return render(request, 'accounts/researcher_forms/acedemic_collab', attributes)
+        return render(request, 'accounts/researcher_forms/acedemic_collab.html', attributes)
     else:
         collab = request.user.researcher.profile.new_acedemic_collab()
         data = request.POST

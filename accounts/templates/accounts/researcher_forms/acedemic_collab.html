@@ -1,23 +1,23 @@
-{% extends 'form.html' %}
+{% extends 'accounts/form.html' %}
 {% block form %}
-    <form method="post">
-        <label for="start">Start date</label>
-        <input type="text" name="start" value="{{ start }}" id="start"><br>
-        <label for="end">End date</label>
-        <input type="text" name="end" value="{{ end }}" id="end"><br>
-        <label for="institution">Institution</label>
-        <input type="text" name="institution" value="{{ institution }}" id="institution"><br>
-        <label for="dept">Department</label>
-        <input type="text" name="dept" value="{{ dept }}" id="dept"><br>
-        <label for="location">Location</label>
-        <input type="text" name="location" value="{{ location }}" id="location"><br>
-        <label for="name">Name</label>
-        <input type="text" name="name" value="{{ name }}" id="name"><br>
-        <label for="goal">Goal</label>
-        <input type="text" name="goal" value="{{ goal }}" id="goal"><br>
-        <label for="frequency">Frequency</label>
-        <input type="text" name="frequency" value="{{ frequency }}" id="frequency"><br>
-        <label for="attribution">Primary attribution</label>
-        <input type="text" name="attribution" value="{{ attribution }}" id="attribution"><br>
-    </form>
+    <table>
+        <tr><td><label for="start">Start date</label></td>
+        <td><input type="text" name="start" value="{{ start }}" id="start"></td></tr>
+        <tr><td><label for="end">End date</label></td>
+        <td><input type="text" name="end" value="{{ end }}" id="end"></td></tr>
+        <tr><td><label for="institution">Institution</label></td>
+        <td><input type="text" name="institution" value="{{ institution }}" id="institution"></td></tr>
+        <tr><td><label for="dept">Department</label></td>
+        <td><input type="text" name="dept" value="{{ dept }}" id="dept"></td></tr>
+        <tr><td><label for="location">Location</label></td>
+        <td><input type="text" name="location" value="{{ location }}" id="location"></td></tr>
+        <tr><td><label for="name">Name</label></td>
+        <td><input type="text" name="name" value="{{ name }}" id="name"></td></tr>
+        <tr><td><label for="goal">Goal</label></td>
+        <td><input type="text" name="goal" value="{{ goal }}" id="goal"></td></tr>
+        <tr><td><label for="frequency">Frequency</label></td>
+        <td><input type="text" name="frequency" value="{{ frequency }}" id="frequency"></td></tr>
+        <tr><td><label for="attribution">Primary attribution</label></td>
+        <td><input type="text" name="attribution" value="{{ attribution }}" id="attribution"></td></tr>
+    </table>
 {% endblock %}

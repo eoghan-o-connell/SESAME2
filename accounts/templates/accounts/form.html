@@ -4,6 +4,9 @@
         strong {
             color: red;
         }
+        label {
+            text-align: left;
+        }
     </style>
     <title>{{ title }}</title>
 {% endblock %}
@@ -15,7 +18,11 @@
         <p><strong>{{ error }}</strong></p>
         {% endfor %}
     </div>
-    {% block form %}
-    {% endblock %}
+    <form method="post">
+        {% csrf_token %}
+        {% block form %}
+        {% endblock %}
+        <input type="submit" value="Save">
+    </form>
 </div>
 {% endblock %}
