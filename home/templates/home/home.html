@@ -4,6 +4,13 @@
     {% block head %}
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <script defer src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script defer src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script defer src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script defer src="{% static 'homeDataTable/dataTable.js' %}"></script>
+    <meta charset="UTF-8">
     {% endblock %}
 </head>
 
@@ -24,7 +31,8 @@
       </div>
 
     <section id="summary">
-        <table class="table">
+        <table id="example" class="table" style="width:100%">
+          <thead>
           <tr>
               <th> Title of call </th>
               <th> Grant range </th>
@@ -32,19 +40,23 @@
               <th> Target audience </th>
               <th></th>
           </tr>
+          </thead>
+          <tbody>
+          {% for item in tableData %}
           <tr>
-              <td id="s_title"><a href="#">Computer Science Research</a></td>
-              <td id="s_amount">€10,000</td>
-              <td id="s_deadline">31/12/2019</td>
-              <td id="s_target">Department of Computer Science</td>
+              <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
+              <td id="s_amount">€{{ item.funds }}</td>
+              <td id="s_deadline">{{ item.deadline }}</td>
+              <td id="s_target">{{ item.target }}</td>
               <td>
               {% if request.user.is_superuser %}
-              <form action="{% url 'home:home' %}">
-                  <button class="btn btn-info" type='submit'>Edit</button>
-              </form>
+                  <a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a>
               {% endif %}
               </td>
           </tr>
+          {% endfor %}
+         </tbody>
+
         </table>
     </section>
 </div>
