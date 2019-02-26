@@ -50,8 +50,8 @@ def pub (request):
 
     if request.method == "POST":
        now = datetime.datetime.now()
-       date_string = "%s-%s-%s"%(now.month,now.day,now.year)
-
+       date_string = "%s-%s-%s"%(now.year,now.month,now.day)
+       
        print(request.user)
        fname = request.POST.get("fname")
        sname = request.POST.get("sname")
