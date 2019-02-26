@@ -24,8 +24,23 @@ class HomeView(TemplateView):
         context = {'tableData':tableData}
         return render(request, self.template_name, context)
 
+def get_call_view(request):
+    call_id = request.GET.get('call_id', '')
+    call_obj = Call.objects.filter(pk=call_id).values()
+    context = {'call_obj':call_obj}
+    return render(request, 'home/call_view.html', context)
+
+def get_my_calls(request):
+    # call_id = request.GET.get('call_id', '')
+    # call_obj = Call.objects.filter(pk=call_id).values()
+    # context = {'call_obj':call_obj}
+    return render(request, 'home/my_calls.html')
+
+
 def pub (request):
     l = []
+    connection = None
+
 
     if request.method == "POST":
         #print(request.POST)
@@ -49,17 +64,17 @@ def pub (request):
        user = str(request.user)
 
        userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
-       if os.path.isdir(userFileDir):
-           print("exists")
-       else:
-           os.makedirs(userFileDir)
+       # if os.path.isdir(userFileDir):
+       #     print("exists")
+       # else:
+       #     os.makedirs(userFileDir)
        for key in request.FILES:
            file = request.FILES[key]
-           with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
-               print("OPENING FILE AND WRITING TO IT")
-               for line in file:
-                   saveFile.write(line)
-               print("File has been saved")
+           # with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
+           #     print("OPENING FILE AND WRITING TO IT")
+           #     for line in file:
+           #         saveFile.write(line)
+           #     print("File has been saved")
        filename = file.name
 
        try:                        #success page if given to db
@@ -79,25 +94,25 @@ def pub (request):
 
            stri=("""
 
-               INSERT INTO calls_ (first_name, second_name, eligibility, title, description, deadline,
-               funds, file_location)
-               VALUES ('%s','%s','%s','%s','%s','%s',%d,'%s');
+               INSERT INTO calls (target, title, description, deadline,funds, file_location)
+               VALUES ('%s','%s','%s','%s',%d,'%s');
 
 
-           """ %(fname,sname,eligibility,title,description,deadline,int(grant),filename))
+           """ %(eligibility,title,description,deadline,int(grant),filename))
 
            print("________________________________________________________")
            print(stri)
            print("________________________________________________________")
 
+           funder_id = request.user.id
+
            cursor.execute("""
 
-               INSERT INTO calls_ (first_name, second_name, eligibility, title, description, deadline,
-               funds, file_location)
-               VALUES ('%s','%s','%s','%s','%s','%s',%d,'%s');
+               INSERT INTO calls (target, funder_id, title, description, deadline,funds, file_location)
+               VALUES ('%s','%s','%s','%s','%s',%d,'%s');
 
 
-           """ %(fname,sname,eligibility,title,description,deadline,int(grant),filename))
+           """ %(eligibility,funder_id,title,description,deadline,int(grant),filename))
 
            connection.commit()
 
@@ -108,6 +123,7 @@ def pub (request):
 
        except _db.Error as e:
            print("Error connecting to the database.. check credentials!")
+           print(e)
 
        finally:
            connection.close()
@@ -143,7 +159,6 @@ def pub (request):
             cursor.execute("""
 
                 SELECT category FROM categories;
-
 
             """)
 
