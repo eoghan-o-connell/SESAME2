@@ -27,6 +27,7 @@
         <table id="example" class="table" style="width:100%">
           <thead>
           <tr>
+              <th> Posted </th>
               <th> Title of call </th>
               <th> Grant range </th>
               <th> Deadline </th>
@@ -36,6 +37,7 @@
           <tbody>
           {% for item in tableData %}
           <tr>
+              <td id="s_created">{{ item.created }}</td>
               <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
               <td id="s_amount">€{{ item.funds }}</td>
               <td id="s_deadline">{{ item.deadline }}</td>
