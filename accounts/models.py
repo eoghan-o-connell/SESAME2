@@ -110,12 +110,8 @@ class Call(models.Model):
     funder = models.ForeignKey(Funder, on_delete=models.CASCADE)
     funds = models.PositiveIntegerField()
     target = models.CharField("Target audience", max_length=1 , choices=CATEGORIES)
-    criteria = models.TextField("Eligibility Criteria", null=True, blank=True)
-    template = models.FileField(upload_to='call_templates/%Y/', null=True)
+    file_location = models.CharField("File is stored", max_length=100, default="File")
     created = models.DateField(auto_now_add=True)
-    duration = models.CharField("Duration of the award", max_length=100, default=0)
-    early_start = models.DateField("Earliest expected start date")
-    late_start = models.DateField("Latest expected start date")
     deadline = models.DateField()
     def __str__(self):
         return self.title
