@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+<head>
+    {% block head %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    {% endblock %}
+</head>
+
+{% block body %}
+<div class="container" id="first_container">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-10">
+          <h1>Published Calls</h1>
+        </div>
+        <div class="col-sm-2">
+            {% if request.user.is_superuser %}
+            <form action="{% url 'home:pub' %}">
+                <button class="btn btn-success" type='submit'>Create Call</button>
+            </form>
+            {% endif %}
+        </div>
+      </div>
+
+    <section id="summary">
+        <table class="table">
+          <tr>
+              <th> Title of call </th>
+              <th> Grant range </th>
+              <th> Deadline </th>
+              <th> Target audience </th>
+              <th></th>
+          </tr>
+          <tr>
+              <td id="s_title"><a href="#">Computer Science Research</a></td>
+              <td id="s_amount">€10,000</td>
+              <td id="s_deadline">31/12/2019</td>
+              <td id="s_target">Department of Computer Science</td>
+              <td>
+              {% if request.user.is_superuser %}
+              <form action="{% url 'home:home' %}">
+                  <button class="btn btn-info" type='submit'>Edit</button>
+              </form>
+              {% endif %}
+              </td>
+          </tr>
+        </table>
+    </section>
+</div>
+{% endblock %}

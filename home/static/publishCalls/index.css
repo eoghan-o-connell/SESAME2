@@ -1,0 +1,44 @@
+#first_container {
+    margin-top: 1.5em;
+}
+
+#summary {
+    margin-top: 1.5em;
+}
+
+p{
+  padding-bottom: 1.5em;
+}
+
+dz:hover{
+    background-color: lightgrey;
+}
+
+.progress{
+   width:70%;
+   margin:auto;
+}
+
+#form{
+    width: 50%
+}
+
+#dz {
+  padding-top: 2em;
+}
+
+button {
+    margin-top: 0.5em;
+}
+
+#prog{
+    margin-top: 0.25em;
+}
+
+label{
+  padding-top:0.25em;
+}
+
+#collapsingButton{
+    margin-bottom: 1em;
+}

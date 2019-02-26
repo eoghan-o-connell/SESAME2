@@ -1,0 +1,1 @@
+scp -r /home/nadehh/Desktop/SOFTWARE_DEV/fromServer/SESAME2-master nadehh@leela.netsoc.co:public_html/aidan
