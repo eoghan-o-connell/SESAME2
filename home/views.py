@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse
 from .forms import PublishForm
-#from django.core.files.storage import FileSystemStorage
+from accounts.models import Call
 import MySQLdb as _db
 import os
 
@@ -19,8 +19,10 @@ result = "fail"
 class HomeView(TemplateView):
     template_name = 'home/home.html'
 
-
-
+    def get(self, request):
+        tableData = Call.objects.all()
+        context = {'tableData':tableData}
+        return render(request, self.template_name, context)
 
 def pub (request):
     l = []
