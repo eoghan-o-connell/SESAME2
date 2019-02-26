@@ -8,6 +8,9 @@ from accounts.models import Call
 import MySQLdb as _db
 import os
 
+import datetime
+
+
 
 host_name = "mysql.netsoc.co"
 user_name = "nadehh"
@@ -39,6 +42,9 @@ def get_my_calls(request):
 def pub (request):
     l = []
     connection = None
+    edit_toggle = False
+    edit_info = None
+
 
 
     if request.method == "POST":
@@ -166,18 +172,38 @@ def pub (request):
                 l.append(row[0])
             print(l)
 
+            call_id = request.GET.get("call_id")
+            if call_id is not None:
+                edit_toggle = True
+
+                cursor.execute("""
+
+                    SELECT target,title, description, deadline, funds, file_location From calls WHERE id = %s;
+
+                """%(call_id))
+
+                for row in cursor.fetchall():
+                    for data in row:
+                        edit_info.append(data)
+                print(edit_info)
+                edit_info[3] = str(edit_info[3])
+
+
+                print(str(edit_info[3]))
+
             # for row in cursor.fetchall():
             #     print(row)
 
         except _db.Error as e:
             print("Error connecting to the database.. check credentials!")
+            print(e)
 
         finally:
             connection.close()
 
 
     form = PublishForm()
-    return render(request, 'home/publish_call.html',{'form':form,'db':l})
+    return render(request, 'home/publish_call.html',{'form':form,'db':l, 'edit_info':edit_info, 'edit':edit_toggle})
     #return HttpResponse("publish calls")
 
 

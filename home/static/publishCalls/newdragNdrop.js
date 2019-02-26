@@ -49,12 +49,10 @@ function setup(){
     toggleButton = document.getElementById('collapsingButton');
     summary = document.getElementById("summary");
     summaryHeading=document.getElementById('summaryHeading');
-    console.log(grant);
 
     progressbar = document.getElementById('progress');
     uploadButton = document.getElementById("btn");
     csrftoken = Cookies.get('csrftoken');
-    // console.log(csrftoken);
 
     fname.addEventListener("input",checkValidName,false);
     sname.addEventListener("input",checkValidName,false);
@@ -62,13 +60,11 @@ function setup(){
     grant.addEventListener("input",checkValidName,false);
 
     toggleButton.addEventListener("click",checkSummary,false);
-
     uploadButton.addEventListener("click",uploadFiles,false);
 
     elements = [fname,sname,title,grant];
 
     form = document.getElementById('checkForm');
-    toggleButton.click();
 
     if (document.getElementById("dropbox")){
         dz = new Dropzone("div#dropbox", {
@@ -96,6 +92,7 @@ function setup(){
 }
 
 function checkSummary(){
+  console.log("click");
     if (summary.style.visibility=="visible"){
         summary.style.visibility="hidden";
         toggleButton.style.visibility = "visible";
@@ -103,6 +100,7 @@ function checkSummary(){
 }
 
 function checkValidName(e){
+
     let element = elements[dict[e.srcElement.id]];
     let val = e.srcElement.value;
     if (val == ""){
