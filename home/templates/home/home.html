@@ -48,11 +48,6 @@
               <td id="s_amount">€{{ item.funds }}</td>
               <td id="s_deadline">{{ item.deadline }}</td>
               <td id="s_target">{{ item.target }}</td>
-              <td>
-              {% if request.user.is_superuser %}
-                  <a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a>
-              {% endif %}
-              </td>
           </tr>
           {% endfor %}
          </tbody>
