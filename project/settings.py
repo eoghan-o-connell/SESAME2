@@ -25,7 +25,11 @@ SECRET_KEY = 'i+&e!gr-p+$y!5gxn&gidcbj@-%bn8)ckk5a5g-q4z0o!bq=ac'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
+ALLOWED_HOSTS = ["nadehh.netsoc.co",'127.0.0.1']
+=======
 ALLOWED_HOSTS = ["nadehh.netsoc.co", "127.0.0.1"]
+>>>>>>> 830c5a9a251a20b2737f342192542b719cd3105a
 
 # Application definition
 

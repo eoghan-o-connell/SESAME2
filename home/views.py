@@ -48,7 +48,7 @@ def pub (request):
 
        user = str(request.user)
 
-       userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
+       userFileDir = "/home/users/nadehh/django-uploads/%s-%s"%(user.split("@")[0])
        if os.path.isdir(userFileDir):
            print("exists")
        else:
@@ -79,7 +79,7 @@ def pub (request):
 
            stri=("""
 
-               INSERT INTO calls_ (first_name, second_name, eligibility, title, description, deadline,
+               INSERT INTO calls (first_name, second_name, eligibility, title, description, deadline,
                funds, file_location)
                VALUES ('%s','%s','%s','%s','%s','%s',%d,'%s');
 
@@ -92,7 +92,7 @@ def pub (request):
 
            cursor.execute("""
 
-               INSERT INTO calls_ (first_name, second_name, eligibility, title, description, deadline,
+               INSERT INTO calls (first_name, second_name, eligibility, title, description, deadline,
                funds, file_location)
                VALUES ('%s','%s','%s','%s','%s','%s',%d,'%s');
 
