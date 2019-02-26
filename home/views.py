@@ -27,6 +27,19 @@ class HomeView(TemplateView):
         context = {'tableData':tableData}
         return render(request, self.template_name, context)
 
+def get_call_view(request):
+    call_id = request.GET.get('call_id', '')
+    call_obj = Call.objects.filter(pk=call_id).values()
+    context = {'call_obj':call_obj}
+    return render(request, 'home/call_view.html', context)
+
+def get_my_calls(request):
+    # call_id = request.GET.get('call_id', '')
+    # call_obj = Call.objects.filter(pk=call_id).values()
+    # context = {'call_obj':call_obj}
+    return render(request, 'home/my_calls.html')
+
+
 def pub (request):
     l = []
     connection = None

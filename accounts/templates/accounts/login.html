@@ -1,14 +1,28 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<br/>
 <div class="container">
+  <div class="row">
+    <div class="col-sm-4 offset-sm-4 text-center" style="background-color:#F5F5F5; border:2px solid teal; height:450px;">
     <h1>Login</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+          <label for="id_username">Username:</label>
+          <input type="text" class="form-control" name="username" maxlength="254" required /autofocus id="id_username"/>
+        </div>
+        <div class="form-group">
+          <label for="id_password" >Password:</label>
+          <input type="password" class="form-control" name="password" required id="id_password"/>
+        </div>
         <button class="btn btn-success" type="submit">Login</button>
-        <p><u><a href="{% url 'accounts:reset_password' %}">Forgot password</a></u></p>
+        <p><u><a href="{% url 'accounts:reset_password' %}">Forgotten password?</a></u></p>
+          <br/>
+        <p><u><a href="/account/register/">Not yet registered? Create an account</a></u></p>
     </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
