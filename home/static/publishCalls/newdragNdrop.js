@@ -3,6 +3,9 @@ window.onload = setup();
 var dz;
 var progressbar;
 
+//REMOVE BUTTON AND ACCEPT GET REQUEST .. spawn a link tag and re direct to same page
+
+
 var fname;
 var sname;
 var date;
@@ -57,6 +60,7 @@ function setup(){
     sname.addEventListener("input",checkValidName,false);
     title.addEventListener("input",checkValidName,false);
     grant.addEventListener("input",checkValidName,false);
+
     toggleButton.addEventListener("click",checkSummary,false);
 
     uploadButton.addEventListener("click",uploadFiles,false);
@@ -64,6 +68,7 @@ function setup(){
     elements = [fname,sname,title,grant];
 
     form = document.getElementById('checkForm');
+    toggleButton.click();
 
     if (document.getElementById("dropbox")){
         dz = new Dropzone("div#dropbox", {
@@ -93,6 +98,7 @@ function setup(){
 function checkSummary(){
     if (summary.style.visibility=="visible"){
         summary.style.visibility="hidden";
+        toggleButton.style.visibility = "visible";
     }
 }
 

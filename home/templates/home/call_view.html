@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+<head>
+    {% block head %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    {% endblock %}
+</head>
+{% block body %}
+<h1>Call View</h1>
+
+{% for item in call_obj %}
+    <p>Title: {{ item.title }}</p>
+    <p>Funds: €{{ item.funds }}</p>
+    <p>Deadline: {{ item.deadline }}</p>
+    <p>Target: {{ item.target }}</p>
+    <p>Created: {{ item.created }}</p>
+    <p>Funder ID: {{ item.funder_id }}</p>
+    <p>Description: {{ item.description }}</p>
+
+
+{% endfor %}
+
+<p> pls </p>
+{% for i in link_obj %}
+<a href="{{ i.0 }}" download="{{ i.1 }}"> {{ i.1 }} </a>
+{% endfor %}
+
+{% endblock %}
