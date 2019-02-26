@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
+{% block head %}
     {% load static %}
     <script type="text/javascript" src="{% static 'accounts/register.js' %}"></script>
     <style media="screen">
@@ -12,8 +9,6 @@
     </style>
     <title>Register</title>
     {% endblock %}
-</head>
-<body>
 {% block body %}
 <div class="container">
     <h2>Register</h2>
@@ -94,5 +89,3 @@
     </form>
 </div>
 {% endblock %}
-</body>
-</html>
