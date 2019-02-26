@@ -32,9 +32,6 @@
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home:home' %}">Home<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="#">Calls/Proposals<span class="sr-only">(current)</span></a>
           </li>
           {% else %}
