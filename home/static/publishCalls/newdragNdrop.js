@@ -62,6 +62,8 @@ function setup(){
     toggleButton.addEventListener("click",checkSummary,false);
     uploadButton.addEventListener("click",uploadFiles,false);
 
+    toggleButton.click();
+
     elements = [fname,sname,title,grant];
 
     form = document.getElementById('checkForm');
@@ -95,7 +97,6 @@ function checkSummary(){
   console.log("click");
     if (summary.style.visibility=="visible"){
         summary.style.visibility="hidden";
-        toggleButton.style.visibility = "visible";
     }
 }
 
