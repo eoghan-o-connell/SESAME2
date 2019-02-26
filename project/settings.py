@@ -27,7 +27,6 @@ DEBUG = True
 
 
 
-
 ALLOWED_HOSTS = ["nadehh.netsoc.co", "127.0.0.1"]
 
 # Application definition
