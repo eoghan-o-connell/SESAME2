@@ -43,6 +43,9 @@ def get_my_calls(request):
 def pub (request):
     l = []
     connection = None
+    edit_toggle = False
+    edit_info = None
+
 
 
     if request.method == "POST":
@@ -67,10 +70,10 @@ def pub (request):
        user = str(request.user)
 
        userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
-       if os.path.isdir(userFileDir):
-           print("exists")
-       else:
-           os.makedirs(userFileDir)
+       # if os.path.isdir(userFileDir):
+       #     print("exists")
+       # else:
+       #     os.makedirs(userFileDir)
        for key in request.FILES:
            file = request.FILES[key]
            # with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
@@ -170,14 +173,9 @@ def pub (request):
                 l.append(row[0])
             print(l)
 
-
-            edit_toggle = False
-            edit_info = []
-
             call_id = request.GET.get("call_id")
             if call_id is not None:
                 edit_toggle = True
-
 
                 cursor.execute("""
 
