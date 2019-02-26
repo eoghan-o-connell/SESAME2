@@ -35,8 +35,8 @@ def get_call_view(request):
 
 def get_my_calls(request):
     call_id = request.GET.get('call_id', '')
-    tableData = Call.objects.filter(funder_id=call_id).values()
-    context = {'tableData':tableData}
+    my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+    context = {'my_call_table_data':my_call_table_data}
     return render(request, 'home/my_calls.html', context)
 
 def pub (request):
