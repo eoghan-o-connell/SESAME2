@@ -45,7 +45,7 @@ def pub (request):
     edit_toggle = False
     edit_info = []
     now = datetime.datetime.now()
-    date_string = "%s-%s-%s"%(now.month,now.day,now.year)
+    date_string = "%s-%s-%s"%(now.year,now.month,now.day)
     print(date_string)
 
     if request.method == "POST":
