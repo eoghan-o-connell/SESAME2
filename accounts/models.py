@@ -160,22 +160,22 @@ class ResearcherProfile():
             for attribute in researcher:
                 key, values = attribute.split(":", 2)
                 self.values[key] = values.split(":")
-        educations = self._get_objects("edu", "degree", "field", "institution", "location", "year")
-        employments = self._get_objects("emp", "company", "location", "years")
-        societies = self._get_objects("soc", "start", "end", "name", "type")
-        awards = self._get_objects("award", "year", "awarding_body", "details", "team")
-        fundings = self._get_objects("fund", "start", "end", "amount", "body", "programme", "attribution")
-        team_members = self._get_objects("mem", "start", "end", "name", "position", "attribution")
-        impacts = self._get_objects("imp", "title", "category", "beneficiary", "attribution")
-        innovations = self._get_objects("inn", "year", "type", "title", "attribution")
-        publications = self._get_objects("pub", "year", "type", "title", "journal", "status", "doi", "attribution")
-        presentations = self._get_objects("pre", "year", "title", "event", "body", "location", "attribution")
-        acedemic_collabs = self._get_objects("acd", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        non_acedemic_collabs = self._get_objects("non", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        conferences = self._get_objects("con", "start", "end", "title", "type", "role", "location", "attribution")
-        comms_overviews = self._get_objects("com", "year", "lectures", "visits", "media")
-        funding_ratios = self._get_objects("rat", "year", "percent")
-        projects = self._get_objects("pro", "name", "start", "end", "type", "topic", "target", "attribution")
+        self.educations = self._get_objects("edu", "degree", "field", "institution", "location", "year")
+        self.employments = self._get_objects("emp", "company", "location", "years")
+        self.societies = self._get_objects("soc", "start", "end", "name", "type")
+        self.awards = self._get_objects("award", "year", "awarding_body", "details", "team")
+        self.fundings = self._get_objects("fund", "start", "end", "amount", "body", "programme", "attribution")
+        self.team_members = self._get_objects("mem", "start", "end", "name", "position", "attribution")
+        self.impacts = self._get_objects("imp", "title", "category", "beneficiary", "attribution")
+        self.innovations = self._get_objects("inn", "year", "type", "title", "attribution")
+        self.publications = self._get_objects("pub", "year", "type", "title", "journal", "status", "doi", "attribution")
+        self.presentations = self._get_objects("pre", "year", "title", "event", "body", "location", "attribution")
+        self.acedemic_collabs = self._get_objects("acd", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
+        self.non_acedemic_collabs = self._get_objects("non", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
+        self.conferences = self._get_objects("con", "start", "end", "title", "type", "role", "location", "attribution")
+        self.comms_overviews = self._get_objects("com", "year", "lectures", "visits", "media")
+        self.funding_ratios = self._get_objects("rat", "year", "percent")
+        self.projects = self._get_objects("pro", "name", "start", "end", "type", "topic", "target", "attribution")
 
     def new_education(self):
         education = self._get_object("edu", "degree", "field", "institution", "location", "year")
@@ -229,7 +229,7 @@ class ResearcherProfile():
 
     def new_acedemic_collab(self):
         acedemic_collab = self._get_object("acd", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        acedemic_collabs.append(acedemic_collab)
+        self.acedemic_collabs.append(acedemic_collab)
         return acedemic_collab
 
     def new_non_acedemic_collab(self):
@@ -278,7 +278,7 @@ class ResearcherProfile():
         return len(self.values.get(key, []))
 
     def save(self):
-        file = default_storage.open(filename, "w")
+        file = default_storage.open(self.filename, "w")
         for key, values in self.values:
             file.write(key)
             for value in values:
@@ -291,7 +291,7 @@ class ResearcherObject():
     def __init__(self, prefix, researcher, index, keys):
         self._researcher = researcher
         is_private_key = "%s_private" % prefix
-        format = "%s_%s" % prefix
+        format = "%s_%s" % (prefix, "%s")
         if index == None:
             self._index = researcher.get_num(is_private_key) + 1
         self.is_private = self._get_property(is_private_key)
