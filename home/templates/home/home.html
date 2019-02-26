@@ -43,7 +43,7 @@
           <tbody>
           {% for item in tableData %}
           <tr>
-              <td id="s_title"><a href=""> {{ item.title }} </a></td>
+              <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
               <td id="s_amount">€{{ item.funds }}</td>
               <td id="s_deadline">{{ item.deadline }}</td>
               <td id="s_target">{{ item.target }}</td>
