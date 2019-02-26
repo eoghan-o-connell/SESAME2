@@ -32,7 +32,7 @@
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home:my_calls' %}">Calls/Proposals<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'home:my_calls' %}?call_id={{ user.id }}">Calls/Proposals<span class="sr-only">(current)</span></a>
           </li>
           {% else %}
           <a class="nav-item nav-link"  href="{% url 'accounts:login' %}">Login</a>

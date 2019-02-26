@@ -22,7 +22,7 @@
           <h1>Published Calls</h1>
         </div>
         <div class="col-sm-2">
-            {% if request.user.is_superuser %}
+            {% if user.id == 28 %}
             <form action="{% url 'home:pub' %}">
                 <button class="btn btn-success" type='submit'>Create Call</button>
             </form>
