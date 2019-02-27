@@ -43,7 +43,6 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
-
     if request.method == 'POST':
         form = ProposalForm(request.POST, request.FILES)
         if form.is_valid():
