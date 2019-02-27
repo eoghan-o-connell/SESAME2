@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from .forms import PublishForm
-from accounts.models import Call, Center, Proposal, Reviewer
+from accounts.models import Call, Center, Proposal, Reviewer ,Funder, Researcher
 from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
@@ -61,24 +61,36 @@ def get_call_view(request):
 
 def get_my_calls(request):
     user = request.user
-
-    funder = user.funder
-    researcher = user.researcher
-    reviewer = user.reviewer
-
     call_id = request.GET.get('call_id', '')
 
-    if funder:
+    try:
+        print("funder")
+        funder = user.funder
         my_call_table_data = Call.objects.filter(funder_id=call_id).values()
         context = {'my_call_table_data':my_call_table_data}
-    elif researcher:
-        my_call_table_data = Proposal.objects.filter(user_id=request.user_id).values()
-        context = {'my_call_table_data':my_call_table_data}
-    else:
-        my_call_table_data = Call.objects.filter(reviewer_id=request.user_id).values()
-        context = {'my_call_table_data':my_call_table_data}
+        return render(request, 'home/my_calls.html', context)
+    except Funder.DoesNotExist:
+        print("Not funder")
 
-    return render(request, 'home/my_calls.html', context)
+    try:
+        print("researcher")
+        researcher = user.researcher
+        my_call_table_data = Proposal.objects.filter(user_id=request.user.id).values()
+        context = {'my_call_table_data':my_call_table_data}
+        return render(request, 'home/my_calls.html', context)
+    except Researcher.DoesNotExist:
+        print("Not researcher")
+
+    try:
+        print("reviewer")
+        reviewer = user.reviewer
+        my_call_table_data = Proposal.objects.filter(reviewer_id=request.user.id).values()
+        context = {'my_call_table_data':my_call_table_data}
+        return render(request, 'home/my_calls.html', context)
+    except Reviewer.DoesNotExist:
+        print("Not reviewer")
+
+
 
 def pub (request):
     categories = []

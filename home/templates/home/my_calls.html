@@ -20,7 +20,7 @@
             {% endif %}
         </div>
       </div>
-
+    {% if user.funder %}
     <section id="summary">
         <table id="example" class="table" style="width:100%">
           <thead>
@@ -48,5 +48,24 @@
 
         </table>
     </section>
+    {% else %}
+    <section id="summary">
+        <table id="example" class="table" style="width:100%">
+          <thead>
+          <tr>
+              <th> Proposal Document </th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for item in my_call_table_data %}
+          <tr>
+              <td id="s_doc">{{ item.proposal_document }}</td>
+          </tr>
+          {% endfor %}
+         </tbody>
+
+        </table>
+    </section>
+    {% endif %}
 </div>
 {% endblock %}
