@@ -31,6 +31,15 @@ class ProposalForm(forms.ModelForm):
         model = Proposal
         fields = ('proposal_document',)
 
+    def save(self, user, call, reviewer=None, commit=True):
+        proposal = super(ProposalForm, self).save(commit=False)
+        proposal.user = user
+        proposal.call = call
+        proposal.reviewer = reviewer
+        if commit:
+            proposal.save()
+        return proposal
+
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project

@@ -146,20 +146,20 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     information = models.TextField("Additional information")
 
+from ConfigParser import SafeConfigParser as cp
 
 class ResearcherProfile():
 
     def __init__(self, researcher):
-        self.filename = "/home/users/nadehh/public_html/aidan/myproject/myproject/accounts/researcher_profiles/%i" % researcher
-        self.values = dict()
-        if default_storage.exists(self.filename):
-            file = default_storage.open(self.filename, "r")
-            researcher = self.file.read()
+        self._filename = "/home/users/nadehh/public_html/aidan/myproject/myproject/accounts/researcher_profiles/%i" % researcher
+        self._config = cp()
+        if default_storage.exists(self._filename):
+            file = default_storage.open(self._filename, "r")
+            self._config.read(file)
             file.close()
-            researcher = researcher.split(";\n")
-            for attribute in researcher:
-                key, values = attribute.split(":", 2)
-                self.values[key] = values.split(":")
+            self._config
+        else:
+            self._config.add_section('profile')
         self.educations = self._get_objects("edu", "degree", "field", "institution", "location", "year")
         self.employments = self._get_objects("emp", "company", "location", "years")
         self.societies = self._get_objects("soc", "start", "end", "name", "type")
@@ -267,34 +267,37 @@ class ResearcherProfile():
         return objects
 
     def _get_value(self, key, index):
-        return self.values[key][index]
+        return self._config.get("profile", key+str(index))
 
     def _set_value(self, key, value, index):
-        if ":" in value or ";\n" in value:
-            raise ValueError
-        self.values[key].insert(index, value)
+        self._config.set("profile", key+str(index), value)
 
     def _get_num(self, key):
-        return len(self.values.get(key, []))
+        index = 0
+        while self._config.has_option("profile", key+str(index)):
+            index += 1
+        return index
+
+    def is_private(self, prefix):
+        return self._config.getboolean("profile", prefix+"_is_private")
+
+    def set_private(self, prefix, private):
+        return self._config.set("profile", prefix+"_is_private", str(private))
 
     def save(self):
-        file = default_storage.open(self.filename, "w")
-        for key, values in self.values:
-            file.write(key)
-            for value in values:
-                file.write(":%s" % value)
-            file.write(";\n")
+        file = default_storage.open(self._filename, "w")
+        self._config.write(file)
         file.close()
 
 class ResearcherObject():
 
     def __init__(self, prefix, researcher, index, keys):
         self._researcher = researcher
-        is_private_key = "%s_private" % prefix
         format = "%s_%s" % (prefix, "%s")
         if index == None:
             self._index = researcher.get_num(is_private_key) + 1
-        self.is_private = self._get_property(is_private_key)
+        self.is_private = property(lambda self: self._researcher.is_private(prefix),
+        lambda self, value: self._researcher.set_private(prefix, value)
         if index == None:
             self.is_private = true
         for keyname in keys:
