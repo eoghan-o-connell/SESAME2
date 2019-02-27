@@ -52,9 +52,12 @@ def register(request):
     return render(request, 'accounts/reg_form.html', {'errors' : errors})
 
 def view_profile(request):
-    storage = messages.get_messages(request)
-    args = {'user': request.user, 'message': storage}
-    return render(request, 'accounts/profile.html', args)
+    try:
+        researcher = request.user.researchers
+    except RelatedObjectDoesNotExist:
+        storage = messages.get_messages(request)
+        args = {'user': request.user, 'message': storage}
+        return render(request, 'accounts/profile.html', args)
 
 def edit_profile(request):
     if request.method=='POST':
@@ -233,7 +236,7 @@ def add_acedemic_collab(request, researcher_id):
         collab.frequency = data.get('frequency', '')
         collab.attribution = data.get('attribution', '')
         collab.save()
-        return redirect(reverse('view researcher', args=[researcher_id]))
+        return redirect('/account/view-researcher/%i#acedemic_collab_%i' % (researcher_id, collab.index))
 
 def edit_acedemic_collab(request, researcher_id, index):
     if request.user.id != researcher_id:

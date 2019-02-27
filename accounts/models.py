@@ -146,7 +146,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     information = models.TextField("Additional information")
 
-from configparser import SafeConfigParser as cp
+from ConfigParser import SafeConfigParser as cp
 
 class ResearcherProfile():
 
@@ -285,7 +285,7 @@ class ResearcherProfile():
         return self._config.set("profile", prefix+"_is_private", str(private))
 
     def save(self):
-        file = default_storage.open(self._filename, "w")
+        file = default_storage.open(self._filename, "w+")
         self._config.write(file)
         file.close()
 
