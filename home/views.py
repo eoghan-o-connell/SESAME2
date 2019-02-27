@@ -9,11 +9,7 @@ from accounts.models import Call, Center
 from accounts.forms import CenterForm
 import MySQLdb as _db
 import os
-
 import datetime
-
-
-# EOGHAN -- > THE VALUE OF THE TOKEN FOR ONE OF THE HIDDEN ELEMENTS IS BREAKING STUFF WHEN TRYING TO CREATE A CALL
 
 
 host_name = "mysql.netsoc.co"
@@ -59,6 +55,9 @@ def get_my_calls(request):
     my_call_table_data = Call.objects.filter(funder_id=call_id).values()
     context = {'my_call_table_data':my_call_table_data}
     return render(request, 'home/my_calls.html', context)
+
+
+
 
 def pub (request):
     categories = []
