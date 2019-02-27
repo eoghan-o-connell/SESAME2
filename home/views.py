@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
+from django.http import JsonResponse
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal, Reviewer ,Funder, Researcher
 from accounts.forms import CenterForm, ProposalForm
@@ -249,104 +250,14 @@ def pub (request):
     form = PublishForm()
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
-
-# def home(request):
-#     output = ""#strings initialised at start for later
-#     sql_query = ""
-#     if request.method == 'GET':
-#         search_query = request.GET.get('search_box', '') #text entered by user
-#         search_type = request.GET.get('search_type', None) #which table to query
-#         searching = request.GET.get('searching', None) #what field to search in table
-#         deadline_before = request.GET.get('deadline_before', None) #input fields for calls to filter by deadline
-#         deadline_after = request.GET.get('deadline_after', None)
-#         try:
-#             connection = _db.connect(host=host_name, user=user_name, passwd=password, db=db_name)
-#             cursor = connection.cursor(_db.cursors.DictCursor)
-#             #this big massive if elif else statement is essentially just building an SQL query depending on the type of search the user is doing
-#             if search_type == "calls_":
-#                 sql_query = "SELECT eligibility, title, description, deadline FROM calls_ WHERE "
-#                 if searching == 'title':
-#                     sql_query += "title"
-#                 else: #only allowing searching of title and description rn
-#                     sql_query += "description"
-#                 sql_query +=" LIKE '%"
-#                 sql_query += search_query
-#                 sql_query += "%' "
-#                 if deadline_before:
-#                     sql_query += "AND deadline < '%s' "%str(deadline_before)
-#                 if deadline_after:
-#                     sql_query += "AND deadline > '%s' "%str(deadline_after)
-#                 sql_query += ";"
-#             elif search_type == "centers": #only allowing to search for centres by name atm
-#                 sql_query = "SELECT name FROM centers WHERE name LIKE '%"
-#                 sql_query += search_query
-#                 sql_query += "%';"
-#             elif search_type == "papers":
-#                 sql_query = "SELECT title, description, r.job_title, c.name FROM papers AS p, researchers AS r, centers AS c WHERE "
-#                 if searching == "title":
-#                     sql_query += "p.title "
-#                 elif searching == "researcher":
-#                     sql_query += "r.jobtitle "
-#                 elif searching == "center":
-#                     sql_query += "c.name "
-#                 else:
-#                     sql_query += "p.description "
-#                 sql_query +=" LIKE '%" #LIKE allows for a blank search if user puts in no input but will display all results
-#                 sql_query += search_query
-#                 sql_query += "%' AND p.researcher=r.researcher AND c.center=p.center ;"
-#             else:
-#                 pass
-#             cursor.execute(sql_query)
-#             #building table from executed SQL statemet
-#             output += "<table>"
-#             for row in cursor.fetchall(): #currently does not display the column titles
-#                 output += "<tr>"
-#                 for column in row:
-#                     output += "<td>"
-#                     output += str(row[column])
-#                     output += "</td>"
-#                 output += "</tr>"
-#             output += "</table>"
-#         except Exception as e: #change later
-#             output = "<p>"
-#             output += str(e)
-#             output +="</p>"
-#             output +="<p>"
-#             output += str(search_query)
-#
-#     return HttpResponse("""<head>
-#                             <style>
-#                             table, td, th { border: 1px solid black;}
-#                             table {border-spacing: 50px 0;}
-#                             th, td { padding:15px;}
-#                             </style>
-#                             </head>
-#                             <body>
-#                                 <h1> Searchbar
-#                                 </h1>
-#                                 <form type="get" action="." style="margin: 0">
-#                                     <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
-#                                     <select id='search_type' name="search_type" onchange="variableSelect()">
-#                                         <option value="calls_">Calls</option>
-#                                         <option value="centers">Centers</option>
-#                                         <option value="papers">Papers</option>
-#                                     </select>
-#                                     <button id="search_submit" type="submit" >Submit</button>
-#                                     <div id="filter_div"></div>
-#                                 </form>
-#                                 <p1>%s</p1>
-#                                 <script>
-#                                     function variableSelect(){
-#                                         var search_var = document.getElementById("search_type").value;
-#                                         if (search_var == "calls_"){
-#                                             filter_div.innerHTML=" <input type='radio' name='searching' value='title'>Title<input type='radio' name='searching' value='description'>Description<br>Deadline Before: <input type='date' name='deadline_before'/><br>Deadline After: <input type='date' name='deadline_after'/> ";
-#                                         }
-#                                         else if (search_var == "centers") {
-#                                             filter_div.innerHTML=""
-#                                         }
-#                                         else if (search_var == "papers"){
-#                                             filter_div.innerHTML="<input type='radio' name='searching' value='title'>Title<input type='radio' name='searching' value='description'>Description<input type='radio' name='searching' value='researcher'>Researcher<input type='radio' name='searching' value='center'>Center";
-#                                         }
-#                                     }
-#                                 </script>
-#                             </body> """%output)
+def autocomplete(request):
+    if request.is_ajax():
+        queryset = Center.objects.filter(name__contains=request.GET.get('?search', ''))
+        list = []
+        for i in queryset:
+            list.append(i.name)
+            print(i)
+        data = {
+            'list': list,
+        }
+        return JsonResponse(data)
