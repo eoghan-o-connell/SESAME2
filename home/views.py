@@ -30,16 +30,17 @@ class HomeView(TemplateView):
         context = {'tableData':tableData}
         return render(request, self.template_name, context)
 
+def view_center(request):
+
+    return render(request, 'home/view_center.html')
+
 def create_center(request):
     if request.method == 'POST':
         form = CenterForm(request.POST)
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            form.save()
+            return redirect(reverse('home:view_center'))
 
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = CenterForm()
 

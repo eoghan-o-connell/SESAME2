@@ -7,8 +7,15 @@
     {% endblock %}
 </head>
 {% block body %}
-<h1>Centers</h1>
-{{ form.as_p }}
-<button class="btn btn-success" type='submit'>Create Center</button>
+<div class="container">
+    <h1>Create Centers</h1>
+</div>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Create Center</button>
+    </form>
+</div>
 
 {% endblock %}
