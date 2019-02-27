@@ -61,21 +61,23 @@ def get_call_view(request):
 
 def get_my_calls(request):
     user = request.user
+
     funder = user.funder
     researcher = user.researcher
     reviewer = user.reviewer
+
+    call_id = request.GET.get('call_id', '')
+
     if funder:
-        call_id = request.GET.get('call_id', '')
         my_call_table_data = Call.objects.filter(funder_id=call_id).values()
         context = {'my_call_table_data':my_call_table_data}
     elif researcher:
-        call_id = request.GET.get('call_id', '')
-        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        my_call_table_data = Proposal.objects.filter(user_id=request.user_id).values()
         context = {'my_call_table_data':my_call_table_data}
     else:
-        call_id = request.GET.get('call_id', '')
-        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        my_call_table_data = Call.objects.filter(reviewer_id=request.user_id).values()
         context = {'my_call_table_data':my_call_table_data}
+
     return render(request, 'home/my_calls.html', context)
 
 def pub (request):
