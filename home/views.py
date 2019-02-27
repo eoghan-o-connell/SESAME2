@@ -65,7 +65,7 @@ def pub (request):
     edit_info = []
     now = datetime.datetime.now()
     date_string = "%s-%s-%s"%(now.year,now.month,now.day)
-    print(date_string)
+    # print(date_string)
 
     if request.method == "POST":
        now = datetime.datetime.now()
@@ -86,10 +86,9 @@ def pub (request):
        editing_mode = False
        value = request.POST.get("editing_mode")
 
-       if bool(value):
+       if value == "True":
            editing_mode = True
 
-       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& %s" % value)
 
 
         # editing_mode = True
@@ -104,7 +103,7 @@ def pub (request):
            #         saveFile.write(line)
            #     print("File has been saved")
            filename = file.name
-       print("======================",value,_call_id)
+       # print("======================",value,_call_id)
 
        db_query = """
 
@@ -133,7 +132,7 @@ def pub (request):
        else:
           print("creating a new call man")
 
-       print("$"*50)
+       # print("$"*50)
 
 
        userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
@@ -147,15 +146,15 @@ def pub (request):
                             user=user_name,
                             passwd=password,
                             db=db_name)
-
-           print("#"*64 + "\n")
-           print("%-25s %32s" % ("Connected to database POST:",db_info_string))
-           print("%-25s %32s\n" % ("Established cursor POST:",db_info_string))
-           print("#"*64)
+           #
+           # print("#"*64 + "\n")
+           # print("%-25s %32s" % ("Connected to database POST:",db_info_string))
+           # print("%-25s %32s\n" % ("Established cursor POST:",db_info_string))
+           # print("#"*64)
            result = "success"
            cursor = connection.cursor()
 
-           print("ABOUT TO EXECUTE QUERY")
+           # print("ABOUT TO EXECUTE QUERY")
 
            # stri=("""
            #
@@ -165,16 +164,16 @@ def pub (request):
            #
            # """ %(eligibility,title,description,deadline,int(grant),filename))
 
-           print("________________________________________________________")
-           print(db_query)
-           print("________________________________________________________")
-
+           # print("________________________________________________________")
+           # print(db_query)
+           # print("________________________________________________________")
+           #
 
            cursor.execute(db_query)
 
            connection.commit()
 
-           print("SUCCESSFULLY UPDATED TABLE WAHOOOO LETS GO BOYS")
+           # print("SUCCESSFULLY UPDATED TABLE WAHOOOO LETS GO BOYS")
 
            # for row in cursor.fetchall():
            #     print(row)
@@ -223,7 +222,11 @@ def pub (request):
             l =[]
             for row in cursor.fetchall():
                 l.append(row[0])
-            print(l)
+            # print(l)
+
+
+
+            #IF NO ITEMS JUST RETURN CREATE A CALL , ITS JUST HTML MANIPULATION
 
             call_id = request.GET.get("call_id")
             if call_id is not None:
@@ -235,17 +238,22 @@ def pub (request):
 
                 """%(call_id))
 
-                for row in cursor.fetchall():
-                    for data in row:
+                row = cursor.fetchall()
+                print("ROW -- > ", row)
+                if len(row)!=0:
+                    for data in row[0]:
+                        print("^"*50)
+                        print(data,row)
+                        print("*",data)
                         edit_info.append(data)
-                print(edit_info)
-                edit_info[3] = str(edit_info[3])
+                    # print(edit_info)
+                    edit_info[3] = str(edit_info[3])
 
-                print(edit_info)
+                    # print(edit_info)
 
-                print(str(edit_info[3]))
+                    # print(str(edit_info[3]))
 
-                edit_info.append(call_id)
+                    edit_info.append(call_id)
 
             # for row in cursor.fetchall():
             #     print(row)
