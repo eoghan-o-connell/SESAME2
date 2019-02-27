@@ -11,6 +11,8 @@ import os
 import datetime
 
 
+# EOGHAN -- > THE VALUE OF THE TOKEN FOR ONE OF THE HIDDEN ELEMENTS IS BREAKING STUFF WHEN TRYING TO CREATE A CALL
+
 
 host_name = "mysql.netsoc.co"
 user_name = "nadehh"
@@ -51,7 +53,7 @@ def pub (request):
     if request.method == "POST":
        now = datetime.datetime.now()
        date_string = "%s-%s-%s"%(now.year,now.month,now.day)
-       
+
        print(request.user)
        fname = request.POST.get("fname")
        sname = request.POST.get("sname")
@@ -64,8 +66,18 @@ def pub (request):
 
        user = str(request.user)
 
-       editing_mode = request.POST.get("editing_mode") != None
-       call_id = request.POST.get("call_id")
+       editing_mode = False
+       value = request.POST.get("editing_mode")
+
+       if bool(value):
+           editing_mode = True
+
+       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& %s" % value)
+
+
+        # editing_mode = True
+
+       _call_id = request.POST.get("_call_id")
 
        for key in request.FILES:
            file = request.FILES[key]
@@ -75,7 +87,7 @@ def pub (request):
            #         saveFile.write(line)
            #     print("File has been saved")
            filename = file.name
-       print("___________________------------__________________",editing_mode,call_id)
+       print("======================",value,_call_id)
 
        db_query = """
 
@@ -90,16 +102,16 @@ def pub (request):
           db_query = """
 
               UPDATE calls
-              SET target='%s'
-                  date_string='%s'
-                  funder_id='%s',
+              SET target='%s',
+                  created='%s',
+                  funder_id=%d,
                   title='%s',
                   description='%s',
                   deadline='%s',
-                  funds=%d,
-              WHERE call_id = '%s'
+                  funds=%d
+              WHERE id = %d;
 
-          """ %(eligibility,date_string,funder_id,title,description,deadline,int(grant),call_id)
+          """ %(eligibility,date_string,int(funder_id),title,description,deadline,int(grant),int(_call_id))
 
        else:
           print("creating a new call man")
