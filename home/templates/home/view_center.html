@@ -14,10 +14,11 @@
     <p>Description: {{ item.info }}</p>
     <p>Created: {{ item.created }}</p>
     <p>Admin: {{ item.admin_id }}</p>
-{% endfor %}
-{% if request.user.id == item.admin_id %}
-    <button class="btn btn-danger" type='submit'>Add User</button>
+
+{% if item.admin_id == request.user.id %}
+    <!-- <button class="btn btn-danger" type='submit'>Add User</button> -->
 {% endif %}
+{% endfor %}
 {% else %}
 <i><p>Not part of a center, create a center below</p></i>
 {% endif %}
