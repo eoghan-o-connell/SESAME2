@@ -41,6 +41,7 @@ var element;
 function setup(){
     Dropzone.autoDiscover = false;
 
+    toggleButton = document.getElementById('collapsingButton');
     fname = document.getElementById('fname');
     sname = document.getElementById('sname');
     date = document.getElementById('date');
@@ -50,7 +51,6 @@ function setup(){
     grant = document.getElementById('grant');
     call_id = document.getElementById('_call_id');
     editing_mode = document.getElementById('updating_call');
-    toggleButton = document.getElementById('collapsingButton');
     summary = document.getElementById("summary");
     summaryHeading=document.getElementById('summaryHeading');
 
@@ -66,9 +66,17 @@ function setup(){
     toggleButton.addEventListener("click",checkSummary,false);
     uploadButton.addEventListener("click",uploadFiles,false);
 
-    toggleButton.click();
+    // toggleButton.click();
 
     elements = [fname,sname,title,grant];
+
+    for (var i=0; i<elements.length; i++){
+        if (elements[i].value!=""){
+            let element = elements[i];
+            element.classList.remove('is-invalid');
+            element.classList.add('is-valid');
+        }
+    }
 
     form = document.getElementById('checkForm');
 
