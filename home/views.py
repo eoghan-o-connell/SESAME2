@@ -38,7 +38,7 @@ def create_center(request):
     if request.method == 'POST':
         form = CenterForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(admin=request.user)
             return redirect(reverse('home:view_center'))
 
     else:
