@@ -130,7 +130,7 @@ class Proposal(models.Model):
         ("d", "Denied")
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    call = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_call', on_delete=models.CASCADE)
+    call = models.ForeignKey(Call, related_name='%(class)s_call', on_delete=models.CASCADE)
     reviewer = models.OneToOneField(Reviewer, on_delete=models.SET_NULL, null=True)
     details = models.TextField("Details of proposal")
     proposal_document = models.FileField(upload_to=get_proposal_filename)
