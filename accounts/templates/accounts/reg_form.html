@@ -10,82 +10,115 @@
     <title>Register</title>
     {% endblock %}
 {% block body %}
-<div class="container">
-    <h2>Register</h2>
-    <div id="errors">
-        {% for error in errors %}
-        <p><strong>{{ error }}</strong></p>
-        {% endfor %}
+<br>
+<div class="row">
+  <div class="col-sm-4 offset-sm-4 text-center" style="background-color:#F5F5F5; border:2px solid teal;">
+    <div class="container">
+        <h2>Register</h2>
+        <div id="errors">
+            {% for error in errors %}
+            <p><strong>{{ error }}</strong></p>
+            {% endfor %}
+        </div>
+        <form id="reg" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="user_type">Register as: </label>
+              <select id="user_type" class="user_type form-control" name="user_type" required>
+                <option selected disabled hidden style='display: none' value=''></option>
+                <option value="researcher">Researcher</option>
+                <option value="funder">Funding Authority</option>
+                <option value="reviewer">Reviewer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="user_form" hidden for="email">Email</label>
+              <input class="user_form form-control" hidden id="email" type="email" name="email" autocomplete="email" placeholder="example@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="user_form" hidden for="first_name">First Name</label>
+              <input class="user_form form-control" hidden type="text" id="first_name" autocomplete="first name" name="first_name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="user_form" hidden for="last_name">Last Name</label>
+              <input class="user_form form-control" hidden type="text" id="last_name" autocomplete="family-name" name="last_name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="user_form" hidden for="password1">Password</label>
+              <input class="user_form form-control" hidden id="password1" type="password" name="password" required/>
+            </div>
+
+            <div class="form-group">
+              <label class="user_form" hidden for="password2">Repeat Password</label>
+              <input class="user_form form-control" hidden id="password2" type="password" required/><p><strong id="no_match" hidden>Passwords do not match</strong></p>
+            </div>
+            <div class="form-group">
+              <div id="researcher_form" hidden>
+                <label for="job_title">Job Title</label>
+                <input id="job_title" type="text" name="job_title" class="res_req form-control">
+              </div>
+              <div class="form-group">
+                <label for="prefix">Prefix</label>
+                <select class="prefix res_req form-control" id="prefix" name="prefix">
+                    <option selected disabled hidden style='display: none' value=''></option>
+                    <option value="mr">Mr</option>
+                    <option value="ms">Ms</option>
+                    <option value="rs">Mrs</option>
+                    <option value="mx">Mx</option>
+                    <option value="dr">Dr</option>
+                    <option value="pr">Prof</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="suffix" >Suffix</label>
+                <input type="text" id="suffix" autocomplete="honorific-suffix" name="suffix" maxlength="10" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" autocomplete="tel" name="phone" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="orcid">ORCID number</label>
+                <input type="text" id="orcid" name="orcid" placeholder="XXXX-XXXX-XXXX-XXXX" class="form-control">
+              </div>
+              <!--<br><label for="profile_picture">Profile Picture</label>
+              <input type="file" id="profile_picture" name="profile_picture">-->
+            <div class="form-group">
+              <div id="reviewer_form" hidden>
+                <label for="field">Field of research</label>
+                <select class="field" name="field" id="field" class="form-control">
+                    <option selected disabled hidden style='display: none' value=''></option>
+                    <option value="A">Priority Area A: Future Networks & Communications</option>
+                    <option value="B">Priority Area B: Data Analytics, Management, Security & Privacy</option>
+                    <option value="C">Priority Area C: Digital Platforms, Content & Applications</option>
+                    <option value="D">Priority Area D: Connected Health & Indepentant Living</option>
+                    <option value="E">Priority Area E: Medical Devices</option>
+                    <option value="F">Priority Area F: Diagnostics</option>
+                    <option value="G">Priority Area G: Therapeutics: Synthesis, Formulation, Processing & Drug Delivery</option>
+                    <option value="H">Priority Area H: Food for Health</option>
+                    <option value="I">Priority Area I: Sustainable Food Producation & Processing</option>
+                    <option value="J">Priority Area J: Marine Renewable Energy</option>
+                    <option value="K">Priority Area K: Smart Grids & Smart Cities</option>
+                    <option value="L">Priority Area L: Manufacturing Competiveness</option>
+                    <option value="M">Priority Area M: Processing Technologies & Novel Matierials</option>
+                    <option value="N">Priority Area N: Innovation in Services & Business Processes</option>
+                    <option value="S">Software</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
+            </div>
+            <div class="form-group">
+              <div id="funder_form" hidden>
+                <label for="organisation">Name of Organisation</label>
+                <input type="text" id="organisation" autocomplete="organization" name="organisation" class="form-control">
+              </div>
+            </div>
+            <button class="btn btn-success" type="submit">Create Account</button>
+        </form>
+      </div>
     </div>
-    <form id="reg" method="post">
-        {% csrf_token %}
-        <label for="user_type">Register as: </label>
-        <select id="user_type" class="user_type" name="user_type" required>
-            <option selected disabled hidden style='display: none' value=''></option>
-            <option value="researcher">Researcher</option>
-            <option value="funder">Funding Authority</option>
-            <option value="reviewer">Reviewer</option>
-        </select>
-        <br></select>
-        <label class="user_form" hidden for="email">Email</label>
-        <input class="user_form" hidden id="email" type="email" name="email" autocomplete="email" placeholder="example@example.com" required>
-        <br><label class="user_form" hidden for="first_name">First Name</label>
-        <input class="user_form" hidden type="text" id="first_name" autocomplete="first name" name="first_name" required>
-        <br><label class="user_form" hidden for="last_name">Last Name</label>
-        <input class="user_form" hidden type="text" id="last_name" autocomplete="family-name" name="last_name" required>
-        <br><label class="user_form" hidden for="password1">Password</label>
-        <input class="user_form" hidden id="password1" type="password" name="password" required/>
-        <br><label class="user_form" hidden for="password2">Repeat Password</label>
-        <input class="user_form" hidden id="password2" type="password" required/><p><strong id="no_match" hidden>Passwords do not match</strong></p>
-        <br><div id="researcher_form" hidden>
-            <label for="job_title">Job Title</label>
-            <input id="job_title" type="text" name="job_title" class="res_req">
-            <br><label for="prefix">Prefix</label>
-            <select class="prefix" id="prefix" name="prefix" class="res_req">
-                <option selected disabled hidden style='display: none' value=''></option>
-                <option value="mr">Mr</option>
-                <option value="ms">Ms</option>
-                <option value="rs">Mrs</option>
-                <option value="mx">Mx</option>
-                <option value="dr">Dr</option>
-                <option value="pr">Prof</option>
-            </select>
-            <br><label for="suffix" >Suffix</label>
-            <input type="text" id="suffix" autocomplete="honorific-suffix" name="suffix" maxlength="10">
-            <br><label for="phone">Phone number</label>
-            <input type="tel" id="phone" autocomplete="tel" name="phone">
-            <br><label for="orcid">ORCID number</label>
-            <input type="text" id="orcid" name="orcid" placeholder="XXXX-XXXX-XXXX-XXXX">
-            <!--<br><label for="profile_picture">Profile Picture</label>
-            <input type="file" id="profile_picture" name="profile_picture">-->
-        </div>
-        <div id="reviewer_form" hidden>
-            <br><label for="field">Field of research</label>
-            <select class="field" name="field" id="field">
-                <option selected disabled hidden style='display: none' value=''></option>
-                <option value="A">Priority Area A: Future Networks & Communications</option>
-                <option value="B">Priority Area B: Data Analytics, Management, Security & Privacy</option>
-                <option value="C">Priority Area C: Digital Platforms, Content & Applications</option>
-                <option value="D">Priority Area D: Connected Health & Indepentant Living</option>
-                <option value="E">Priority Area E: Medical Devices</option>
-                <option value="F">Priority Area F: Diagnostics</option>
-                <option value="G">Priority Area G: Therapeutics: Synthesis, Formulation, Processing & Drug Delivery</option>
-                <option value="H">Priority Area H: Food for Health</option>
-                <option value="I">Priority Area I: Sustainable Food Producation & Processing</option>
-                <option value="J">Priority Area J: Marine Renewable Energy</option>
-                <option value="K">Priority Area K: Smart Grids & Smart Cities</option>
-                <option value="L">Priority Area L: Manufacturing Competiveness</option>
-                <option value="M">Priority Area M: Processing Technologies & Novel Matierials</option>
-                <option value="N">Priority Area N: Innovation in Services & Business Processes</option>
-                <option value="S">Software</option>
-                <option value="O">Other</option>
-            </select>
-        </div>
-        <div id="funder_form" hidden>
-            <br><label for="organisation">Name of Organisation</label>
-            <input type="text" id="organisation" autocomplete="organization" name="organisation">
-        </div>
-        <button class="btn btn-success" type="submit">Create Account</button>
-    </form>
 </div>
 {% endblock %}
