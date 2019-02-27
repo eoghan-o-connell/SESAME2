@@ -146,12 +146,13 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     information = models.TextField("Additional information")
 
-from ConfigParser import SafeConfigParser as cp
+from configparser import SafeConfigParser as cp
+from project.settings import BASE_DIR
 
 class ResearcherProfile():
 
     def __init__(self, researcher):
-        self._filename = "/home/users/nadehh/public_html/aidan/myproject/myproject/accounts/researcher_profiles/%i" % researcher
+        self._filename = BASE_DIR + "/accounts/researcher_profiles/%i" % researcher
         self._config = cp()
         if default_storage.exists(self._filename):
             file = default_storage.open(self._filename, "r")
@@ -267,9 +268,11 @@ class ResearcherProfile():
         return objects
 
     def _get_value(self, key, index):
+        print("getting %s number %i" % (key, index))
         return self._config.get("profile", key+str(index))
 
     def _set_value(self, key, value, index):
+        print("setting %s number %i to %s" % (key, index, value))
         self._config.set("profile", key+str(index), value)
 
     def _get_num(self, key):
