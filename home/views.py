@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse
 from .forms import PublishForm
-from accounts.models import Call
+from accounts.models import Call, Center
+from accounts.forms import CenterForm
 import MySQLdb as _db
 import os
 
@@ -28,6 +29,21 @@ class HomeView(TemplateView):
         tableData = Call.objects.all()
         context = {'tableData':tableData}
         return render(request, self.template_name, context)
+
+def create_center(request):
+    if request.method == 'POST':
+        form = CenterForm(request.POST)
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CenterForm()
+
+    return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
     call_id = request.GET.get('call_id', '')

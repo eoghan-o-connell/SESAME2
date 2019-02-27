@@ -51,6 +51,11 @@
             <a class="nav-link" href="{% url 'home:my_calls' %}?call_id={{ user.id }}">My Proposals<span class="sr-only">(current)</span></a>
           </li>
           {% endif %}
+          {% if user.researcher %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home:center' %}">Centers<span class="sr-only">(current)</span></a>
+          </li>
+          {% endif %}
           {% else %}
           <a class="nav-item nav-link"  href="{% url 'accounts:login' %}">Login</a>
           <a class="nav-item nav-link" href="{% url 'accounts:register' %}">Register</a></a>
