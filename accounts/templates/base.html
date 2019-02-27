@@ -69,6 +69,15 @@
                 {{ user.first_name }} {{ user.last_name }}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% if user.researcher %}
+                <a class="dropdown-item" href="">Researcher</a>
+                {% endif %}
+                {% if user.reviewer %}
+                <a class="dropdown-item" href="">Reviewer</a>
+                {% endif %}
+                {% if user.funder %}
+                <a class="dropdown-item" href="">Funder</a>
+                {% endif %}
                 <a class="dropdown-item" href="{% url 'accounts:view_profile' %}">View Profile</a>
                 <a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Edit Profile</a>
                 <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>

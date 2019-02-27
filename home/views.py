@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from .forms import PublishForm
-from accounts.models import Call, Center, Proposal
+from accounts.models import Call, Center, Proposal, Reviewer
 from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
@@ -43,10 +43,12 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
+    call_id = request.GET.get('call_id', '')
+    call_obj = Call.objects.get(pk=call_id)
     if request.method == 'POST':
         form = ProposalForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            form.save(request.user, call_obj)
             return redirect(reverse('home:home'))
 
     else:
@@ -58,9 +60,22 @@ def get_call_view(request):
     return render(request, 'home/call_view.html', {'form':form, 'call_obj':call_obj})
 
 def get_my_calls(request):
-    call_id = request.GET.get('call_id', '')
-    my_call_table_data = Call.objects.filter(funder_id=call_id).values()
-    context = {'my_call_table_data':my_call_table_data}
+    user = request.user
+    funder = user.funder
+    researcher = user.researcher
+    reviewer = user.reviewer
+    if funder:
+        call_id = request.GET.get('call_id', '')
+        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        context = {'my_call_table_data':my_call_table_data}
+    elif researcher:
+        call_id = request.GET.get('call_id', '')
+        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        context = {'my_call_table_data':my_call_table_data}
+    else:
+        call_id = request.GET.get('call_id', '')
+        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        context = {'my_call_table_data':my_call_table_data}
     return render(request, 'home/my_calls.html', context)
 
 def pub (request):
