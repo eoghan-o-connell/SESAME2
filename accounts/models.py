@@ -146,7 +146,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     information = models.TextField("Additional information")
 
-from ConfigParser import SafeConfigParser as cp
+from configparser import SafeConfigParser as cp
 
 class ResearcherProfile():
 
@@ -296,8 +296,10 @@ class ResearcherObject():
         format = "%s_%s" % (prefix, "%s")
         if index == None:
             self._index = researcher.get_num(is_private_key) + 1
+        else:
+            self._index = index
         self.is_private = property(lambda self: self._researcher.is_private(prefix),
-        lambda self, value: self._researcher.set_private(prefix, value)
+        lambda self, value: self._researcher.set_private(prefix, value))
         if index == None:
             self.is_private = true
         for keyname in keys:
