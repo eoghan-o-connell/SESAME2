@@ -5,15 +5,11 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from .forms import PublishForm
-from accounts.models import Call, Center
+from accounts.models import Call, Center, Proposal
 from accounts.forms import CenterForm
 import MySQLdb as _db
 import os
-
 import datetime
-
-
-# EOGHAN -- > THE VALUE OF THE TOKEN FOR ONE OF THE HIDDEN ELEMENTS IS BREAKING STUFF WHEN TRYING TO CREATE A CALL
 
 
 host_name = "mysql.netsoc.co"
@@ -42,13 +38,21 @@ def create_center(request):
         if form.is_valid():
             form.save(admin=request.user)
             return redirect(reverse('home:view_center'))
-
     else:
         form = CenterForm()
-
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
+
+    if request.method == 'POST':
+        form = ProposalForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('home:home'))
+
+    else:
+        form = ProposalForm()
+
     call_id = request.GET.get('call_id', '')
     call_obj = Call.objects.filter(pk=call_id).values()
     context = {'call_obj':call_obj}

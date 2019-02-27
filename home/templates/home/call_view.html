@@ -19,8 +19,16 @@
     <p>Description: {{ item.description }}</p>
 {% endfor %}
 
-{% for i in link_obj %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Create Center</button>
+    </form>
+</div>
+
+<!-- {% for i in link_obj %}
 <a href="{{ i.0 }}" download="{{ i.1 }}"> {{ i.1 }} </a>
-{% endfor %}
+{% endfor %} -->
 
 {% endblock %}
