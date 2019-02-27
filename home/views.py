@@ -6,7 +6,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal
-from accounts.forms import CenterForm
+from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
