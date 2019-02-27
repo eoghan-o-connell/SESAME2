@@ -43,8 +43,7 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
-<<<<<<< HEAD
-=======
+
     if request.method == 'POST':
         form = ProposalForm(request.POST, request.FILES)
         if form.is_valid():
@@ -54,7 +53,6 @@ def get_call_view(request):
     else:
         form = ProposalForm()
 
->>>>>>> 06e4c1ebfe48fd22d6a20bb361e186c7a6ef5f1b
     call_id = request.GET.get('call_id', '')
     call_obj = Call.objects.filter(pk=call_id).values()
     context = {'call_obj':call_obj}
