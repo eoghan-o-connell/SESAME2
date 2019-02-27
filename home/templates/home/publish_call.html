@@ -57,8 +57,18 @@
                     <!-- {{ form }} -->
                         <label for="deadline">Select deadline date </label>
                         <input id="date" value="{{ edit_info.3 }}" type="date" class="custom-select" name="deadline" required>
+                        <!-- <input id="grant" value={{ edit_info.4 }} name="grant" class="form-control is-invalid" type="number" placeholder="0"> -->
+
                         <label for="grant">Grant value</label>
-                        <input id="grant" value={{ edit_info.4 }} name="grant" class="form-control is-invalid" type="number" placeholder="0">
+                        <select class="custom-select" id="grant" name="grant">
+                            {% if edit %}
+                            <option value="{{ edit_info.4 }}">{{ edit_info.4 }}</option>
+                            {% endif %}
+                            {% for fund in funds %}
+                            <option value="{{ fund }}"> {{ fund }} </option>
+                            {% endfor %}
+                        </select>
+
                         <input name="editing_mode" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
                         <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
                     </form>

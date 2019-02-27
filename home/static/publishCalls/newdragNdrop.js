@@ -182,10 +182,8 @@ function fileAdded(file){
  }
 
 function uploadFiles(ev){
-    console.log("pressed");
     if (form.checkValidity()){
       if (dz.getQueuedFiles().length > 0){
-        console.log("sending")
         captureFiles = dz.getQueuedFiles();
         summaryGeneration();
         dz.processQueue();
@@ -193,6 +191,8 @@ function uploadFiles(ev){
     }
     form.reportValidity();
 }
+
+
 
 function summaryGeneration(){
 
