@@ -64,7 +64,6 @@ def get_my_calls(request):
     call_id = request.GET.get('call_id', '')
 
     try:
-        print("funder")
         funder = user.funder
         my_call_table_data = Call.objects.filter(funder_id=call_id).values()
         context = {'my_call_table_data':my_call_table_data}
@@ -73,7 +72,6 @@ def get_my_calls(request):
         print("Not funder")
 
     try:
-        print("researcher")
         researcher = user.researcher
         my_call_table_data = Proposal.objects.filter(user_id=request.user.id).values()
         context = {'my_call_table_data':my_call_table_data}
@@ -82,7 +80,6 @@ def get_my_calls(request):
         print("Not researcher")
 
     try:
-        print("reviewer")
         reviewer = user.reviewer
         my_call_table_data = Proposal.objects.filter(reviewer_id=request.user.id).values()
         context = {'my_call_table_data':my_call_table_data}
