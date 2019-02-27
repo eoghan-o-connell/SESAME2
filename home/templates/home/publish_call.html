@@ -10,8 +10,6 @@
         <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
         <link rel="stylesheet" href="{% static 'publishCalls/dist/dropzone.css' %}">
         <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <script defer src="{% static 'publishCalls/dist/dropzone.js' %}"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         <script defer src="{% static 'publishCalls/newdragNdrop.js' %}" charset="utf-8"></script>
@@ -31,7 +29,7 @@
                   You can broadcast calls to researchers globally by simply filling in the criteria.
                 </p>
             {% endif %}
-            <button style="visibility:hidden" id="collapsingButton" class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapser" aria-expanded="false" aria-controls="collapseExample">
+            <button id="collapsingButton" class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapser" aria-expanded="false" aria-controls="collapse">
                 Publishing a call? click here!
             </button>
 
@@ -55,13 +53,14 @@
                         <label for="title">Call title</label>
                         <input id ="title" name="title" type="text" placeholder="enter call title here.." class="form-control is-invalid" value="{{ edit_info.1 }}" required>
                         <label for="description">Create a description for the call</label>
-                        <textarea id="description" class="form-control" placeholder="Write brief call description here.. (optional)" rows="4" cols="50" name="description" value="{{ edit_info.2 }}" form="checkForm">{{ edit_info.2 }}</textarea>
+                        <textarea id="description" class="form-control" placeholder="Write brief call description here.. (optional)" rows="4" cols="50" name="description" form="checkForm">{{ edit_info.2 }}</textarea>
                     <!-- {{ form }} -->
                         <label for="deadline">Select deadline date </label>
                         <input id="date" value="{{ edit_info.3 }}" type="date" class="custom-select" name="deadline" required>
                         <label for="grant">Grant value</label>
                         <input id="grant" value={{ edit_info.4 }} name="grant" class="form-control is-invalid" type="number" placeholder="0">
-                        <input type="text" id="updating_call" value={{ edit_info.6 }} style="visibility:hidden">
+                        <input name="editing_mode" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
+                        <input name="call_id" type="text" id="call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
                     </form>
                   </div>
                   <section id="dz">

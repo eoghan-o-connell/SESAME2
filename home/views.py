@@ -8,6 +8,9 @@ from accounts.models import Call
 import MySQLdb as _db
 import os
 
+import datetime
+
+
 
 host_name = "mysql.netsoc.co"
 user_name = "nadehh"
@@ -31,27 +34,24 @@ def get_call_view(request):
     return render(request, 'home/call_view.html', context)
 
 def get_my_calls(request):
-    # call_id = request.GET.get('call_id', '')
-    # call_obj = Call.objects.filter(pk=call_id).values()
-    # context = {'call_obj':call_obj}
-    return render(request, 'home/my_calls.html')
-
+    call_id = request.GET.get('call_id', '')
+    my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+    context = {'my_call_table_data':my_call_table_data}
+    return render(request, 'home/my_calls.html', context)
 
 def pub (request):
     l = []
     connection = None
-
+    edit_toggle = False
+    edit_info = []
+    now = datetime.datetime.now()
+    date_string = "%s-%s-%s"%(now.year,now.month,now.day)
+    print(date_string)
 
     if request.method == "POST":
-        #print(request.POST)
-
-        #fname sname title description deadline date grant
-
-       # print(request.get_signed_cookie("csrftoken"))
-
-       # HAS : grant, target, deadline
-       # DOESNT HAVE : fname, sname, title, description, eligibility
-       print("**********************!!!!!!!!!!!!!!*********************")
+       now = datetime.datetime.now()
+       date_string = "%s-%s-%s"%(now.year,now.month,now.day)
+       
        print(request.user)
        fname = request.POST.get("fname")
        sname = request.POST.get("sname")
@@ -60,14 +60,13 @@ def pub (request):
        description = request.POST.get("description")
        deadline = request.POST.get("date")
        grant = request.POST.get("grant")
+       funder_id = request.user.id
 
        user = str(request.user)
 
-       userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
-       # if os.path.isdir(userFileDir):
-       #     print("exists")
-       # else:
-       #     os.makedirs(userFileDir)
+       editing_mode = request.POST.get("editing_mode") != None
+       call_id = request.POST.get("call_id")
+
        for key in request.FILES:
            file = request.FILES[key]
            # with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
@@ -75,7 +74,44 @@ def pub (request):
            #     for line in file:
            #         saveFile.write(line)
            #     print("File has been saved")
-       filename = file.name
+           filename = file.name
+       print("___________________------------__________________",editing_mode,call_id)
+
+       db_query = """
+
+           INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location)
+           VALUES ('%s','%s','%s','%s','%s','%s',%d,'%s');
+
+       """ %(eligibility,date_string,funder_id,title,description,deadline,int(grant),filename)
+
+       print("$"*50)
+
+       if editing_mode:
+          db_query = """
+
+              UPDATE calls
+              SET target='%s'
+                  date_string='%s'
+                  funder_id='%s',
+                  title='%s',
+                  description='%s',
+                  deadline='%s',
+                  funds=%d,
+              WHERE call_id = '%s'
+
+          """ %(eligibility,date_string,funder_id,title,description,deadline,int(grant),call_id)
+
+       else:
+          print("creating a new call man")
+
+       print("$"*50)
+
+
+       userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
+       # if os.path.isdir(userFileDir):
+       #     print("exists")
+       # else:
+       #     os.makedirs(userFileDir)
 
        try:                        #success page if given to db
            connection = _db.connect(host=host_name,
@@ -92,27 +128,20 @@ def pub (request):
 
            print("ABOUT TO EXECUTE QUERY")
 
-           stri=("""
-
-               INSERT INTO calls (target, title, description, deadline,funds, file_location)
-               VALUES ('%s','%s','%s','%s',%d,'%s');
-
-
-           """ %(eligibility,title,description,deadline,int(grant),filename))
+           # stri=("""
+           #
+           #     INSERT INTO calls (target, title, description, deadline,funds, file_location)
+           #     VALUES ('%s','%s','%s','%s',%d,'%s');
+           #
+           #
+           # """ %(eligibility,title,description,deadline,int(grant),filename))
 
            print("________________________________________________________")
-           print(stri)
+           print(db_query)
            print("________________________________________________________")
 
-           funder_id = request.user.id
 
-           cursor.execute("""
-
-               INSERT INTO calls (target, funder_id, title, description, deadline,funds, file_location)
-               VALUES ('%s','%s','%s','%s','%s',%d,'%s');
-
-
-           """ %(eligibility,funder_id,title,description,deadline,int(grant),filename))
+           cursor.execute(db_query)
 
            connection.commit()
 
@@ -167,18 +196,41 @@ def pub (request):
                 l.append(row[0])
             print(l)
 
+            call_id = request.GET.get("call_id")
+            if call_id is not None:
+                edit_toggle = True
+
+                cursor.execute("""
+
+                    SELECT target,title, description, deadline, funds, file_location From calls WHERE id = %s;
+
+                """%(call_id))
+
+                for row in cursor.fetchall():
+                    for data in row:
+                        edit_info.append(data)
+                print(edit_info)
+                edit_info[3] = str(edit_info[3])
+
+                print(edit_info)
+
+                print(str(edit_info[3]))
+
+                edit_info.append(call_id)
+
             # for row in cursor.fetchall():
             #     print(row)
 
         except _db.Error as e:
             print("Error connecting to the database.. check credentials!")
+            print(e)
 
         finally:
             connection.close()
 
 
     form = PublishForm()
-    return render(request, 'home/publish_call.html',{'form':form,'db':l})
+    return render(request, 'home/publish_call.html',{'form':form,'db':l, 'edit_info':edit_info, 'edit':edit_toggle})
     #return HttpResponse("publish calls")
 
 
