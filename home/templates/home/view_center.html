@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+<head>
+    {% block head %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    {% endblock %}
+</head>
+{% block body %}
+<h1>Centers</h1>
+<i><p>Not part of a center, create a center below</p></i>
+
+<form action="{% url 'home:create_center' %}">
+    <button class="btn btn-success" type='submit'>Create Center</button>
+</form>
+
+{% endblock %}
