@@ -16,6 +16,8 @@ var form;
 var title;
 var description;
 var grant;
+var call_id;
+var editing_mode;
 var captureFiles;
 var toggleButton;
 var summary;
@@ -46,6 +48,8 @@ function setup(){
     title = document.getElementById('title');
     description = document.getElementById('description');
     grant = document.getElementById('grant');
+    call_id = document.getElementById('_call_id');
+    editing_mode = document.getElementById('updating_call');
     toggleButton = document.getElementById('collapsingButton');
     summary = document.getElementById("summary");
     summaryHeading=document.getElementById('summaryHeading');
@@ -121,6 +125,8 @@ function sndMul(file,xhr,formData){
     formData.append("title",title.value);
     formData.append("description",description.value);
     formData.append("grant",grant.value);
+    formData.append("editing_mode",editing_mode.value);
+    formData.append("_call_id",call_id.value);
     console.log("**********" + tag.value);
 }
 
