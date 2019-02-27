@@ -12,6 +12,14 @@ class CenterForm(forms.ModelForm):
         model = Center
         fields = ('name', 'info')
 
+    def save(self, admin, commit=True):
+        center = super(CenterForm, self).save(commit=False)
+        center.admin = admin
+        center.members.add(admin)
+        if commit:
+            center.save()
+        return center
+
 class CallForm(forms.ModelForm):
     class Meta:
         model = Call
