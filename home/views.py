@@ -6,7 +6,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal
-from accounts.forms import CenterForm
+from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
@@ -43,7 +43,6 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
-
     if request.method == 'POST':
         form = ProposalForm(request.POST, request.FILES)
         if form.is_valid():
@@ -56,7 +55,7 @@ def get_call_view(request):
     call_id = request.GET.get('call_id', '')
     call_obj = Call.objects.filter(pk=call_id).values()
     context = {'call_obj':call_obj}
-    return render(request, 'home/call_view.html', context)
+    return render(request, 'home/call_view.html', {'form':form, 'call_obj':call_obj})
 
 def get_my_calls(request):
     call_id = request.GET.get('call_id', '')
