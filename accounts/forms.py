@@ -29,7 +29,7 @@ class CallForm(forms.ModelForm):
 class ProposalForm(forms.ModelForm):
     class Meta:
         model = Proposal
-        fields = ('details', 'proposal_document')
+        fields = ('proposal_document',)
 
 class ProjectForm(forms.ModelForm):
     class Meta:
