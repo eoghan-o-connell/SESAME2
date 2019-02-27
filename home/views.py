@@ -45,15 +45,15 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def get_call_view(request):
-    form = ProposalForm()
     if request.method == 'POST':
-        print(request.POST.items())
+        form = ProposalForm(request.POST, request.FILES)
         if form.is_valid():
-            print("this is valid")
             form.save()
             return redirect(reverse('home:home'))
-        else:
-            print("this isnt working")
+
+    else:
+        form = ProposalForm()
+
     call_id = request.GET.get('call_id', '')
     call_obj = Call.objects.filter(pk=call_id).values()
     return render(request, 'home/call_view.html', {'form': form, 'call_obj':call_obj})
