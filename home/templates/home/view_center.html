@@ -16,6 +16,7 @@
     <p>Admin: {{ item.admin_id }}</p>
 {% endfor %}
 {% if request.user.id == item.admin_id %}
+    <button class="btn btn-danger" type='submit'>Add User</button>
 {% endif %}
 {% else %}
 <i><p>Not part of a center, create a center below</p></i>

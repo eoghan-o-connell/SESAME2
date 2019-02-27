@@ -101,7 +101,7 @@ class Center(models.Model):
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='%(class)s_in_center', db_table='center_researcher')
     def __str__(self):
-        return name
+        return self.name
     class Meta:
         db_table = 'centers'
 
