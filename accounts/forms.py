@@ -15,9 +15,9 @@ class CenterForm(forms.ModelForm):
     def save(self, admin, commit=True):
         center = super(CenterForm, self).save(commit=False)
         center.admin = admin
-        center.members.add(admin)
         if commit:
             center.save()
+            center.members.add(admin)
         return center
 
 class CallForm(forms.ModelForm):
