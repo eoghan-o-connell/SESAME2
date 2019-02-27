@@ -8,7 +8,18 @@
 </head>
 {% block body %}
 <h1>Centers</h1>
+{% if center_obj %}
+{% for item in center_obj %}
+    <p>Name: {{ item.name }}</p>
+    <p>Description: {{ item.info }}</p>
+    <p>Created: {{ item.created }}</p>
+    <p>Admin: {{ item.admin_id }}</p>
+{% endfor %}
+{% if request.user.id == item.admin_id %}
+{% endif %}
+{% else %}
 <i><p>Not part of a center, create a center below</p></i>
+{% endif %}
 
 <form action="{% url 'home:create_center' %}">
     <button class="btn btn-success" type='submit'>Create Center</button>

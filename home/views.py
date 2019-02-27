@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 from django.views.generic import TemplateView
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse
 from .forms import PublishForm
 from accounts.models import Call, Center
 from accounts.forms import CenterForm
@@ -31,8 +32,9 @@ class HomeView(TemplateView):
         return render(request, self.template_name, context)
 
 def view_center(request):
-
-    return render(request, 'home/view_center.html')
+    center_obj = Center.objects.filter(admin_id=request.user.id).values()
+    context = {'center_obj':center_obj}
+    return render(request, 'home/view_center.html', context)
 
 def create_center(request):
     if request.method == 'POST':
