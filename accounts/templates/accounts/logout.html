@@ -2,10 +2,11 @@
 
 {% block body %}
 <div class="container">
-    <h1>Logged Out</h1>
-    <p>
-        You have logged out!
-    </p>
+  <div class="row">
+    <div class="col-sm-4 offset-sm-4 text-center" style="padding-top:100px">
+    <h1 style="font-size:4vw;">Logged Out</h1>
+    <br>
+    <p><u><a href="{% url 'accounts:login' %}">Want to log back in?</a></u></p>
 </div>
 
 {% endblock %}
