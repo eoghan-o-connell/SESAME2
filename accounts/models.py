@@ -150,13 +150,14 @@ import json
 from project.settings import BASE_DIR
 
 class ResearcherProfile():
-
     def __init__(self, researcher):
         self._filename = BASE_DIR + "/accounts/researcher_profiles/%i" % researcher
         self._dict = dict()
         if default_storage.exists(self._filename):
             file = default_storage.open(self._filename, "r")
-            self._dict = json.loads(file.read())
+            researcher = file.read()
+            if researcher != '':
+                self._dict = json.loads(researcher)
             file.close()
 
         self.educations = self._get_objects("education", lambda index: Education(self, index))
@@ -177,43 +178,53 @@ class ResearcherProfile():
         self.projects = self._get_objects("project", lambda index: ResProject(self, index))
 
     def new_education(self):
-        self.educations.append(Education(self, None))
+        education = Education(self, None)
+        self.educations.append()
         return education
 
     def new_employment(self):
-        self.employments.append(Employment(self, None))
+        employment = Employment(self, None)
+        self.employments.append(employment)
         return employment
 
     def new_society(self):
-        self.societies.append(Society(self, None))
+        society = Society(self, None)
+        self.societies.append(society)
         return society
 
     def new_award(self):
-        self.awards.append(Award(self, None))
+        award = Award(self, None)
+        self.awards.append(award)
         return award
 
     def new_funding(self):
-        self.fundings.append(Funding(self, None))
+        funding = Funding(self, None)
+        self.fundings.append(funding)
         return funding
 
     def new_team_member(self):
-        self.team_members.append(TeamMember(self, None))
+        team_member = TeamMember(self, None)
+        self.team_members.append(team_member)
         return team_member
 
     def new_impact(self):
-        self.impacts.append(Impact(self, None))
+        impact = Impact(self, None)
+        self.impacts.append(impact)
         return impact
 
     def new_innovation(self):
-        self.innovations.append(Innovation(self, None))
+        innovation = Innovation(self, None)
+        self.innovations.append(innovation)
         return innovation
 
     def new_publication(self):
-        self.publications.append(Publication(self, None))
+        publication = Publication(self, None)
+        self.publications.append(publication)
         return publication
 
     def new_presentation(self):
-        self.presentations.append(Presentation(self, None))
+        presentation = Presentation(self, None)
+        self.presentations.append(presentation)
         return presentation
 
     def new_acedemic_collab(self):
@@ -222,23 +233,28 @@ class ResearcherProfile():
         return acedemic_collab
 
     def new_non_acedemic_collab(self):
-        self.non_acedemic_collabs.append(NonAcedemicCollab(self, None))
+        non_acedemic_collab = NonAcedemicCollab(self, None)
+        self.non_acedemic_collabs.append(non_acedemic_collab)
         return non_acedemic_collab
 
     def new_conference(self):
-        self.conferences.append(Conference(self, None))
+        conference = Conference(self, None)
+        self.conferences.append(conference)
         return conference
 
     def new_comms_overview(self):
-        self.comms_overviews.append(CommsOverview(self, None))
+        comms_overview = CommsOverview(self, None)
+        self.comms_overviews.append(comms_overview)
         return comms_overview
 
     def new_funding_ratio(self):
-        self.funding_ratios.append(FundingRatio(self, None))
+        funding_ratio = FundingRatio(self, None)
+        self.funding_ratios.append(funding_ratio)
         return funding_ratio
 
     def new_project(self):
-        self.projects.append(ResProject(self, None))
+        prject = ResProject(self, None)
+        self.projects.append(project)
         return project
 
     def _get_objects(self, prefix, new):
@@ -261,12 +277,6 @@ class ResearcherProfile():
             return 0
         else:
             return len(self._dict[key])
-
-    def is_private(self, prefix, index):
-        return self._get_value(prefix+"_is_private", index)
-
-    def set_private(self, prefix, index, private):
-        self._set_value(prefix+"_is_private", private, index)
 
     def save(self):
         file = default_storage.open(self._filename, "w+")
@@ -293,18 +303,23 @@ class ResearcherObject(object):
         return self._index
 
     def _get_value(self, key):
-        self._researcher._get_value(self._prefix + '_' + key, self._index)
+        return self._researcher._get_value(self._prefix + '_' + key, self._index)
 
     def _set_value(self, key, value):
         self._researcher._set_value(self._prefix + '_' + key, value, self._index)
 
     @property
     def is_private(self):
-        return self._researcher.is_private(self._prefix)
+        return self._researcher._get_value(self._prefix+"_is_private", self._index)
 
     @is_private.setter
     def is_private(self, value):
-        self._researcher.set_private(self._prefix, value)
+        self._researcher._set_value(self._prefix+"_is_private", value, self._index)
+
+    def update(self, data):
+        self.private = data.get('private', '')
+        self.save()
+        return self
 
 class Education(ResearcherObject):
     def __init__(self, researcher, index):
@@ -383,6 +398,14 @@ class Society(ResearcherObject):
     def __init__(self, researcher, index):
         super(Society, self).__init__("society", researcher, index)
 
+    @property
+    def start(self):
+        return self._get_value("start")
+
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
 class Award(ResearcherObject):
     def __init__(self, researcher, index):
         super(Award, self).__init__("award", researcher, index)
@@ -414,6 +437,42 @@ class Presentation(ResearcherObject):
 class AcedemicCollab(ResearcherObject):
     def __init__(self, researcher, index):
         super(AcedemicCollab, self).__init__("acedemic_collab", researcher, index)
+
+    @staticmethod
+    def get_inputs(collab=None):
+        new = collab==None
+        start = '' if new else collab.start
+        end = '' if new else collab.end
+        institution = '' if new else collab.institution
+        dept = '' if new else collab.dept
+        location = '' if new else collab.location
+        name = '' if new else collab.name
+        goal = '' if new else collab.goal
+        frequency = '' if new else collab.frequency
+        attribution = '' if new else collab.attribution
+        return [
+            {'label':'Start date','name':'start','value': start},
+            {'label':'End date','name':'end','value': end},
+            {'label':'Institution','name':'institution','value': institution},
+            {'label':'Department','name':'dept','value': dept},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Name','name':'name','value': name},
+            {'label':'Start date','name':'goal','value': goal},
+            {'label':'Start date','name':'frequency','value': frequency},
+            {'label':'Start date','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.institution = data.get('institution', '')
+        self.dept = data.get('dept', '')
+        self.location = data.get('location', '')
+        self.name = data.get('name', '')
+        self.goal = data.get('goal', '')
+        self.frequency = data.get('frequency', '')
+        self.attribution = data.get('attribution', '')
+        return super(AcedemicCollab, self).update(data)
 
     @property
     def start(self):

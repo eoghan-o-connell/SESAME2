@@ -23,7 +23,7 @@
         <form id="reg" method="post">
             {% csrf_token %}
             <div class="form-group">
-              <label for="user_type">Register as: </label>
+              <label for="user_type" align="left">Register as: </label>
               <select id="user_type" class="user_type form-control" name="user_type" required>
                 <option selected disabled hidden style='display: none' value=''></option>
                 <option value="researcher">Researcher</option>
@@ -34,6 +34,19 @@
             <div class="form-group">
               <label class="user_form" hidden for="email">Email</label>
               <input class="user_form form-control" hidden id="email" type="email" name="email" autocomplete="email" placeholder="example@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="prefix">Prefix</label>
+              <select class="prefix res_req form-control" id="prefix" name="prefix">
+                  <option selected disabled hidden style='display: none' value=''></option>
+                  <option value="mr">Mr</option>
+                  <option value="ms">Ms</option>
+                  <option value="rs">Mrs</option>
+                  <option value="mx">Mx</option>
+                  <option value="dr">Dr</option>
+                  <option value="pr">Prof</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -59,18 +72,6 @@
               <div id="researcher_form" hidden>
                 <label for="job_title">Job Title</label>
                 <input id="job_title" type="text" name="job_title" class="res_req form-control">
-              </div>
-              <div class="form-group">
-                <label for="prefix">Prefix</label>
-                <select class="prefix res_req form-control" id="prefix" name="prefix">
-                    <option selected disabled hidden style='display: none' value=''></option>
-                    <option value="mr">Mr</option>
-                    <option value="ms">Ms</option>
-                    <option value="rs">Mrs</option>
-                    <option value="mx">Mx</option>
-                    <option value="dr">Dr</option>
-                    <option value="pr">Prof</option>
-                </select>
               </div>
               <div class="form-group">
                 <label for="suffix" >Suffix</label>
@@ -117,6 +118,8 @@
               </div>
             </div>
             <button class="btn btn-success" type="submit">Create Account</button>
+            <br><br>
+            <p><u><a href="{% url 'accounts:login' %}">Already have an account? Login here</a></u></p>
         </form>
       </div>
     </div>

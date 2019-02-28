@@ -108,7 +108,7 @@ def get_my_calls(request):
 
     try:
         researcher = user.researcher
-        my_call_table_data = Proposal.objects.filter(user_id=request.user.id).values()
+        my_call_table_data = [prop.call for prop in Proposal.objects.select_related('call').filter(user=user)]
         context = {'my_call_table_data':my_call_table_data}
         return render(request, 'home/my_calls.html', context)
     except Researcher.DoesNotExist:
@@ -121,7 +121,6 @@ def get_my_calls(request):
         return render(request, 'home/my_calls.html', context)
     except Reviewer.DoesNotExist:
         print("Not reviewer")
-
 
 
 def pub (request):
@@ -307,6 +306,7 @@ def autocomplete(request):
         search_query = request.GET.get('?search', '')
         centerQuerySet = Center.objects.filter(name__icontains=search_query)[:3]
         researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)[:3]
+        queryset = Center.objects.filter(name__contains=request.GET.get('?search', ''))
         list = []
         for i in centerQuerySet:
             list.append(i.name)
@@ -317,6 +317,7 @@ def autocomplete(request):
             name += ' '
             name += i.user.last_name
             list.append(name)
+            print(i)
         data = {
             'list': list,
         }
