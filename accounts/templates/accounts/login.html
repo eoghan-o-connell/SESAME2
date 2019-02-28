@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<br/>
+<br>
 <div class="container">
   <div class="row">
     <div class="col-sm-4 offset-sm-4 text-center" style="background-color:#F5F5F5; border:2px solid teal; height:450px;">
@@ -17,9 +17,10 @@
           <input type="password" class="form-control" name="password" required id="id_password"/>
         </div>
         <button class="btn btn-success" type="submit">Login</button>
+        <br><br>
         <p><u><a href="{% url 'accounts:reset_password' %}">Forgotten password?</a></u></p>
-          <br/>
-        <p><u><a href="/account/register/">Not yet registered? Create an account</a></u></p>
+          <br>
+        <p><u><a href="{% url 'accounts:register' %}">Not yet registered? Create an account</a></u></p>
     </form>
     </div>
   </div>
