@@ -96,11 +96,10 @@ def get_call_view(request):
 
 def get_my_calls(request):
     user = request.user
-    call_id = request.GET.get('call_id', '')
 
     try:
         funder = user.funder
-        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        my_call_table_data = Call.objects.filter(funder_id=user.id).values()
         context = {'my_call_table_data':my_call_table_data}
         return render(request, 'home/my_calls.html', context)
     except Funder.DoesNotExist:
