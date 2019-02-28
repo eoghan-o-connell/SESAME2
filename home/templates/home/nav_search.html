@@ -44,8 +44,8 @@
     <tbody>
       {% for item in researcherQuerySet %}
       <tr>
-        <td id='researcher-fname'>{{ item.user.first_name }}</td>
-        <td id='researcher-lname'>{{ item.user.last_name}}</td>
+        <td id='researcher-fname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.first_name }}</a></td>
+        <td id='researcher-lname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.last_name}}</a></td>
         <td id='researcher-title'>{{ item.job_title }}</td>
       </tr>
       {% endfor %}
