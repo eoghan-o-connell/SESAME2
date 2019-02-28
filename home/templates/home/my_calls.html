@@ -38,7 +38,7 @@
           <tr>
               <td id="s_created">{{ item.created }}</td>
               <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
-              <td id="s_amount">€{{ item.funds }}</td>
+              <td id="s_amount">{{ item.funds }}</td>
               <td id="s_deadline">{{ item.deadline }}</td>
               <td id="s_target">{{ item.target }}</td>
               <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
