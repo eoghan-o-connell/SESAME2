@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from django.http import HttpResponseForbidden
-from accounts.models import Researcher, Funder, Reviewer
+from accounts.models import *
 
 # Create your views here.
 def register(request):
@@ -509,17 +509,9 @@ def add_acedemic_collab(request, researcher_id):
         attributes = {
             'title' : 'New Acededemic Collaboration',
             'is_private' : True,
-            'start' : '',
-            'end' : '',
-            'institution' : '',
-            'dept' : '',
-            'location' : '',
-            'name' : '',
-            'goal' : '',
-            'frequency' : '',
-            'attribution' : ''
+            'inputs' : AcedemicCollab.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/acedemic_collab.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_acedemic_collab().update(request.POST)
         return redirect('/account/view-researcher/%i#acedemic_collab_%i' % (researcher_id, obj.index))
@@ -534,17 +526,9 @@ def edit_acedemic_collab(request, researcher_id, index):
         attributes = {
             'title' : 'Edit Acededemic Collaboration',
             'is_private' : obj.is_private,
-            'start' : obj.start,
-            'end' : obj.end,
-            'institution' : obj.institution,
-            'dept' : obj.dept,
-            'location' : obj.location,
-            'name' : obj.name,
-            'goal' : obj.goal,
-            'frequency' : obj.frequency,
-            'attribution' : obj.attribution
+            'inputs' : AcedemicCollab.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/acedemic_collab.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.acedemic_collabs[index].update(request.POST)
         return redirect("/account/view-researcher/%i#acedemic_collab_%i" % (researcher_id, index))

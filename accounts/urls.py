@@ -28,5 +28,6 @@ urlpatterns = [
     {'template_name': 'accounts/reset_password_complete.html'}, name='password_reset_complete'),
 
     url(r'^view-researcher/(?P<researcher_id>\d+)/$', views.view_researcher, name='view researcher'),
-    url(r'^view-researcher/(?P<researcher_id>\d+)/acedemic-collab/new', views.add_acedemic_collab)
+    url(r'^view-researcher/(?P<researcher_id>\d+)/acedemic-collab/new', views.add_acedemic_collab),
+    url(r'^view-researcher/(?P<researcher_id>\d+)/acedemic-collab/(?P<index>\d+)', views.edit_acedemic_collab)
 ]
