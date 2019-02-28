@@ -85,8 +85,7 @@
               </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" method='POST'>
-          {% csrf_token %}
+        <form class="form-inline my-2 my-lg-0" method='GET' action="{% url 'home:nav_search' %}">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search" name='search'>
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -101,7 +100,6 @@
     <script>
         $("#search").on('keyup', function(){
             var value = $(this).val();
-            console.log( $(this).val() );
             $.ajax({
                 url: "{% url 'home:ajax_autocomplete' %}",
                 data: {

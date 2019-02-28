@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+from django.db.models import Q
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal, Reviewer ,Funder, Researcher
 from accounts.forms import CenterForm, ProposalForm
@@ -252,12 +253,36 @@ def pub (request):
 
 def autocomplete(request):
     if request.is_ajax():
-        queryset = Center.objects.filter(name__contains=request.GET.get('?search', ''))
+        search_query = request.GET.get('?search', '')
+        centerQuerySet = Center.objects.filter(name__icontains=search_query)[:3]
+        researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)[:3]
         list = []
-        for i in queryset:
+        for i in centerQuerySet:
             list.append(i.name)
-            print(i)
+            #print(i)
+        for i in researcherQuerySet:
+            name = ''
+            name += i.user.first_name
+            name += ' '
+            name += i.user.last_name
+            list.append(name)
         data = {
             'list': list,
         }
         return JsonResponse(data)
+
+def nav_search(request):
+    if request.method == 'GET':
+        search_query = request.GET.get('search', '')
+        #print(search_query)
+        search_query = search_query.split()
+        centerQuerySet = Center.objects.all()
+        researcherQuerySet = Researcher.objects.all()
+        for word in search_query:
+            print(word)
+            centerQuerySet= centerQuerySet.filter(name__icontains=word)
+            researcherQuerySet= researcherQuerySet.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word))
+        #centerQuerySet = Center.objects.filter(name__icontains=search_query)
+        #researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)
+        context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
+        return render(request, 'home/nav_search.html', context)
