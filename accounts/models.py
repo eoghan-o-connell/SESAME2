@@ -179,7 +179,7 @@ class ResearcherProfile():
 
     def new_education(self):
         education = Education(self, None)
-        self.educations.append()
+        self.educations.append(education)
         return education
 
     def new_employment(self):
@@ -324,6 +324,41 @@ class ResearcherObject(object):
 class Education(ResearcherObject):
     def __init__(self, researcher, index):
         super(Education, self).__init__("education", researcher, index)
+
+    @staticmethod
+    def get_inputs(collab=None):
+        new = collab==None
+        degree = '' if new else collab.degree
+        field = '' if new else collab.field
+        institution = '' if new else collab.institution
+        location = '' if new else collab.location
+        year = '' if new else collab.year
+        return [
+            {'label':'Degree','name':'degree','value': degree},
+            {'label':'Field','name':'field','value': field},
+            {'label':'Institution','name':'institution','value': institution},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Year','name':'year','value': year}
+        ]
+
+    def __str__(self):
+        return """
+<p>
+    Degree: %s<br>
+    Field: %s<br>
+    Institution: %s<br>
+    Location: %s<br>
+    Year: %s
+</p>
+        """ % (self.degree, self.field, self.institution, self.location, self.year)
+
+    def update(self, data):
+        self.degree = data.get('degree', '')
+        self.field = data.get('field', '')
+        self.institution = data.get('institution', '')
+        self.location = data.get('location', '')
+        self.year = data.get('year', '')
+        return super(Education, self).update(data)
 
     @property
     def degree(self):

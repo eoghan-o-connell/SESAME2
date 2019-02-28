@@ -115,7 +115,7 @@ def add_education(request, researcher_id):
             'is_private' : True,
             'inputs' : Education.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/education.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_education().update(request.POST)
         return redirect('/account/view-researcher/%i#education_%i' % (researcher_id, obj.index))
@@ -132,7 +132,7 @@ def edit_education(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Education.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/education.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.educations[index].update(request.POST)
         return redirect("/account/view-researcher/%i#educations_%i" % (researcher_id, index))
@@ -147,7 +147,7 @@ def add_employment(request, researcher_id):
             'is_private' : True,
             'inputs' : Employment.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/employment.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_employment().update(request.POST)
         return redirect('/account/view-researcher/%i#employment_%i' % (researcher_id, obj.index))
@@ -164,7 +164,7 @@ def edit_employment(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Employment.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/employment.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.employments[index].update(request.POST)
         return redirect("/account/view-researcher/%i#employment_%i" % (researcher_id, index))
@@ -179,7 +179,7 @@ def add_society(request, researcher_id):
             'is_private' : True,
             'inputs' : Society.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/society.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_society().update(request.POST)
         return redirect('/account/view-researcher/%i#society_%i' % (researcher_id, obj.index))
@@ -196,7 +196,7 @@ def edit_society(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Society.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/society.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.societies[index].update(request.POST)
         return redirect("/account/view-researcher/%i#society_%i" % (researcher_id, index))
@@ -211,7 +211,7 @@ def add_award(request, researcher_id):
             'is_private' : True,
             'inputs' : Award.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/award.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_award().update(request.POST)
         return redirect('/account/view-researcher/%i#award_%i' % (researcher_id, obj.index))
@@ -228,7 +228,7 @@ def edit_award(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Award.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/award.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.awards[index].update(request.POST)
         return redirect("/account/view-researcher/%i#award_%i" % (researcher_id, index))
@@ -243,7 +243,7 @@ def add_funding(request, researcher_id):
             'is_private' : True,
             'inputs' : Funding.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/funding.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding().update(request.POST)
         return redirect('/account/view-researcher/%i#funding_%i' % (researcher_id, obj.index))
@@ -260,7 +260,7 @@ def edit_funding(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Funding.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/funding.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.awards[index].update(request.POST)
         return redirect("/account/view-researcher/%i#funding_%i" % (researcher_id, index))
@@ -275,7 +275,7 @@ def add_team_member(request, researcher_id):
             'is_private' : True,
             'inputs' : TeamMember.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/team_member.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_team_member().update(request.POST)
         return redirect('/account/view-researcher/%i#team_member_%i' % (researcher_id, obj.index))
@@ -292,7 +292,7 @@ def edit_team_member(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : TeamMember.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/team_member.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.team_members[index].update(request.POST)
         return redirect("/account/view-researcher/%i#team_members_%i" % (researcher_id, index))
@@ -307,7 +307,7 @@ def add_impact(request, researcher_id):
             'is_private' : True,
             'inputs' : Impact.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/impact.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding().update(request.POST)
         return redirect('/account/view-researcher/%i#impact_%i' % (researcher_id, obj.index))
@@ -324,7 +324,7 @@ def edit_impact(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Impact.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/impact.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.impacts[index].update(request.POST)
         return redirect("/account/view-researcher/%i#impact_%i" % (researcher_id, index))
@@ -339,7 +339,7 @@ def add_innovation(request, researcher_id):
             'is_private' : True,
             'inputs' : Innovation.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/innovation.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_innovation().update(request.POST)
         return redirect('/account/view-researcher/%i#innovation_%i' % (researcher_id, obj.index))
@@ -356,7 +356,7 @@ def edit_innovation(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Innovation.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/innovation.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.innovations[index].update(request.POST)
         return redirect("/account/view-researcher/%i#innovation_%i" % (researcher_id, index))
@@ -371,7 +371,7 @@ def add_publication(request, researcher_id):
             'is_private' : True,
             'inputs' : Publication.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/publication.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_publication().update(request.POST)
         return redirect('/account/view-researcher/%i#publication_%i' % (researcher_id, obj.index))
@@ -388,7 +388,7 @@ def edit_publication(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Publication.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/publication.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.publications[index].update(request.POST)
         return redirect("/account/view-researcher/%i#publication_%i" % (researcher_id, index))
@@ -403,7 +403,7 @@ def add_presentation(request, researcher_id):
             'is_private' : True,
             'inputs' : Presentation.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/presentation.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_presentation().update(request.POST)
         return redirect('/account/view-researcher/%i#presentation_%i' % (researcher_id, obj.index))
@@ -420,7 +420,7 @@ def edit_presentation(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Presentation.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/presentation.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.presentations[index].update(request.POST)
         return redirect("/account/view-researcher/%i#presentation_%i" % (researcher_id, index))
@@ -467,11 +467,9 @@ def add_non_acedemic_collab(request, researcher_id):
             'is_private' : True,
             'inputs' : NonAcedemicCollab.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/education.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
-        obj = request.user.researcher.profile.new_education()
-        obj.update(request.POST)
-        obj.save()
+        obj = request.user.researcher.profile.new_education().update(request.POST)
         return redirect('/account/view-researcher/%i#education_%i' % (researcher_id, obj.index))
 
 def edit_non_acedemic_collab(request, researcher_id, index):
@@ -486,7 +484,7 @@ def edit_non_acedemic_collab(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : NonAcedemicCollab.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/non_acedemic_collab.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.non_acedemic_collabs[index].update(request.POST)
         return redirect("/account/view-researcher/%i#non_acedemic_collab_%i" % (researcher_id, index))
@@ -501,7 +499,7 @@ def add_conference(request, researcher_id):
             'is_private' : True,
             'inputs' : Conference.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/conference.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_conference().update(request.POST)
         return redirect('/account/view-researcher/%i#conference_%i' % (researcher_id, obj.index))
@@ -518,7 +516,7 @@ def edit_conference(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : Conference.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/conference.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.conferences[index].update(request.POST)
         return redirect("/account/view-researcher/%i#conference_%i" % (researcher_id, index))
@@ -533,7 +531,7 @@ def add_comms_overview(request, researcher_id):
             'is_private' : True,
             'inputs' : CommsOverview.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/comms_overview.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_comms_overview().update(request.POST)
         return redirect('/account/view-researcher/%i#comms_overview_%i' % (researcher_id, obj.index))
@@ -550,7 +548,7 @@ def edit_comms_overview(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : CommsOverview.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/comms_overview.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.comms_overviews[index].update(request.POST)
         return redirect("/account/view-researcher/%i#comms_overview_%i" % (researcher_id, index))
@@ -564,7 +562,7 @@ def add_funding_ratio(request, researcher_id):
             'is_private' : True,
             'inputs' : FundingRatio.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/funding_ratio.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding_ratio().update(request.POST)
         return redirect('/account/view-researcher/%i#funding_ratio_%i' % (researcher_id, obj.index))
@@ -581,7 +579,7 @@ def edit_funding_ratio(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : FundingRatio.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/funding_ratio.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.funding_ratios[index].update(request.POST)
         return redirect("/account/view-researcher/%i#funding_ratio_%i" % (researcher_id, index))
@@ -595,7 +593,7 @@ def add_project(request, researcher_id):
             'is_private' : True,
             'inputs' : ResProject.get_inputs()
         }
-        return render(request, 'accounts/researcher_forms/project.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_project().update(request.POST)
         return redirect('/account/view-researcher/%i#project_%i' % (researcher_id, obj.index))
@@ -612,7 +610,7 @@ def edit_project(request, researcher_id, index):
             'is_private' : obj.is_private,
             'inputs' : ResProject.get_inputs(obj)
         }
-        return render(request, 'accounts/researcher_forms/project.html', attributes)
+        return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.projects[index].update(request.POST)
         return redirect("/account/view-researcher/%i#project_%i" % (researcher_id, index))
