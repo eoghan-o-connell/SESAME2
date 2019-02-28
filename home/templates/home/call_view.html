@@ -4,6 +4,13 @@
     {% block head %}
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
+    <link rel="stylesheet" href="{% static 'publishCalls/dist/dropzone.css' %}">
+    <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script defer src="{% static 'publishCalls/dist/dropzone.js' %}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script defer src="{% static 'publishCalls/newdragNdropCalls.js' %}" charset="utf-8"></script>
     {% endblock %}
 </head>
 {% block body %}
@@ -21,16 +28,25 @@
 
 {% if user.researcher %}
 <div class="container">
-    <form method="post" enctype="multipart/form-data">
+    <!-- <form method="post" enctype="multipart/form-data"> -->
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-success" type="submit">Apply</button>
-    </form>
+        <!-- {{ form.as_p }} -->
+        <input id="call_id" type="text" style="visibility:hidden" value={{ call_id }}>
+        <section id="dz">
+            <div id="dropbox" class="dropzone "></div>
+        </section>
+        <button id="btn" type="button" class="btn btn-success btn-large">Apply</button>
+
+        <div id="prog" class="progress">
+            <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
+        </div>
+        <!-- <button class="btn btn-success" type="submit">Apply</button> -->
+    <!-- </form> -->
 </div>
 {% endif %}
 
-<!-- {% for i in link_obj %}
-<a href="{{ i.0 }}" download="{{ i.1 }}"> {{ i.1 }} </a>
-{% endfor %} -->
+{% for i in link_obj %}
+<a href="http://127.0.0.1:8000/home/download_file?filename={{ i }}" download> Click here to download related documents ( {{ i }} ) </a>
+{% endfor %}
 
 {% endblock %}
