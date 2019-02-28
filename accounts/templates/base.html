@@ -9,18 +9,19 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
-        <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script-->
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         <link rel="stylesheet" href="{% static 'publishCalls/index.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-        <script defer src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script defer src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script defer src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
         <script defer src="{% static 'homeDataTable/dataTable.js' %}"></script>
         <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+        <script src="http://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
         <!-- <script type="text/javascript" src="{% static 'bootstrap/bootstrap.min.js' %}"></script> -->
     </head>
@@ -84,8 +85,8 @@
               </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" method='GET' action="{% url 'home:nav_search' %}">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search" name='search'>
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         {% endif %}
@@ -95,5 +96,26 @@
     {% block body %}
     <h1>Base</h1>
     {% endblock body %}
+    {%block javascript %}
+    <script>
+        $("#search").on('keyup', function(){
+            var value = $(this).val();
+            $.ajax({
+                url: "{% url 'home:ajax_autocomplete' %}",
+                data: {
+                  'search': value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    list = data.list;
+                    $("#search").autocomplete({
+                    source: list,
+                    minLength: 3
+                    });
+                }
+            });
+        });
+    </script>
+    {% endblock %}
     </body>
 </html>
