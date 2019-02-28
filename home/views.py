@@ -74,8 +74,7 @@ def get_my_calls(request):
 
     try:
         researcher = user.researcher
-        proposals = Proposal.objects.filter(user_id=request.user.id)
-        my_call_table_data = [proposal.call for proposal in proposals]
+        my_call_table_data = Proposal.objects.select_related('call').filter(user_id=request.user.id).values()
         context = {'my_call_table_data':my_call_table_data}
         return render(request, 'home/my_calls.html', context)
     except Researcher.DoesNotExist:
