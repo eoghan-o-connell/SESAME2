@@ -259,7 +259,6 @@ def autocomplete(request):
         queryset = Center.objects.filter(name__contains=request.GET.get('?search', ''))
         list = []
         for i in centerQuerySet:
-        for i in queryset:
             list.append(i.name)
             #print(i)
         for i in researcherQuerySet:
