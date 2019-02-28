@@ -146,168 +146,144 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     information = models.TextField("Additional information")
 
-from configparser import SafeConfigParser as cp
+import json
 from project.settings import BASE_DIR
 
 class ResearcherProfile():
 
     def __init__(self, researcher):
         self._filename = BASE_DIR + "/accounts/researcher_profiles/%i" % researcher
-        self._config = cp()
+        self._dict = dict()
         if default_storage.exists(self._filename):
             file = default_storage.open(self._filename, "r")
-            self._config.read(file)
+            self._dict = json.loads(file.read())
             file.close()
-            self._config
-        else:
-            self._config.add_section('profile')
-        self.educations = self._get_objects("edu", "degree", "field", "institution", "location", "year")
-        self.employments = self._get_objects("emp", "company", "location", "years")
-        self.societies = self._get_objects("soc", "start", "end", "name", "type")
-        self.awards = self._get_objects("award", "year", "awarding_body", "details", "team")
-        self.fundings = self._get_objects("fund", "start", "end", "amount", "body", "programme", "attribution")
-        self.team_members = self._get_objects("mem", "start", "end", "name", "position", "attribution")
-        self.impacts = self._get_objects("imp", "title", "category", "beneficiary", "attribution")
-        self.innovations = self._get_objects("inn", "year", "type", "title", "attribution")
-        self.publications = self._get_objects("pub", "year", "type", "title", "journal", "status", "doi", "attribution")
-        self.presentations = self._get_objects("pre", "year", "title", "event", "body", "location", "attribution")
-        self.acedemic_collabs = self._get_objects("acd", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        self.non_acedemic_collabs = self._get_objects("non", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        self.conferences = self._get_objects("con", "start", "end", "title", "type", "role", "location", "attribution")
-        self.comms_overviews = self._get_objects("com", "year", "lectures", "visits", "media")
-        self.funding_ratios = self._get_objects("rat", "year", "percent")
-        self.projects = self._get_objects("pro", "name", "start", "end", "type", "topic", "target", "attribution")
+
+        self.educations = self._get_objects("education", lambda index: Education(self, index))
+        self.employments = self._get_objects("employment", lambda index: Employment(self, index))
+        self.societies = self._get_objects("society", lambda index: Society(self, index))
+        self.awards = self._get_objects("award", lambda index: Award(self, index))
+        self.fundings = self._get_objects("funding", lambda index: Funding(self, index))
+        self.team_members = self._get_objects("team_member", lambda index: TeamMember(self, index))
+        self.impacts = self._get_objects("impact", lambda index: Impact(self, index))
+        self.innovations = self._get_objects("innovation", lambda index: Innovation(self, index))
+        self.publications = self._get_objects("publication", lambda index: Publication(self, index))
+        self.presentations = self._get_objects("presentation", lambda index: Presentation(self, index))
+        self.acedemic_collabs = self._get_objects("acedemic_collab", lambda index: AcedemicCollab(self, index))
+        self.non_acedemic_collabs = self._get_objects("non_acedemic_collab", lambda index: NonAcedemicCollab(self, index))
+        self.conferences = self._get_objects("conference", lambda index: Conference(self, index))
+        self.comms_overviews = self._get_objects("comms_overview", lambda index: CommsOverview(self, index))
+        self.funding_ratios = self._get_objects("funding_ratio", lambda index: FundingRatio(self, index))
+        self.projects = self._get_objects("project", lambda index: ResProject(self, index))
 
     def new_education(self):
-        education = self._get_object("edu", "degree", "field", "institution", "location", "year")
-        educations.append(education)
+        self.educations.append(Education(self, None))
         return education
 
     def new_employment(self):
-        employment = self._get_object("emp", "company", "location", "years")
-        employments.append(employment)
+        self.employments.append(Employment(self, None))
         return employment
 
     def new_society(self):
-        society = self._get_object("soc", "start", "end", "name", "type")
-        societies.append(society)
+        self.societies.append(Society(self, None))
         return society
 
     def new_award(self):
-        award = self._get_object("award", "year", "awarding_body", "details", "team")
-        awards.append(award)
+        self.awards.append(Award(self, None))
         return award
 
     def new_funding(self):
-        funding = self._get_object("fund", "start", "end", "amount", "body", "programme", "attribution")
-        fundings.append(funding)
+        self.fundings.append(Funding(self, None))
         return funding
 
     def new_team_member(self):
-        team_member = self._get_object("mem", "start", "end", "name", "position", "attribution")
-        team_members.append(team_member)
+        self.team_members.append(TeamMember(self, None))
         return team_member
 
     def new_impact(self):
-        impact = self._get_object("imp", "title", "category", "beneficiary", "attribution")
-        impacts.append(impact)
+        self.impacts.append(Impact(self, None))
         return impact
 
     def new_innovation(self):
-        innovation = self._get_object("inn", "year", "type", "title", "attribution")
-        innovations.append(innovation)
+        self.innovations.append(Innovation(self, None))
         return innovation
 
     def new_publication(self):
-        publication = self._get_object("pub", "year", "type", "title", "journal", "status", "doi", "attribution")
-        publications.append(publication)
+        self.publications.append(Publication(self, None))
         return publication
 
     def new_presentation(self):
-        presentation = self._get_object("pre", "year", "title", "event", "body", "location", "attribution")
-        presentations.append(presentation)
+        self.presentations.append(Presentation(self, None))
         return presentation
 
     def new_acedemic_collab(self):
-        acedemic_collab = self._get_object("acd", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
+        acedemic_collab = AcedemicCollab(self, None)
         self.acedemic_collabs.append(acedemic_collab)
         return acedemic_collab
 
     def new_non_acedemic_collab(self):
-        non_acedemic_collab = self._get_object("non", "start", "end", "institution", "dept", "location", "name", "goal", "frequency", "attribution")
-        non_acedemic_collabs.append(non_acedemic_collab)
+        self.non_acedemic_collabs.append(NonAcedemicCollab(self, None))
         return non_acedemic_collab
 
     def new_conference(self):
-        conference = self._get_object("con", "start", "end", "title", "type", "role", "location", "attribution")
-        conferences.append(conference)
+        self.conferences.append(Conference(self, None))
         return conference
 
     def new_comms_overview(self):
-        comms_overview = self._get_object("com", "year", "lectures", "visits", "media")
-        comms_overviews.append(comms_overview)
+        self.comms_overviews.append(CommsOverview(self, None))
         return comms_overview
 
     def new_funding_ratio(self):
-        funding_ratio = self._get_object("rat", "year", "percent")
-        funding_ratios.append(funding_ratio)
+        self.funding_ratios.append(FundingRatio(self, None))
         return funding_ratio
 
     def new_project(self):
-        project = self._get_object("pro", "name", "start", "end", "type", "topic", "target", "attribution")
-        projects.append(project)
+        self.projects.append(ResProject(self, None))
         return project
 
-    def _get_object(self, prefix, *keys):
-        return ResearcherObject(prefix, self, self._get_num("%s_private" % prefix), keys)
-
-    def _get_objects(self, prefix, *keys):
-        objects = []
-        for i in range(self._get_num("%s_private" % prefix)):
-            objects[i] = ResearcherObject(prefix, self, i, keys)
-        return objects
+    def _get_objects(self, prefix, new):
+        return [new(i) for i in range(self._get_num(prefix))]
 
     def _get_value(self, key, index):
-        print("getting %s number %i" % (key, index))
-        return self._config.get("profile", key+str(index))
+        return self._dict[key][index]
 
     def _set_value(self, key, value, index):
-        print("setting %s number %i to %s" % (key, index, value))
-        self._config.set("profile", key+str(index), value)
+        if key not in self._dict:
+            self._dict[key] = list()
+        if index < len(self._dict[key]):
+            self._dict[key][index] = value
+        else:
+            self._dict[key] += [value]
 
-    def _get_num(self, key):
-        index = 0
-        while self._config.has_option("profile", key+str(index)):
-            index += 1
-        return index
+    def _get_num(self, prefix):
+        key = prefix + '_' + "is_private"
+        if key not in self._dict:
+            return 0
+        else:
+            return len(self._dict[key])
 
-    def is_private(self, prefix):
-        return self._config.getboolean("profile", prefix+"_is_private")
+    def is_private(self, prefix, index):
+        return self._get_value(prefix+"_is_private", index)
 
-    def set_private(self, prefix, private):
-        return self._config.set("profile", prefix+"_is_private", str(private))
+    def set_private(self, prefix, index, private):
+        self._set_value(prefix+"_is_private", private, index)
 
     def save(self):
         file = default_storage.open(self._filename, "w+")
-        self._config.write(file)
+        file.write(json.dumps(self._dict))
         file.close()
 
-class ResearcherObject():
+class ResearcherObject(object):
 
-    def __init__(self, prefix, researcher, index, keys):
+    def __init__(self, prefix, researcher, index):
+        self._prefix = prefix
         self._researcher = researcher
-        format = "%s_%s" % (prefix, "%s")
         if index == None:
-            self._index = researcher.get_num(is_private_key) + 1
+            self._index = researcher._get_num(prefix) + 1
         else:
             self._index = index
-        self.is_private = property(lambda self: self._researcher.is_private(prefix),
-        lambda self, value: self._researcher.set_private(prefix, value))
         if index == None:
-            self.is_private = true
-        for keyname in keys:
-            key = format % keyname
-            self.__dict__[keyname] = self._get_property(key)
+            self.is_private = True
 
     def save(self):
         self._researcher.save()
@@ -316,6 +292,217 @@ class ResearcherObject():
     def index(self):
         return self._index
 
-    def _get_property(self, key):
-        return property(lambda self: self._researcher.get_value(self.key, self._index),
-        lambda self, value: self._researcher.set_value(key, value, self._index))
+    def _get_value(self, key):
+        self._researcher._get_value(self._prefix + '_' + key, self._index)
+
+    def _set_value(self, key, value):
+        self._researcher._set_value(self._prefix + '_' + key, value, self._index)
+
+    @property
+    def is_private(self):
+        return self._researcher.is_private(self._prefix)
+
+    @is_private.setter
+    def is_private(self, value):
+        self._researcher.set_private(self._prefix, value)
+
+class Education(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Education, self).__init__("education", researcher, index)
+
+    @property
+    def degree(self):
+        return self._get_value("degree")
+
+    @degree.setter
+    def degree(self, value):
+        self._set_value("degree", value)
+
+    @property
+    def field(self):
+        return self._get_value("field")
+
+    @field.setter
+    def field(self, value):
+        self._set_value("field", value)
+
+    @property
+    def institution(self):
+        return self._get_value("institution")
+
+    @institution.setter
+    def institution(self, value):
+        self._set_value("institution", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+class Employment(ResearcherObject):
+
+    def __init__(self, researcher, index):
+        super(Employment, self).__init__("employment", researcher, index)
+
+    @property
+    def company(self):
+        return self._get_value("company")
+
+    @company.setter
+    def company(self, value):
+        self._set_value("company", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def years(self):
+        return self._get_value("years")
+
+    @years.setter
+    def years(self, value):
+        self._set_value("years", value)
+
+class Society(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Society, self).__init__("society", researcher, index)
+
+class Award(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Award, self).__init__("award", researcher, index)
+
+class Funding(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Funding, self).__init__("funding", researcher, index)
+
+class TeamMember(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(TeamMember, self).__init__("team_member", researcher, index)
+
+class Impact(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Impact, self).__init__("impact", researcher, index)
+
+class Innovation(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Innovation, self).__init__("innovation", researcher, index)
+
+class Publication(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Publication, self).__init__("publication", researcher, index)
+
+class Presentation(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Presentation, self).__init__("presentation", researcher, index)
+
+class AcedemicCollab(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(AcedemicCollab, self).__init__("acedemic_collab", researcher, index)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def institution(self):
+        return self._get_value("institution")
+
+    @institution.setter
+    def institution(self, value):
+        self._set_value("institution", value)
+
+    @property
+    def dept(self):
+        return self._get_value("dept")
+
+    @dept.setter
+    def dept(self, value):
+        self._set_value("dept", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def goal(self):
+        return self._get_value("goal")
+
+    @goal.setter
+    def goal(self, value):
+        self._set_value("goal", value)
+
+    @property
+    def frequency(self):
+        return self._get_value("frequency")
+
+    @frequency.setter
+    def frequency(self, value):
+        self._set_value("frequency", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
+
+class NonAcedemicCollab(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(NonAcedemicCollab, self).__init__("non_acedemic_collab", researcher, index)
+
+class Conference(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(Conference, self).__init__("conference", researcher, index)
+
+class CommsOverview(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(CommsOverview, self).__init__("comms_overview", researcher, index)
+
+class FundingRatio(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(FundingRatio, self).__init__("funding_ratio", researcher, index)
+
+class ResProject(ResearcherObject):
+    def __init__(self, researcher, index):
+        super(ResProject, self).__init__("project", researcher, index)
