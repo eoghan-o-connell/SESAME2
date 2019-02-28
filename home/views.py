@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
+from django.views.static import serve
 from django.http import JsonResponse
 from django.db.models import Q
 from .forms import PublishForm
@@ -44,30 +45,61 @@ def create_center(request):
         form = CenterForm()
     return render(request, 'home/create_center.html', {'form': form})
 
+def download_file(request):
+    if request.method == "GET":
+        filepath = request.GET.get("filename")
+        return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
 def get_call_view(request):
-    call_id = request.GET.get('call_id', '')
-    call_obj = Call.objects.get(pk=call_id)
-    if request.method == 'POST':
-        form = ProposalForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save(request.user, call_obj)
-            return redirect(reverse('home:home'))
+    files = []
+    call_obj = None
+    call_id = None
+    print("OK RECEIVING SOMETHING")
+    if request.method == 'GET':
+        call_id = request.GET.get('call_id', '')
+        call_obj = Call.objects.get(pk=call_id)
+        print("was a get request lol")
+        call_id = request.GET.get('call_id', '')
+        call_obj = Call.objects.filter(pk=call_id).values()
+        context = {'call_obj':call_obj}
+
 
     else:
-        form = ProposalForm()
+        filenames = []
 
-    call_id = request.GET.get('call_id', '')
-    call_obj = Call.objects.filter(pk=call_id).values()
-    context = {'call_obj':call_obj}
-    return render(request, 'home/call_view.html', {'form':form, 'call_obj':call_obj})
+        call_id = request.POST.get('call_id', '').decode('utf-8')
+
+        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+        if not os.path.isdir(userFileDir):
+            os.makedirs(userFileDir)
+
+        for key in request.FILES:
+            file = request.FILES[key]
+            filenames.append(str(file))
+            with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
+                for line in file:
+                    saveFile.write(line)
+                    print("File has been saved")
+
+        print(filenames)
+        filename = ','.join(filenames)
+
+        id = request.user.id
+        call_id = int(call_id)
+
+        print(id,call_id,filename)
+
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id)
+        db.save()
+
+    return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
 
 def get_my_calls(request):
     user = request.user
-    call_id = request.GET.get('call_id', '')
 
     try:
         funder = user.funder
-        my_call_table_data = Call.objects.filter(funder_id=call_id).values()
+        my_call_table_data = Call.objects.filter(funder_id=user.id).values()
         context = {'my_call_table_data':my_call_table_data}
         return render(request, 'home/my_calls.html', context)
     except Funder.DoesNotExist:
@@ -114,9 +146,6 @@ def pub (request):
        grant = request.POST.get("grant")
        funder_id = request.user.id
 
-
-       user = str(request.user)
-
        value = request.POST.get("editing_mode")
 
        if value == "True":
@@ -124,10 +153,6 @@ def pub (request):
 
        _call_id = request.POST.get("_call_id")
 
-       # if os.path.isdir(userFileDir):
-       #     print("exists")
-       # else:
-       #     os.makedirs(userFileDir)
 
        #print(request.POST.items())
        # for key in request.FILES:
@@ -136,15 +161,24 @@ def pub (request):
        #         for line in file:
        #             saveFile.write(line)
        #         print("File has been saved")
+
+
+       filenames = []
+
+
        for key in request.FILES:
-           file = request.FILES[key]
-           # with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
-           #     print("OPENING FILE AND WRITING TO IT")
-           #     for line in file:
-           #         saveFile.write(line)
-           #     print("File has been saved")
-           filename = file.name
-       # print("======================",value,_call_id)
+           file = str(request.FILES[key])
+           print(file)
+           filenames.append(file)
+
+       print(filenames)
+
+       filename = ', '.join(filenames)
+
+       print("FILE NAMES SENT FROM CONCATENATION --- > ",filename)
+
+       print(request.FILES.values())
+
 
 
 
@@ -172,7 +206,6 @@ def pub (request):
 
           """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(_call_id))
 
-       userFileDir = "/home/users/nadehh/django-uploads/%s"%(user.split("@")[0])
        try:                        #success page if given to db
            connection = _db.connect(host=host_name,
                             user=user_name,
@@ -183,6 +216,23 @@ def pub (request):
            cursor = connection.cursor()
 
            cursor.execute(db_query)
+
+           if not editing_mode:
+               id = cursor.lastrowid
+
+               user = str(request.user)
+               userFileDir = "calls/%s-%s/calls"%(user.split("@")[0],id)
+
+               if not os.path.isdir(userFileDir):
+                   os.makedirs(userFileDir)
+
+               for key in request.FILES:
+                   file = request.FILES[key]
+                   with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
+                       for line in file:
+                           saveFile.write(line)
+                           print("File has been saved")
+
            connection.commit()
 
        except _db.Error as e:

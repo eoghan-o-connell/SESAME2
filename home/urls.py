@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^publish_call$', views.pub, name='pub'),
     url(r'^call_view$', views.get_call_view, name='call_view'),
     url(r'^my_calls$', views.get_my_calls, name='my_calls'),
+    url(r'^download_file$', views.download_file, name='download_file'),
     url(r'^centers$', views.view_center, name='view_center'),
     url(r'^centers/create_center$', views.create_center, name='create_center'),
     url(r'^ajax/autocomplete/$', views.autocomplete, name='ajax_autocomplete'),
