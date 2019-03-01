@@ -15,19 +15,64 @@
 </head>
 {% block body %}
 <br>
-<h1 style="color:teal; font-size=3vw; margin-left:10px;">Call View</h1><br>
-  <div class="container" style="margin-left:2px">
+<div class="container">
+  <h1> {{ item.title }}</h1>
+  <table id="example" class="table table-borderless" style="width:100%; search:none;">
+    <script> $(document).ready(function() {
+        $('#example').DataTable( {
+            "searching": false,
+            "sorting": false,
+            "paging": false,
+            "info": false,
+            "lengthChange":false,
+            "targets": 'no-sort',
+            "bSort": false,
+            "order": []
+        } );
+    } );
+  </script>
+    <thead style="background-color:teal; color:white;">
+    <tr>
+        <th> Title </th>
+        <th> Funds </th>
+        <th> Deadline </th>
+        <th> Target </th>
+        <th> Created </th>
+        <th> Funder ID </th>
+        <th> Description </th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for item in call_obj %}
+    <tr>
+        <td>{{ item.title }} </td>
+        <td>{{ item.funds }} </td>
+        <td>{{ item.deadline }} </td>
+        <td>{{ item.target }} </td>
+        <td>{{ item.created }} </td>
+        <td>{{ item.funder_id }} </td>
+        <td>{{ item.description }} </td>
+
+    </tr>
+    {% endfor %}
+   </tbody>
+  </table>
+  <!-- {% comment %}
+  <h1 style="color:teal; font-size=3vw; margin-left:10px;">Call View</h1><br>
+    <div class="container" style="margin-left:2px">
 
 
-  {% for item in call_obj %}
-      <p style="font-size:1.6vw">Title: {{ item.title }}</p>
-      <p style="font-size:1.6vw">Funds: {{ item.funds }}</p>
-      <p style="font-size:1.6vw">Deadline: {{ item.deadline }}</p>
-      <p style="font-size:1.6vw">Target: {{ item.target }}</p>
-      <p style="font-size:1.6vw">Created: {{ item.created }}</p>
-      <p style="font-size:1.6vw">Funder ID: {{ item.funder_id }}</p>
-      <p style="font-size:1.6vw">Description: {{ item.description }}</p>
-  {% endfor %}
+    {% for item in call_obj %}
+        <p style="font-size:1.6vw">Title: {{ item.title }}</p>
+        <p style="font-size:1.6vw">Funds: {{ item.funds }}</p>
+        <p style="font-size:1.6vw">Deadline: {{ item.deadline }}</p>
+        <p style="font-size:1.6vw">Target: {{ item.target }}</p>
+        <p style="font-size:1.6vw">Created: {{ item.created }}</p>
+        <p style="font-size:1.6vw">Funder ID: {{ item.funder_id }}</p>
+        <p style="font-size:1.6vw">Description: {{ item.description }}</p>
+    {% endfor %}
+    {% endcomment %} -->
+  </div>
 
 {% if user.researcher %}
 <div class="container">
@@ -36,7 +81,7 @@
         <!-- {{ form.as_p }} -->
         <input id="call_id" type="text" style="visibility:hidden" value={{ call_id }}>
         <section id="dz">
-            <div id="dropbox" class="dropzone form-control" style="width:60%"></div><br>
+            <div id="dropbox" class="dropzone form-control"></div><br>
         </section>
         <button id="btn" type="button" class="btn btn-success btn-large">Apply</button>
 

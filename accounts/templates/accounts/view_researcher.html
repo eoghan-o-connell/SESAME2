@@ -37,7 +37,7 @@ section {
     <h3>Account</h3>
     First name: {{ researcher.user.first_name }}<br>
     Last name: {{ researcher.user.last_name }}<br>
-    Email: {{ researcher.user.email }}</p>
+    Email: {{ researcher.user.email }}
     <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
     <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
 
