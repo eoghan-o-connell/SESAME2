@@ -19,6 +19,10 @@
 .panel-title > a:focus  {
     text-decoration:none;
 }
+section {
+    padding: 20px;
+    padding-left: 80px;
+}
 </style>
 <title>{{ researcher }}</title>
 {% endblock %}
@@ -29,6 +33,15 @@
         <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
     {% endif %}
     <h2>{{ researcher }}</h2>
+    {% if editing %}
+    <h3>Account</h3>
+    First name: {{ researcher.user.first_name }}<br>
+    Last name: {{ researcher.user.last_name }}<br>
+    Email: {{ researcher.user.email }}</p>
+    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
+    <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
+
+    {% endif %}
     <p>
         <a href="https://orcid.com/{{researcher.orcid}}">ORCID</a>
     </p>
