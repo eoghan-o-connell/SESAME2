@@ -298,6 +298,12 @@ class ResearcherObject(object):
     def save(self):
         self._researcher.save()
 
+    def __str__(self):
+        rows = ""
+        for input in self.get_inputs(self):
+            rows += "<tr><td>%s:</td><td>%s</td></tr>" % (input["label"], input["value"])
+        return "<table>%s</table>" % rows
+
     @property
     def index(self):
         return self._index
@@ -340,17 +346,6 @@ class Education(ResearcherObject):
             {'label':'Location','name':'location','value': location},
             {'label':'Year','name':'year','value': year}
         ]
-
-    def __str__(self):
-        return """
-<p>
-    Degree: %s<br>
-    Field: %s<br>
-    Institution: %s<br>
-    Location: %s<br>
-    Year: %s
-</p>
-        """ % (self.degree, self.field, self.institution, self.location, self.year)
 
     def update(self, data):
         self.degree = data.get('degree', '')
@@ -404,6 +399,24 @@ class Employment(ResearcherObject):
 
     def __init__(self, researcher, index):
         super(Employment, self).__init__("employment", researcher, index)
+
+    @staticmethod
+    def get_inputs(collab=None):
+        new = collab==None
+        company = '' if new else collab.company
+        location = '' if new else collab.location
+        years = '' if new else collab.years
+        return [
+            {'label':'Company','name':'company','value': company},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Years','name':'years','value': years}
+        ]
+
+    def update(self, data):
+        self.company = data.get('company', '')
+        self.location = data.get('location', '')
+        self.years = data.get('years', '')
+        return super(Education, self).update(data)
 
     @property
     def company(self):
