@@ -32,9 +32,9 @@ section {
     {% if profile.profile_picture %}
         <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
     {% endif %}
-    <h2>{{ researcher }}</h2>
+<!--    <h2>{{ researcher }}</h2> -->
     {% if editing %}
-    <h3>Account</h3>
+    <h1 style="color:teal"> Account details</h1>
     First name: {{ researcher.user.first_name }}<br>
     Last name: {{ researcher.user.last_name }}<br>
     Email: {{ researcher.user.email }}</p>
