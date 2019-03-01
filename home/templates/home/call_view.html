@@ -14,17 +14,20 @@
     {% endblock %}
 </head>
 {% block body %}
-<h1>Call View</h1>
+<br>
+<h1 style="color:teal; font-size=3vw; margin-left:10px;">Call View</h1><br>
+  <div class="container" style="margin-left:2px">
 
-{% for item in call_obj %}
-    <p>Title: {{ item.title }}</p>
-    <p>Funds: {{ item.funds }}</p>
-    <p>Deadline: {{ item.deadline }}</p>
-    <p>Target: {{ item.target }}</p>
-    <p>Created: {{ item.created }}</p>
-    <p>Funder ID: {{ item.funder_id }}</p>
-    <p>Description: {{ item.description }}</p>
-{% endfor %}
+
+  {% for item in call_obj %}
+      <p style="font-size:1.6vw">Title: {{ item.title }}</p>
+      <p style="font-size:1.6vw">Funds: {{ item.funds }}</p>
+      <p style="font-size:1.6vw">Deadline: {{ item.deadline }}</p>
+      <p style="font-size:1.6vw">Target: {{ item.target }}</p>
+      <p style="font-size:1.6vw">Created: {{ item.created }}</p>
+      <p style="font-size:1.6vw">Funder ID: {{ item.funder_id }}</p>
+      <p style="font-size:1.6vw">Description: {{ item.description }}</p>
+  {% endfor %}
 
 {% if user.researcher %}
 <div class="container">
@@ -33,7 +36,7 @@
         <!-- {{ form.as_p }} -->
         <input id="call_id" type="text" style="visibility:hidden" value={{ call_id }}>
         <section id="dz">
-            <div id="dropbox" class="dropzone "></div>
+            <div id="dropbox" class="dropzone form-control" style="width:60%"></div><br>
         </section>
         <button id="btn" type="button" class="btn btn-success btn-large">Apply</button>
 
