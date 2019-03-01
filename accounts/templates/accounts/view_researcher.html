@@ -37,13 +37,13 @@ section {
     <h3>Account</h3>
     First name: {{ researcher.user.first_name }}<br>
     Last name: {{ researcher.user.last_name }}<br>
-    Email: {{ researcher.user.email }}</p>
+    Email: {{ researcher.user.email }}
     <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
     <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
 
     {% endif %}
     <p>
-        <a href="https://orcid.com/{{researcher.orcid}}">ORCID</a>
+        <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
     </p>
 </section>
 
@@ -111,7 +111,7 @@ section {
         <div class="panel-heading" role="tab" id="headingThree">
              <h4 class="panel-title">
                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                     Professional societies ({{ profile.societies|length }})
+                     Professional Societies (Membership) ({{ profile.societies|length }})
                  </a>
              </h4>
         </div>
@@ -167,7 +167,7 @@ section {
         <div class="panel-heading" role="tab" id="headingFive">
              <h4 class="panel-title">
                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                     Funding diversities ({{ profile.fundings|length }})
+                     Funding diversification ({{ profile.fundings|length }})
                  </a>
              </h4>
         </div>
@@ -349,7 +349,7 @@ section {
                             {% if editing %}
                             <a href="acedemic-collab/{{ acedemic_collab.index }}">Edit</a>
                             {% endif %}
-                            {{acedemic_collab.name}}
+                            {{acedemic_collab|safe}}
                         </li>
                         {% endif %}
                     {% empty %}

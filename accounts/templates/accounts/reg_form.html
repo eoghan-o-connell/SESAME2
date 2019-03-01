@@ -23,7 +23,7 @@
         <form id="reg" method="post">
             {% csrf_token %}
             <div class="form-group">
-              <label for="user_type" align="left">Register as: </label>
+              <label for="user_type" class="col-form-label ">Register as: </label>
               <select id="user_type" class="user_type form-control" name="user_type" required>
                 <option selected disabled hidden style='display: none' value=''></option>
                 <option value="researcher">Researcher</option>
@@ -90,7 +90,7 @@
             <div class="form-group">
               <div id="reviewer_form" hidden>
                 <label for="field">Field of research</label>
-                <select class="field" name="field" id="field" class="form-control">
+                <select class="field form-control" name="field" id="field">
                     <option selected disabled hidden style='display: none' value=''></option>
                     <option value="A">Priority Area A: Future Networks & Communications</option>
                     <option value="B">Priority Area B: Data Analytics, Management, Security & Privacy</option>
