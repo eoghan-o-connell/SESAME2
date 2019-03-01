@@ -217,6 +217,9 @@ def pub (request):
 
            cursor.execute(db_query)
 
+           #Calling this fucntion below which I set up as the email fucntion
+           email_users()
+
            if not editing_mode:
                id = cursor.lastrowid
 
@@ -299,6 +302,10 @@ def pub (request):
 
     form = PublishForm()
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
+
+def email_users(request):
+    print("Here Ben!")
+
 
 def autocomplete(request):
     if request.is_ajax():
