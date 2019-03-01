@@ -10,6 +10,13 @@
 <br>
 
 <div class="container">
+  {% if result %}
+    {% if result == 'success' %}
+      <p>User Successfully Added to Center!</p>
+    {% else %}
+      <p>User Email Does Not Exist!</p>
+    {% endif %}
+  {% endif %}
   <h1 style="color:teal">Centers</h1>
 
   <table id="example" class="table" style="width:100%">
@@ -29,7 +36,13 @@
         <td>{{ item.info }} </td>
         <td>{{ item.created }} </td>
         <td>{{ item.admin_id }} </td>
-
+        <!-- if user is admin of that center -->
+        <td>
+          <form class="add_user" action="{% url 'home:add_to_center' %}" method="get">
+            <input type="text" name="user_email" placeholder="User Email">
+            <input type="hidden" name="center" value="{{ item.name }}">
+          </form>
+        </td>
     </tr>
     {% endfor %}
    </tbody>
@@ -59,4 +72,5 @@
         <button class="btn btn-success" type='submit'>Create Center</button>
     </form>
   </div>
+
 {% endblock %}
