@@ -218,7 +218,7 @@ def pub (request):
            cursor.execute(db_query)
 
            #Calling this fucntion below which I set up as the email fucntion
-           email_users()
+           email_users(request)
 
            if not editing_mode:
                id = cursor.lastrowid
