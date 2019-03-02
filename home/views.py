@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.views.static import serve
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
