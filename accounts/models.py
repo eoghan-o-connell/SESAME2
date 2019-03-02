@@ -533,10 +533,10 @@ class Award(ResearcherObject):
         details = '' if new else obj.details
         team = '' if new else obj.team
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'awarding_body','name':'awarding_body','value': awarding_body},
-            {'label':'details','name':'details','value': details},
-            {'label':'team','name':'team','value': team}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Awarding_body','name':'awarding_body','value': awarding_body},
+            {'label':'Details','name':'details','value': details},
+            {'label':'Team','name':'team','value': team}
         ]
 
     def update(self, data):
@@ -588,12 +588,12 @@ class Funding(ResearcherObject):
         programme = '' if new else obj.programme
         attribution = '' if new else obj.attribution
         return [
-            {'label':'start','name':'start','value': start},
-            {'label':'end','name':'end','value': end},
-            {'label':'amount','name':'amount','value': amount},
-            {'label':'body','name':'body','value': body},
-            {'label':'programme','name':'programme','value': programme},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Start','name':'start','value': start},
+            {'label':'End','name':'end','value': end},
+            {'label':'Amount','name':'amount','value': amount},
+            {'label':'Body','name':'body','value': body},
+            {'label':'Programme','name':'programme','value': programme},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -660,11 +660,11 @@ class TeamMember(ResearcherObject):
         position = '' if new else obj.position
         attribution = '' if new else obj.attribution
         return [
-            {'label':'start','name':'start','value': start},
-            {'label':'end','name':'end','value': end},
-            {'label':'name','name':'name','value': name},
-            {'label':'position','name':'position','value': position},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Start','name':'start','value': start},
+            {'label':'End','name':'end','value': end},
+            {'label':'Name','name':'name','value': name},
+            {'label':'Position','name':'position','value': position},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -722,10 +722,10 @@ class Impact(ResearcherObject):
         beneficiary = '' if new else obj.beneficiary
         attribution = '' if new else obj.attribution
         return [
-            {'label':'title','name':'title','value': title},
-            {'label':'category','name':'category','value': category},
-            {'label':'beneficiary','name':'beneficiary','value': beneficiary},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Title','name':'title','value': title},
+            {'label':'Category','name':'category','value': category},
+            {'label':'Beneficiary','name':'beneficiary','value': beneficiary},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -777,10 +777,10 @@ class Innovation(ResearcherObject):
         title = '' if new else obj.title
         attribution = '' if new else obj.attribution
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'type','name':'type','value': type},
-            {'label':'title','name':'title','value': title},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Type','name':'type','value': type},
+            {'label':'Title','name':'title','value': title},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -833,13 +833,13 @@ class Publication(ResearcherObject):
         doi = '' if new else obj.doi
         attribution = '' if new else obj.attribution
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'type','name':'type','value': type},
-            {'label':'title','name':'title','value': title},
-            {'label':'name','name':'name','value': name},
-            {'label':'status','name':'status','value': status},
-            {'label':'doi','name':'doi','value': doi},
-            {'label':'attribution','name':'name','value': attribution}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Type','name':'type','value': type},
+            {'label':'Title','name':'title','value': title},
+            {'label':'Name','name':'name','value': name},
+            {'label':'Status','name':'status','value': status},
+            {'label':'Doi','name':'doi','value': doi},
+            {'label':'Attribution','name':'name','value': attribution}
         ]
 
     def update(self, data):
@@ -915,12 +915,12 @@ class Presentation(ResearcherObject):
         location = '' if new else obj.location
         attribution = '' if new else obj.attribution
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'title','name':'title','value': title},
-            {'label':'event','name':'event','value': event},
-            {'label':'body','name':'body','value': body},
-            {'label':'location','name':'location','value': location},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Title','name':'title','value': title},
+            {'label':'Event','name':'event','value': event},
+            {'label':'Body','name':'body','value': body},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -997,9 +997,9 @@ class AcedemicCollab(ResearcherObject):
             {'label':'Department','name':'dept','value': dept},
             {'label':'Location','name':'location','value': location},
             {'label':'Name','name':'name','value': name},
-            {'label':'Start date','name':'goal','value': goal},
-            {'label':'Start date','name':'frequency','value': frequency},
-            {'label':'Start date','name':'attribution','value': attribution}
+            {'label':'Goal','name':'goal','value': goal},
+            {'label':'Frequency','name':'frequency','value': frequency},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -1183,13 +1183,13 @@ class Conference(ResearcherObject):
         location = '' if new else obj.location
         attribution = '' if new else obj.attribution
         return [
-            {'label':'start','name':'start','value': start},
-            {'label':'end','name':'end','value': end},
-            {'label':'title','name':'title','value': title},
-            {'label':'type','name':'type','value': type},
-            {'label':'role','name':'role','value': role},
-            {'label':'location','name':'location','value': location},
-            {'label':'attribution','name':'attribution','value': attribution}
+            {'label':'Start','name':'start','value': start},
+            {'label':'End','name':'end','value': end},
+            {'label':'Title','name':'title','value': title},
+            {'label':'Type','name':'type','value': type},
+            {'label':'Role','name':'role','value': role},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Attribution','name':'attribution','value': attribution}
         ]
 
     def update(self, data):
@@ -1263,10 +1263,10 @@ class CommsOverview(ResearcherObject):
         visits = '' if new else obj.visits
         media = '' if new else obj.media
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'lectures','name':'lectures','value': lectures},
-            {'label':'visits','name':'visits','value': visits},
-            {'label':'media','name':'media','value': media}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Lectures','name':'lectures','value': lectures},
+            {'label':'Visits','name':'visits','value': visits},
+            {'label':'Media','name':'media','value': media}
         ]
 
     def update(self, data):
@@ -1314,8 +1314,8 @@ class FundingRatio(ResearcherObject):
         year = '' if new else obj.year
         percent = '' if new else obj.percent
         return [
-            {'label':'year','name':'year','value': year},
-            {'label':'percent','name':'percent','value': percent}
+            {'label':'Year','name':'year','value': year},
+            {'label':'Percent','name':'percent','value': percent}
         ]
 
     def update(self, data):
@@ -1352,13 +1352,13 @@ class ResProject(ResearcherObject):
         target = '' if new else obj.target
         attribution = '' if new else obj.attribution
         return [
-            {'label':'name','name':'name','value': name},
-            {'label':'start','name':'start','value': start},
-            {'label':'end','name':'end','value': end},
-            {'label':'type','name':'type','value': type},
-            {'label':'topic','name':'topic','value': topic},
-            {'label':'target','name':'target','value': target},
-            {'label':'attribution','name':'type','value': attribution}
+            {'label':'Name','name':'name','value': name},
+            {'label':'Start','name':'start','value': start},
+            {'label':'End','name':'end','value': end},
+            {'label':'Type','name':'type','value': type},
+            {'label':'Topic','name':'topic','value': topic},
+            {'label':'Target','name':'target','value': target},
+            {'label':'Attribution','name':'type','value': attribution}
         ]
 
     def update(self, data):

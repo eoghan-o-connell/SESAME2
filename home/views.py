@@ -5,9 +5,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.views.static import serve
-from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal, Reviewer ,Funder, Researcher
@@ -33,7 +31,7 @@ class HomeView(TemplateView):
         return render(request, self.template_name, context)
 
 def view_center(request):
-    center_obj = Center.objects.filter(members=request.user.id)
+    center_obj = Center.objects.filter(admin_id=request.user.id).values()
     context = {'center_obj':center_obj}
     return render(request, 'home/view_center.html', context)
 
@@ -65,6 +63,12 @@ def get_call_view(request):
         call_obj = Call.objects.filter(pk=call_id).values()
         context = {'call_obj':call_obj}
 
+        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+
+
+        for file in os.listdir(userFileDir):
+            files.append(file)
+
 
     else:
         filenames = []
@@ -90,7 +94,7 @@ def get_call_view(request):
 
         print(id,call_id,filename)
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,status="Pending")
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id)
         db.save()
 
     return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
@@ -108,9 +112,8 @@ def get_my_calls(request):
 
     try:
         researcher = user.researcher
-        proposals = Proposal.objects.select_related('call').filter(user=user)
-        my_call_table_data = [prop.call for prop in proposals]
-        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
+        my_call_table_data = [prop.call for prop in Proposal.objects.select_related('call').filter(user=user)]
+        context = {'my_call_table_data':my_call_table_data}
         return render(request, 'home/my_calls.html', context)
     except Researcher.DoesNotExist:
         print("Not researcher")
@@ -219,6 +222,9 @@ def pub (request):
 
            cursor.execute(db_query)
 
+           #Calling this fucntion below which I set up as the email fucntion
+           email_users(request)
+
            if not editing_mode:
                id = cursor.lastrowid
 
@@ -301,6 +307,10 @@ def pub (request):
     form = PublishForm()
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
+def email_users(request):
+    print("Here Ben!")
+
+
 def autocomplete(request):
     if request.is_ajax():
         search_query = request.GET.get('?search', '')
@@ -317,7 +327,6 @@ def autocomplete(request):
             name += ' '
             name += i.user.last_name
             list.append(name)
-            print(i)
         data = {
             'list': list,
         }
@@ -326,32 +335,11 @@ def autocomplete(request):
 def nav_search(request):
     if request.method == 'GET':
         search_query = request.GET.get('search', '')
-        #print(search_query)
         search_query = search_query.split()
         centerQuerySet = Center.objects.all()
         researcherQuerySet = Researcher.objects.all()
         for word in search_query:
-            print(word)
             centerQuerySet= centerQuerySet.filter(name__icontains=word)
             researcherQuerySet= researcherQuerySet.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word))
-        #centerQuerySet = Center.objects.filter(name__icontains=search_query)
-        #researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)
         context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
         return render(request, 'home/nav_search.html', context)
-
-def add_to_center(request):
-    if request.method == 'GET':
-        user_email = request.GET.get('user_email', '')
-        center_name = request.GET.get('center', '')
-        centerObj = Center.objects.get(name=center_name)
-        center_obj = Center.objects.filter(admin_id=request.user.id).values() #for reloading page
-        context = {'center_obj':center_obj} #for reloading page
-        try:
-            userObj = User.objects.get(email=user_email)
-            centerObj.members.add(userObj.id)
-            centerObj.save()
-            context['result'] = 'success'
-            return render(request, 'home/view_center.html', context)
-        except ObjectDoesNotExist:
-            context['result']= 'failure'
-            return render(request, 'home/view_center.html', context)
