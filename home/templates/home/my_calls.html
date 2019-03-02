@@ -88,7 +88,9 @@
                       <td id="s_amount">{{ item.funds }}</td>
                       <td id="s_deadline">{{ item.deadline }}</td>
                       <td id="s_target">{{ item.target }}</td>
+                      {% if user.funder %}
                       <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
+                      {% endif %}
                   </tr>
               {% endfor %}
           {% endif %}
