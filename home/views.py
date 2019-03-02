@@ -217,9 +217,6 @@ def pub (request):
 
            cursor.execute(db_query)
 
-           #Calling this fucntion below which I set up as the email fucntion
-           email_users(request)
-
            if not editing_mode:
                id = cursor.lastrowid
 
@@ -234,7 +231,6 @@ def pub (request):
                    with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
                        for line in file:
                            saveFile.write(line)
-                           print("File has been saved")
 
            connection.commit()
 
@@ -303,10 +299,6 @@ def pub (request):
     form = PublishForm()
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
-def email_users(request):
-    print("Here Ben!")
-
-
 def autocomplete(request):
     if request.is_ajax():
         search_query = request.GET.get('?search', '')
@@ -323,6 +315,7 @@ def autocomplete(request):
             name += ' '
             name += i.user.last_name
             list.append(name)
+            print(i)
         data = {
             'list': list,
         }
@@ -331,11 +324,15 @@ def autocomplete(request):
 def nav_search(request):
     if request.method == 'GET':
         search_query = request.GET.get('search', '')
+        #print(search_query)
         search_query = search_query.split()
         centerQuerySet = Center.objects.all()
         researcherQuerySet = Researcher.objects.all()
         for word in search_query:
+            print(word)
             centerQuerySet= centerQuerySet.filter(name__icontains=word)
             researcherQuerySet= researcherQuerySet.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word))
+        #centerQuerySet = Center.objects.filter(name__icontains=search_query)
+        #researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)
         context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
         return render(request, 'home/nav_search.html', context)
