@@ -17,18 +17,19 @@
 <br><br>
 <div class="container">
   <div class="row">
-    <div class="col-sm-6 offset-sm-3" style="background-color:#F5F5F5;">
-      <h1 style="font-size=3vw;">Call View</h1>
+    <div class="col-sm-6 offset-sm-3 text-center" style="background-color:#F5F5F5;">
+      {% for item in call_obj %}
+      <h1 style="font-size=3vw;"> {{ item.title }}</h1><br>
 
-
-  {% for item in call_obj %}
-      <p style="font-size:1.5vw">Title: {{ item.title }}</p>
-      <p style="font-size:1.5vw">Funds: {{ item.funds }}</p>
-      <p style="font-size:1.5vw">Deadline: {{ item.deadline }}</p>
-      <p style="font-size:1.5vw">Target: {{ item.target }}</p>
-      <p style="font-size:1.5vw">Created: {{ item.created }}</p>
-      <p style="font-size:1.5vw">Funder ID: {{ item.funder_id }}</p>
-      <p style="font-size:1.5vw">Description: {{ item.description }}</p>
+      <div class="col text-left">
+      <!--  <p style="font-size:1.5vw">Title: {{ item.title }}</p> -->
+        <p style="font-size:1.5vw">Funds: {{ item.funds }}</p>
+        <p style="font-size:1.5vw">Deadline: {{ item.deadline }}</p>
+        <p style="font-size:1.5vw">Target: {{ item.target }}</p>
+        <p style="font-size:1.5vw">Created: {{ item.created }}</p>
+        <p style="font-size:1.5vw">Funder ID: {{ item.funder_id }}</p>
+        <p style="font-size:1.5vw">Description: {{ item.description }}</p>
+      </div>
   {% endfor %}
 
 {% if user.researcher %}
