@@ -36,18 +36,6 @@
               <input class="user_form form-control" hidden id="email" type="email" name="email" autocomplete="email" placeholder="example@example.com" required>
             </div>
 
-            <div class="form-group text-left">
-              <label for="prefix">Prefix</label>
-              <select class="prefix res_req form-control" id="prefix" name="prefix">
-                  <option selected disabled hidden style='display: none' value=''></option>
-                  <option value="mr">Mr</option>
-                  <option value="ms">Ms</option>
-                  <option value="rs">Mrs</option>
-                  <option value="mx">Mx</option>
-                  <option value="dr">Dr</option>
-                  <option value="pr">Prof</option>
-              </select>
-            </div>
 
             <div class="form-group text-left">
               <label class="user_form" hidden for="first_name">First Name</label>
@@ -68,10 +56,22 @@
               <label class="user_form" hidden for="password2">Repeat Password</label>
               <input class="user_form form-control" hidden id="password2" type="password" required/><p><strong id="no_match" hidden>Passwords do not match</strong></p>
             </div>
-            <div class="form-group text-left">
-              <div id="researcher_form" hidden>
+            <div id="researcher_form" hidden>
+              <div class="form-group text-left">
                 <label for="job_title">Job Title</label>
                 <input id="job_title" type="text" name="job_title" class="res_req form-control">
+              </div>
+              <div class="form-group text-left">
+                <label for="prefix">Prefix</label>
+                <select class="prefix res_req form-control" id="prefix" name="prefix">
+                    <option selected disabled hidden style='display: none' value=''></option>
+                    <option value="mr">Mr</option>
+                    <option value="ms">Ms</option>
+                    <option value="rs">Mrs</option>
+                    <option value="mx">Mx</option>
+                    <option value="dr">Dr</option>
+                    <option value="pr">Prof</option>
+                </select>
               </div>
               <div class="form-group text-left">
                 <label for="suffix" >Suffix</label>
@@ -85,10 +85,11 @@
                 <label for="orcid">ORCID number</label>
                 <input type="text" id="orcid" name="orcid" placeholder="XXXX-XXXX-XXXX-XXXX" class="form-control">
               </div>
+            </div>
               <!--<br><label for="profile_picture">Profile Picture</label>
               <input type="file" id="profile_picture" name="profile_picture">-->
-            <div class="form-group text-left">
-              <div id="reviewer_form" hidden>
+            <div id="reviewer_form" hidden>
+              <div class="form-group text-left">
                 <label for="field">Field of research</label>
                 <select class="field form-control" name="field" id="field">
                     <option selected disabled hidden style='display: none' value=''></option>
@@ -109,10 +110,10 @@
                     <option value="S">Software</option>
                     <option value="O">Other</option>
                 </select>
+              </div>
             </div>
-            </div>
-            <div class="form-group text-left">
-              <div id="funder_form" hidden>
+            <div id="funder_form" hidden>
+              <div class="form-group text-left">
                 <label for="organisation">Name of Organisation</label>
                 <input type="text" id="organisation" autocomplete="organization" name="organisation" class="form-control">
               </div>
