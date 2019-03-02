@@ -29,7 +29,12 @@
         <td>{{ item.info }} </td>
         <td>{{ item.created }} </td>
         <td>{{ item.admin_id }} </td>
-
+        <td>
+          <form class="add_user" action="{% url 'home:add_to_center' %}" method="get">
+            <input type="text" name="user_email" placeholder="User Email">
+            <input type="hidden" name="center" value="{{ item.name }}">
+          </form>
+        </td>
     </tr>
       {% endfor %}
    </tbody>
