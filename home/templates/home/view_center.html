@@ -26,7 +26,7 @@
         <th> Description </th>
         <th> Created </th>
         <th> Admin </th>
-        <!-- th> Add User to Center </th -->
+        <th> Add User to Center </th>
     </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
         {% if item.admin_id == user.id %}
         <td>
           <form class="add_user" action="{% url 'home:add_to_center' %}" method="get">
-            <input type="text" name="user_email" placeholder="User Email">
+            <input type="text" class="form-control" name="user_email" placeholder="User Email">
             <input type="hidden" name="center" value="{{ item.name }}">
           </form>
         </td>
