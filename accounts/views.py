@@ -55,7 +55,7 @@ def view_profile(request):
     try:
         researcher = request.user.researcher
         return redirect("/account/view-researcher/%s" % request.user.id)
-    except RelatedObjectDoesNotExist:
+    except Researcher.DoesNotExist:
         storage = messages.get_messages(request)
         args = {'user': request.user, 'message': storage}
         return render(request, 'accounts/profile.html', args)
