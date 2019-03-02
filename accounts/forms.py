@@ -44,6 +44,7 @@ class ProposalForm(forms.ModelForm):
         proposal.user = user
         proposal.call = call
         proposal.reviewer = reviewer
+        proposal.status = "p"
         if commit:
             proposal.save()
         return proposal

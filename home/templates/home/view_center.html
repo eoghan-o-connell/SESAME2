@@ -11,7 +11,14 @@
 
 <div class="container">
   <h1>Centers</h1>
-
+  {% if result %}
+    {% if result == 'success' %}
+      <p>User Successfully Added to Center!</p>
+    {% else %}
+      <p>User Email Does Not Exist!</p>
+    {% endif %}
+  {% endif %}
+  {% if center_obj %}
   <table id="example" class="table table-borderless" style="width:100%">
     <thead style="background-color:teal; color:white;">
     <tr>
@@ -19,38 +26,28 @@
         <th> Description </th>
         <th> Created </th>
         <th> Admin </th>
+        <th> Add User to Center </th>
     </tr>
     </thead>
     <tbody>
-      {% if center_obj %}
       {% for item in center_obj %}
     <tr>
         <td>{{ item.name }} </td>
         <td>{{ item.info }} </td>
         <td>{{ item.created }} </td>
         <td>{{ item.admin_id }} </td>
-
+        {% if item.admin_id == user.id %}
+        <td>
+          <form class="add_user" action="{% url 'home:add_to_center' %}" method="get">
+            <input type="text" class="form-control" name="user_email" placeholder="User Email">
+            <input type="hidden" name="center" value="{{ item.name }}">
+          </form>
+        </td>
+        {% endif %}
     </tr>
-    {% endfor %}
+      {% endfor %}
    </tbody>
   </table>
-
-<!--
-    {% comment %}
-    div class="container" style="margin-left:0">
-        h1 style="color:teal; font-size:3vw">Centers</h1>
-        {% if center_obj %}
-        {% for item in center_obj %}
-            <p style="font-size:1.75vw">Name: {{ item.name }}</p>
-            <p style="font-size:1.75vw">Description: {{ item.info }}</p>
-            <p style="font-size:1.75vw">Created: {{ item.created }}</p>
-            <p style="font-size:1.75vw">Admin: {{ item.admin_id }}</p>
-          {% if item.admin_id == request.user.id %}
-                <button class="btn btn-danger" type='submit'>Add User</button>
-          {% endif %}
-          {% endfor %}
-      {% endcomment %}
-         -->
     {% else %}
     <i><p>Not part of a center, create a center below</p></i>
     {% endif %}
