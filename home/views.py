@@ -378,5 +378,6 @@ def update_proposal(request):
             proposalObj.status = proposal_status
             proposalObj.save()
             return render(request, 'home/my_calls.html', context)
+
         except ObjectDoesNotExist:
             return render(request, 'home/my_calls.html')
