@@ -90,7 +90,7 @@ def get_call_view(request):
 
         print(id,call_id,filename)
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id)
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,status="Pending")
         db.save()
 
     return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
@@ -108,8 +108,9 @@ def get_my_calls(request):
 
     try:
         researcher = user.researcher
-        my_call_table_data = [prop.call for prop in Proposal.objects.select_related('call').filter(user=user)]
-        context = {'my_call_table_data':my_call_table_data}
+        proposals = Proposal.objects.select_related('call').filter(user=user)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
     except Researcher.DoesNotExist:
         print("Not researcher")

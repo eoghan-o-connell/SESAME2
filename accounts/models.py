@@ -133,8 +133,24 @@ class Proposal(models.Model):
     call = models.ForeignKey(Call, related_name='%(class)s_call', on_delete=models.CASCADE)
     reviewer = models.OneToOneField(Reviewer, on_delete=models.SET_NULL, null=True)
     proposal_document = models.FileField(upload_to=get_proposal_filename)
-    status = models.CharField(max_length=1, choices=PROPOSAL_CHOICES)
+    _status = models.CharField(db_column="status", max_length=1, choices=PROPOSAL_CHOICES)
     date = models.DateField(auto_now_add=True)
+    @property
+    def status(self):
+        status = self._status
+        for choice in self.PROPOSAL_CHOICES:
+            if choice[0] == status:
+                return choice[1]
+        return ""
+    @status.setter
+    def status(self, value):
+        if len(value)>1:
+            for choice in self.PROPOSAL_CHOICES:
+                if value == choice[1]:
+                    value = choice[0]
+                    break
+        self._status = value
+
     class Meta:
         db_table='proposals'
 

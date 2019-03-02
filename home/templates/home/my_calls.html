@@ -10,7 +10,11 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-10">
-          <h1>My Calls</h1>
+            {% if proposals %}
+            <h1>My Proposals</h1>
+            {% else %}
+            <h1>My Calls</h1>
+            {% endif %}
         </div>
         <div class="col-sm-2">
             {% if user.funder %}
@@ -58,19 +62,33 @@
               <th> Grant range </th>
               <th> Deadline </th>
               <th> Target audience </th>
-
+              {% if proposals %}<th> Status </th>{% endif %}
           </tr>
           </thead>
           <tbody>
-          {% for item in my_call_table_data %}
-          <tr>
-              <td id="s_created">{{ item.created }}</td>
-              <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
-              <td id="s_amount">{{ item.funds }}</td>
-              <td id="s_deadline">{{ item.deadline }}</td>
-              <td id="s_target">{{ item.target }}</td>
-          </tr>
-          {% endfor %}
+          {% if proposals %}
+              {% for item in proposals %}
+                  <tr>
+                      <td id="s_created">{{ item.call.created }}</td>
+                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.call.id }}"> {{ item.call.title }} </a></td>
+                      <td id="s_amount">{{ item.call.funds }}</td>
+                      <td id="s_deadline">{{ item.call.deadline }}</td>
+                      <td id="s_target">{{ item.call.target }}</td>
+                      <td>{{ item.status }}</td>
+                  </tr>
+              {% endfor %}
+          {% else %}
+              {% for item in my_call_table_data %}
+                  <tr>
+                      <td id="s_created">{{ item.created }}</td>
+                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
+                      <td id="s_amount">{{ item.funds }}</td>
+                      <td id="s_deadline">{{ item.deadline }}</td>
+                      <td id="s_target">{{ item.target }}</td>
+                      <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
+                  </tr>
+              {% endfor %}
+          {% endif %}
          </tbody>
 
         </table>
