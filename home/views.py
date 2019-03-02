@@ -33,7 +33,7 @@ class HomeView(TemplateView):
         return render(request, self.template_name, context)
 
 def view_center(request):
-    center_obj = Center.objects.filter(admin_id=request.user.id).values()
+    center_obj = Center.objects.filter(members=request.user.id)
     context = {'center_obj':center_obj}
     return render(request, 'home/view_center.html', context)
 
