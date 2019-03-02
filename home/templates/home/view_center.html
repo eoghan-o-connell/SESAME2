@@ -11,7 +11,13 @@
 
 <div class="container">
   <h1>Centers</h1>
-
+  {% if result %}
+    {% if result == 'success' %}
+      <p>User Successfully Added to Center!</p>
+    {% else %}
+      <p>User Email Does Not Exist!</p>
+    {% endif %}
+  {% endif %}
   {% if center_obj %}
   <table id="example" class="table table-borderless" style="width:100%">
     <thead style="background-color:teal; color:white;">
