@@ -343,7 +343,6 @@ def nav_search(request):
             researcherQuerySet= researcherQuerySet.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word))
         context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
         return render(request, 'home/nav_search.html', context)
-<<<<<<< HEAD
 
 def add_to_center(request):
     if request.method == 'GET':
@@ -379,5 +378,3 @@ def update_proposal(request):
 
         except ObjectDoesNotExist:
             return render(request, 'home/my_calls.html')
-=======
->>>>>>> fa1331817efc7674b545f4b13c3223772d5973e6
