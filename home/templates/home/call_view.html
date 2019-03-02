@@ -21,14 +21,14 @@
       {% for item in call_obj %}
       <h1 style="font-size=3vw;"> {{ item.title }}</h1><br>
 
-      <div class="col text-left">
+      <div class="col text-left" style="font-size:1.5vw">
       <!--  <p style="font-size:1.5vw">Title: {{ item.title }}</p> -->
-        <p style="font-size:1.5vw">Funds: {{ item.funds }}</p>
-        <p style="font-size:1.5vw">Deadline: {{ item.deadline }}</p>
-        <p style="font-size:1.5vw">Target: {{ item.target }}</p>
-        <p style="font-size:1.5vw">Created: {{ item.created }}</p>
-        <p style="font-size:1.5vw">Funder ID: {{ item.funder_id }}</p>
-        <p style="font-size:1.5vw">Description: {{ item.description }}</p>
+        <p>Funds: {{ item.funds }}</p>
+        <p>Deadline: {{ item.deadline }}</p>
+        <p>Target: {{ item.target }}</p>
+        <p>Created: {{ item.created }}</p>
+        <p>Funder ID: {{ item.funder_id }}</p>
+        <p style="margin-bottom:0; padding-bottom:0">Description: {{ item.description }}</p>
       </div>
   {% endfor %}
 
@@ -37,7 +37,7 @@
           <!-- <form method="post" enctype="multipart/form-data"> -->
             {% csrf_token %}
               <!-- {{ form.as_p }} -->
-                <input id="call_id" type="text" style="visibility:hidden" value={{ call_id }}>
+                <input id="call_id" type="hidden" value={{ call_id }}>
             <section id="dz">
                 <div id="dropbox" class="dropzone"</div><br>
             </section><br>
