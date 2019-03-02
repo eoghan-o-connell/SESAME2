@@ -99,6 +99,14 @@ def get_call_view(request):
 
     return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
 
+def delete_proposal(request, proposal_id):
+    Proposal.objects.get(pk=int(proposal_id)).delete()
+    return redirect(reverse("home:my_calls"))
+
+def delete_call(request, call_id):
+    Call.objects.get(pk=int(call_id)).delete()
+    return redirect(reverse("home:my_calls"))
+
 def get_my_calls(request):
     user = request.user
 
