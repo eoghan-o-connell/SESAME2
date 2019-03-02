@@ -234,7 +234,6 @@ def pub (request):
                    with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
                        for line in file:
                            saveFile.write(line)
-                           print("File has been saved")
 
            connection.commit()
 
