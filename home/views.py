@@ -360,6 +360,8 @@ def add_to_center(request):
 def update_proposal(request):
     if request.method == 'GET':
         proposal_status = request.GET.get('status', '')
+        if proposal_status == 'o':
+            proposal_status = 'p'
         proposal_id = request.GET.get('id', '')
         proposalObj = Proposal.objects.get(id=proposal_id)
         proposals = Proposal.objects.select_related('call').filter(reviewer_id=request.user.id)

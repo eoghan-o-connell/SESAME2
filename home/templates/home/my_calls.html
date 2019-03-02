@@ -106,6 +106,7 @@
                       <form class="update_status" action="{% url 'home:update_proposal' %}" method="get">
                           <input type="hidden" name="id" value="{{ item.id }}">
                           <select name="status">
+                            <option value="o" selected></option>
                             <option value="p">Pending</option>
                             <option value="r">Reviewed</option>
                             <option value="a">Accepted</option>
