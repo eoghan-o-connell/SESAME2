@@ -117,10 +117,11 @@ def get_my_calls(request):
 
     try:
         reviewer = user.reviewer
-        my_call_table_data = Proposal.objects.filter(reviewer_id=request.user.id).values()
-        context = {'my_call_table_data':my_call_table_data}
+        proposals = Proposal.objects.select_related('call').filter(reviewer_id=user.id)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
-    except Reviewer.DoesNotExist:
+    except Researcher.DoesNotExist:
         print("Not reviewer")
 
 
@@ -355,3 +356,18 @@ def add_to_center(request):
         except ObjectDoesNotExist:
             context['result']= 'failure'
             return render(request, 'home/view_center.html', context)
+
+def update_proposal(request):
+    if request.method == 'GET':
+        proposal_status = request.GET.get('status', '')
+        proposal_id = request.GET.get('id', '')
+        proposalObj = Proposal.objects.get(id=proposal_id)
+        proposals = Proposal.objects.select_related('call').filter(reviewer_id=request.user.id)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
+        try:
+            proposalObj.status = proposal_status
+            proposalObj.save()
+            return render(request, 'home/my_calls.html', context)
+        except ObjectDoesNotExist:
+            return render(request, 'home/my_calls.html')

@@ -52,7 +52,7 @@
 
         </table>
     </section>
-    {% else %}
+    {% elif user.researcher %}
     <section id="summary">
       <table id="example" class="table table-borderless" style="width:100%">
         <thead style="background-color:teal; color:white;">
@@ -62,33 +62,61 @@
               <th> Grant range </th>
               <th> Deadline </th>
               <th> Target audience </th>
-              {% if proposals %}<th> Status </th>{% endif %}
+              <th> Status </th>
           </tr>
           </thead>
           <tbody>
-          {% if proposals %}
-              {% for item in proposals %}
-                  <tr>
-                      <td id="s_created">{{ item.call.created }}</td>
-                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.call.id }}"> {{ item.call.title }} </a></td>
-                      <td id="s_amount">{{ item.call.funds }}</td>
-                      <td id="s_deadline">{{ item.call.deadline }}</td>
-                      <td id="s_target">{{ item.call.target }}</td>
-                      <td>{{ item.status }}</td>
-                  </tr>
-              {% endfor %}
-          {% else %}
-              {% for item in my_call_table_data %}
-                  <tr>
-                      <td id="s_created">{{ item.created }}</td>
-                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
-                      <td id="s_amount">{{ item.funds }}</td>
-                      <td id="s_deadline">{{ item.deadline }}</td>
-                      <td id="s_target">{{ item.target }}</td>
-                      <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
-                  </tr>
-              {% endfor %}
-          {% endif %}
+          {% for item in proposals %}
+              <tr>
+                  <td id="s_created">{{ item.call.created }}</td>
+                  <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.call.id }}"> {{ item.call.title }} </a></td>
+                  <td id="s_amount">{{ item.call.funds }}</td>
+                  <td id="s_deadline">{{ item.call.deadline }}</td>
+                  <td id="s_target">{{ item.call.target }}</td>
+                  <td>{{ item.status }}</td>
+              </tr>
+          {% endfor %}
+
+         </tbody>
+
+        </table>
+    </section>
+    {% else %}
+    <section id="summary">
+      <table id="example" class="table table-borderless" style="width:100%">
+        <thead style="background-color:teal; color:white;">
+          <tr>
+              <th> Posted </th>
+              <th> Title of call </th>
+              <th> Deadline </th>
+              <th> Target audience </th>
+              <th> Status </th>
+              <th> Update Status </th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for item in proposals %}
+              <tr>
+                  <td id="s_created">{{ item.call.created }}</td>
+                  <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.call.id }}"> {{ item.call.title }} </a></td>
+                  <td id="s_deadline">{{ item.call.deadline }}</td>
+                  <td id="s_target">{{ item.call.target }}</td>
+                  <td>{{ item.status }}</td>
+                  <td>
+                      <form class="update_status" action="{% url 'home:update_proposal' %}" method="get">
+                          <input type="hidden" name="id" value="{{ item.id }}">
+                          <select name="status">
+                            <option value="p">Pending</option>
+                            <option value="r">Reviewed</option>
+                            <option value="a">Accepted</option>
+                            <option value="d">Denied</option>
+                          </select>
+                          <button class="btn btn-success" type='submit'>Update</button>
+                      </form>
+                  </td>
+              </tr>
+          {% endfor %}
+
          </tbody>
 
         </table>
