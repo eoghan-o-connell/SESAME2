@@ -13,8 +13,8 @@
 <br>
 <div class="row">
   <div class="col-sm-4 offset-sm-4 text-center" style="background-color:#F5F5F5; border:2px solid teal;">
+    <h1>Register</h1>
     <div class="container">
-        <h2>Register</h2>
         <div id="errors">
             {% for error in errors %}
             <p><strong>{{ error }}</strong></p>
@@ -22,8 +22,8 @@
         </div>
         <form id="reg" method="post">
             {% csrf_token %}
-            <div class="form-group">
-              <label for="user_type" align="left">Register as: </label>
+            <div class="form-group text-left">
+              <label for="user_type" class="col-form-label ">Register as </label>
               <select id="user_type" class="user_type form-control" name="user_type" required>
                 <option selected disabled hidden style='display: none' value=''></option>
                 <option value="researcher">Researcher</option>
@@ -31,12 +31,12 @@
                 <option value="reviewer">Reviewer</option>
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group text-left">
               <label class="user_form" hidden for="email">Email</label>
               <input class="user_form form-control" hidden id="email" type="email" name="email" autocomplete="email" placeholder="example@example.com" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-left">
               <label for="prefix">Prefix</label>
               <select class="prefix res_req form-control" id="prefix" name="prefix">
                   <option selected disabled hidden style='display: none' value=''></option>
@@ -49,48 +49,48 @@
               </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-left">
               <label class="user_form" hidden for="first_name">First Name</label>
               <input class="user_form form-control" hidden type="text" id="first_name" autocomplete="first name" name="first_name" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-left">
               <label class="user_form" hidden for="last_name">Last Name</label>
               <input class="user_form form-control" hidden type="text" id="last_name" autocomplete="family-name" name="last_name" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-left">
               <label class="user_form" hidden for="password1">Password</label>
               <input class="user_form form-control" hidden id="password1" type="password" name="password" required/>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-left">
               <label class="user_form" hidden for="password2">Repeat Password</label>
               <input class="user_form form-control" hidden id="password2" type="password" required/><p><strong id="no_match" hidden>Passwords do not match</strong></p>
             </div>
-            <div class="form-group">
+            <div class="form-group text-left">
               <div id="researcher_form" hidden>
                 <label for="job_title">Job Title</label>
                 <input id="job_title" type="text" name="job_title" class="res_req form-control">
               </div>
-              <div class="form-group">
+              <div class="form-group text-left">
                 <label for="suffix" >Suffix</label>
                 <input type="text" id="suffix" autocomplete="honorific-suffix" name="suffix" maxlength="10" class="form-control">
               </div>
-              <div class="form-group">
+              <div class="form-group text-left">
                 <label for="phone">Phone number</label>
                 <input type="tel" id="phone" autocomplete="tel" name="phone" class="form-control">
               </div>
-              <div class="form-group">
+              <div class="form-group text-left">
                 <label for="orcid">ORCID number</label>
                 <input type="text" id="orcid" name="orcid" placeholder="XXXX-XXXX-XXXX-XXXX" class="form-control">
               </div>
               <!--<br><label for="profile_picture">Profile Picture</label>
               <input type="file" id="profile_picture" name="profile_picture">-->
-            <div class="form-group">
+            <div class="form-group text-left">
               <div id="reviewer_form" hidden>
                 <label for="field">Field of research</label>
-                <select class="field" name="field" id="field" class="form-control">
+                <select class="field form-control" name="field" id="field">
                     <option selected disabled hidden style='display: none' value=''></option>
                     <option value="A">Priority Area A: Future Networks & Communications</option>
                     <option value="B">Priority Area B: Data Analytics, Management, Security & Privacy</option>
@@ -111,16 +111,18 @@
                 </select>
             </div>
             </div>
-            <div class="form-group">
+            <div class="form-group text-left">
               <div id="funder_form" hidden>
                 <label for="organisation">Name of Organisation</label>
                 <input type="text" id="organisation" autocomplete="organization" name="organisation" class="form-control">
               </div>
+            </div><br>
+            <div class="col text-center">
+              <button class="btn btn-success" type="submit">Create Account</button>
+              <br><br>
+              <p><u><a href="{% url 'accounts:login' %}">Already have an account? Login here</a></u></p>
             </div>
-            <button class="btn btn-success" type="submit">Create Account</button>
-            <br><br>
-            <p><u><a href="{% url 'accounts:login' %}">Already have an account? Login here</a></u></p>
-        </form>
+            </form>
       </div>
     </div>
 </div>

@@ -32,7 +32,7 @@ class Researcher(models.Model):
         ("mr", "Mr"),
         ("rs", "Mrs"),
         ("ms", "Ms"),
-        ("mx", "Mx"),
+        ("mx", "M"),
         ("dr", "Dr"),
         ("pr", "Prof"),
     )
@@ -179,7 +179,7 @@ class ResearcherProfile():
 
     def new_education(self):
         education = Education(self, None)
-        self.educations.append()
+        self.educations.append(education)
         return education
 
     def new_employment(self):
@@ -298,6 +298,21 @@ class ResearcherObject(object):
     def save(self):
         self._researcher.save()
 
+    def __str__(self):
+        rows = ""
+        for input in self.get_inputs(self):
+            rows += "<tr><td>%s:</td><td>%s</td></tr>" % (input["label"], input["value"])
+        return "<table>%s</table>" % rows
+
+    def _get_prop(self, name):
+        def name():
+            def fget(self):
+                return self._get_value(name)
+            def fset(self, value):
+                self._set_value(name, value)
+            return locals()
+        return property(**name())
+
     @property
     def index(self):
         return self._index
@@ -325,10 +340,35 @@ class Education(ResearcherObject):
     def __init__(self, researcher, index):
         super(Education, self).__init__("education", researcher, index)
 
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        degree = '' if new else obj.degree
+        field = '' if new else obj.field
+        institution = '' if new else obj.institution
+        location = '' if new else obj.location
+        year = '' if new else obj.year
+        return [
+            {'label':'Degree','name':'degree','value': degree},
+            {'label':'Field','name':'field','value': field},
+            {'label':'Institution','name':'institution','value': institution},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Year','name':'year','value': year}
+        ]
+
+    def update(self, data):
+        self.degree = data.get('degree', '')
+        self.field = data.get('field', '')
+        self.institution = data.get('institution', '')
+        self.location = data.get('location', '')
+        self.year = data.get('year', '')
+        return super(Education, self).update(data)
+
+
     @property
     def degree(self):
         return self._get_value("degree")
-
     @degree.setter
     def degree(self, value):
         self._set_value("degree", value)
@@ -336,7 +376,6 @@ class Education(ResearcherObject):
     @property
     def field(self):
         return self._get_value("field")
-
     @field.setter
     def field(self, value):
         self._set_value("field", value)
@@ -344,7 +383,6 @@ class Education(ResearcherObject):
     @property
     def institution(self):
         return self._get_value("institution")
-
     @institution.setter
     def institution(self, value):
         self._set_value("institution", value)
@@ -352,7 +390,6 @@ class Education(ResearcherObject):
     @property
     def location(self):
         return self._get_value("location")
-
     @location.setter
     def location(self, value):
         self._set_value("location", value)
@@ -360,7 +397,6 @@ class Education(ResearcherObject):
     @property
     def year(self):
         return self._get_value("year")
-
     @year.setter
     def year(self, value):
         self._set_value("year", value)
@@ -370,10 +406,27 @@ class Employment(ResearcherObject):
     def __init__(self, researcher, index):
         super(Employment, self).__init__("employment", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        company = '' if new else obj.company
+        location = '' if new else obj.location
+        years = '' if new else obj.years
+        return [
+            {'label':'Company','name':'company','value': company},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Years','name':'years','value': years}
+        ]
+
+    def update(self, data):
+        self.company = data.get('company', '')
+        self.location = data.get('location', '')
+        self.years = data.get('years', '')
+        return super(Employment, self).update(data)
+
     @property
     def company(self):
         return self._get_value("company")
-
     @company.setter
     def company(self, value):
         self._set_value("company", value)
@@ -381,7 +434,6 @@ class Employment(ResearcherObject):
     @property
     def location(self):
         return self._get_value("location")
-
     @location.setter
     def location(self, value):
         self._set_value("location", value)
@@ -389,7 +441,6 @@ class Employment(ResearcherObject):
     @property
     def years(self):
         return self._get_value("years")
-
     @years.setter
     def years(self, value):
         self._set_value("years", value)
@@ -398,41 +449,514 @@ class Society(ResearcherObject):
     def __init__(self, researcher, index):
         super(Society, self).__init__("society", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        start = '' if new else obj.start
+        end = '' if new else obj.end
+        name = '' if new else obj.name
+        type = '' if new else obj.type
+        return [
+            {'label':'Start','name':'start','value': start},
+            {'label':'End','name':'end','value': end},
+            {'label':'Name','name':'name','value': name},
+            {'label':'Type','name':'type','value': type}
+        ]
+
+    def update(self, data):
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.name = data.get('name', '')
+        self.type = data.get('type', '')
+        return super(Society, self).update(data)
+
     @property
     def start(self):
         return self._get_value("start")
-
     @start.setter
     def start(self, value):
         self._set_value("start", value)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def type(self):
+        return self._get_value("type")
+    @type.setter
+    def type(self, value):
+        self._set_value("type", value)
 
 class Award(ResearcherObject):
     def __init__(self, researcher, index):
         super(Award, self).__init__("award", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        awarding_body = '' if new else obj.awarding_body
+        details = '' if new else obj.details
+        team = '' if new else obj.team
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'awarding_body','name':'awarding_body','value': awarding_body},
+            {'label':'details','name':'details','value': details},
+            {'label':'team','name':'team','value': team}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.awarding_body = data.get('awarding_body', '')
+        self.details = data.get('details', '')
+        self.team = data.get('team', '')
+        return super(Award, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def awarding_body(self):
+        return self._get_value("awarding_body")
+    @awarding_body.setter
+    def awarding_body(self, value):
+        self._set_value("awarding_body", value)
+
+    @property
+    def details(self):
+        return self._get_value("details")
+    @details.setter
+    def details(self, value):
+        self._set_value("details", value)
+
+    @property
+    def team(self):
+        return self._get_value("team")
+    @team.setter
+    def team(self, value):
+        self._set_value("team", value)
+
 class Funding(ResearcherObject):
     def __init__(self, researcher, index):
         super(Funding, self).__init__("funding", researcher, index)
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        start = '' if new else obj.start
+        end = '' if new else obj.end
+        amount = '' if new else obj.amount
+        body = '' if new else obj.body
+        programme = '' if new else obj.programme
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'start','name':'start','value': start},
+            {'label':'end','name':'end','value': end},
+            {'label':'amount','name':'amount','value': amount},
+            {'label':'body','name':'body','value': body},
+            {'label':'programme','name':'programme','value': programme},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.amount = data.get('amount', '')
+        self.body = data.get('body', '')
+        self.programme = data.get('programme', '')
+        self.attribution = data.get('attribution', '')
+        return super(Funding, self).update(data)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def amount(self):
+        return self._get_value("amount")
+    @amount.setter
+    def amount(self, value):
+        self._set_value("amount", value)
+
+    @property
+    def body(self):
+        return self._get_value("body")
+    @body.setter
+    def body(self, value):
+        self._set_value("body", value)
+
+    @property
+    def programme(self):
+        return self._get_value("programme")
+    @programme.setter
+    def programme(self, value):
+        self._set_value("programme", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
 
 class TeamMember(ResearcherObject):
     def __init__(self, researcher, index):
         super(TeamMember, self).__init__("team_member", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        start = '' if new else obj.start
+        end = '' if new else obj.end
+        name = '' if new else obj.name
+        position = '' if new else obj.position
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'start','name':'start','value': start},
+            {'label':'end','name':'end','value': end},
+            {'label':'name','name':'name','value': name},
+            {'label':'position','name':'position','value': position},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.name = data.get('name', '')
+        self.position = data.get('position', '')
+        self.attribution = data.get('attribution', '')
+        return super(TeamMember, self).update(data)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def position(self):
+        return self._get_value("position")
+    @position.setter
+    def position(self, value):
+        self._set_value("position", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
+
 class Impact(ResearcherObject):
     def __init__(self, researcher, index):
         super(Impact, self).__init__("impact", researcher, index)
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        title = '' if new else obj.title
+        category = '' if new else obj.category
+        beneficiary = '' if new else obj.beneficiary
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'title','name':'title','value': title},
+            {'label':'category','name':'category','value': category},
+            {'label':'beneficiary','name':'beneficiary','value': beneficiary},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.title = data.get('title', '')
+        self.category = data.get('category', '')
+        self.beneficiary = data.get('beneficiary', '')
+        self.attribution = data.get('attribution', '')
+        self.status = data.get('status', '')
+        self.doi = data.get('doi', '')
+        return super(Impact, self).update(data)
+
+    @property
+    def title(self):
+        return self._get_value("title")
+    @title.setter
+    def title(self, value):
+        self._set_value("title", value)
+
+    @property
+    def category(self):
+        return self._get_value("category")
+    @category.setter
+    def category(self, value):
+        self._set_value("category", value)
+
+    @property
+    def beneficiary(self):
+        return self._get_value("beneficiary")
+    @beneficiary.setter
+    def beneficiary(self, value):
+        self._set_value("beneficiary", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
 
 class Innovation(ResearcherObject):
     def __init__(self, researcher, index):
         super(Innovation, self).__init__("innovation", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        type = '' if new else obj.type
+        title = '' if new else obj.title
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'type','name':'type','value': type},
+            {'label':'title','name':'title','value': title},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.type = data.get('type', '')
+        self.title = data.get('title', '')
+        self.attribution = data.get('attribution', '')
+        return super(Innovation, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def type(self):
+        return self._get_value("type")
+    @type.setter
+    def type(self, value):
+        self._set_value("type", value)
+
+    @property
+    def title(self):
+        return self._get_value("title")
+    @title.setter
+    def title(self, value):
+        self._set_value("title", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
+
 class Publication(ResearcherObject):
     def __init__(self, researcher, index):
         super(Publication, self).__init__("publication", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        type = '' if new else obj.type
+        title = '' if new else obj.title
+        name = '' if new else obj.name
+        status = '' if new else obj.status
+        doi = '' if new else obj.doi
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'type','name':'type','value': type},
+            {'label':'title','name':'title','value': title},
+            {'label':'name','name':'name','value': name},
+            {'label':'status','name':'status','value': status},
+            {'label':'doi','name':'doi','value': doi},
+            {'label':'attribution','name':'name','value': attribution}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.type = data.get('type', '')
+        self.title = data.get('title', '')
+        self.name = data.get('name', '')
+        self.status = data.get('status', '')
+        self.doi = data.get('doi', '')
+        self.attribution = data.get('attribution', '')
+        return super(Publication, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def type(self):
+        return self._get_value("type")
+    @type.setter
+    def type(self, value):
+        self._set_value("type", value)
+
+    @property
+    def title(self):
+        return self._get_value("title")
+    @title.setter
+    def title(self, value):
+        self._set_value("title", value)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def status(self):
+        return self._get_value("status")
+    @status.setter
+    def status(self, value):
+        self._set_value("status", value)
+
+    @property
+    def doi(self):
+        return self._get_value("doi")
+    @doi.setter
+    def doi(self, value):
+        self._set_value("doi", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
+
 class Presentation(ResearcherObject):
     def __init__(self, researcher, index):
         super(Presentation, self).__init__("presentation", researcher, index)
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        title = '' if new else obj.title
+        event = '' if new else obj.event
+        body = '' if new else obj.body
+        location = '' if new else obj.location
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'title','name':'title','value': title},
+            {'label':'event','name':'event','value': event},
+            {'label':'body','name':'body','value': body},
+            {'label':'location','name':'location','value': location},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.title = data.get('title', '')
+        self.event = data.get('event', '')
+        self.body = data.get('body', '')
+        self.location = data.get('location', '')
+        self.attribution = data.get('attribution', '')
+        return super(Presentation, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def title(self):
+        return self._get_value("title")
+    @title.setter
+    def title(self, value):
+        self._set_value("title", value)
+
+    @property
+    def event(self):
+        return self._get_value("event")
+    @event.setter
+    def event(self, value):
+        self._set_value("event", value)
+
+    @property
+    def body(self):
+        return self._get_value("body")
+    @body.setter
+    def body(self, value):
+        self._set_value("body", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
 
 class AcedemicCollab(ResearcherObject):
     def __init__(self, researcher, index):
@@ -477,7 +1001,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def start(self):
         return self._get_value("start")
-
     @start.setter
     def start(self, value):
         self._set_value("start", value)
@@ -485,7 +1008,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def end(self):
         return self._get_value("end")
-
     @end.setter
     def end(self, value):
         self._set_value("end", value)
@@ -493,7 +1015,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def institution(self):
         return self._get_value("institution")
-
     @institution.setter
     def institution(self, value):
         self._set_value("institution", value)
@@ -501,7 +1022,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def dept(self):
         return self._get_value("dept")
-
     @dept.setter
     def dept(self, value):
         self._set_value("dept", value)
@@ -509,7 +1029,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def location(self):
         return self._get_value("location")
-
     @location.setter
     def location(self, value):
         self._set_value("location", value)
@@ -517,7 +1036,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def name(self):
         return self._get_value("name")
-
     @name.setter
     def name(self, value):
         self._set_value("name", value)
@@ -525,7 +1043,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def goal(self):
         return self._get_value("goal")
-
     @goal.setter
     def goal(self, value):
         self._set_value("goal", value)
@@ -533,7 +1050,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def frequency(self):
         return self._get_value("frequency")
-
     @frequency.setter
     def frequency(self, value):
         self._set_value("frequency", value)
@@ -541,7 +1057,6 @@ class AcedemicCollab(ResearcherObject):
     @property
     def attribution(self):
         return self._get_value("attribution")
-
     @attribution.setter
     def attribution(self, value):
         self._set_value("attribution", value)
@@ -550,18 +1065,341 @@ class NonAcedemicCollab(ResearcherObject):
     def __init__(self, researcher, index):
         super(NonAcedemicCollab, self).__init__("non_acedemic_collab", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        degree = '' if new else obj.degree
+        field = '' if new else obj.field
+        institution = '' if new else obj.institution
+        location = '' if new else obj.location
+        year = '' if new else obj.year
+        return [
+            {'label':'Degree','name':'degree','value': degree},
+            {'label':'Field','name':'field','value': field},
+            {'label':'Institution','name':'institution','value': institution},
+            {'label':'Location','name':'location','value': location},
+            {'label':'Year','name':'year','value': year}
+        ]
+
+    def update(self, data):
+        self.degree = data.get('degree', '')
+        self.field = data.get('field', '')
+        self.institution = data.get('institution', '')
+        self.location = data.get('location', '')
+        self.year = data.get('year', '')
+        return super(NonAcedemicCollab, self).update(data)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def institution(self):
+        return self._get_value("institution")
+    @institution.setter
+    def institution(self, value):
+        self._set_value("institution", value)
+
+    @property
+    def dept(self):
+        return self._get_value("dept")
+    @dept.setter
+    def dept(self, value):
+        self._set_value("dept", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def goal(self):
+        return self._get_value("goal")
+    @goal.setter
+    def goal(self, value):
+        self._set_value("goal", value)
+
+    @property
+    def frequency(self):
+        return self._get_value("frequency")
+    @frequency.setter
+    def frequency(self, value):
+        self._set_value("frequency", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
+
 class Conference(ResearcherObject):
     def __init__(self, researcher, index):
         super(Conference, self).__init__("conference", researcher, index)
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        start = '' if new else obj.start
+        end = '' if new else obj.end
+        title = '' if new else obj.title
+        type = '' if new else obj.type
+        role = '' if new else obj.role
+        location = '' if new else obj.location
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'start','name':'start','value': start},
+            {'label':'end','name':'end','value': end},
+            {'label':'title','name':'title','value': title},
+            {'label':'type','name':'type','value': type},
+            {'label':'role','name':'role','value': role},
+            {'label':'location','name':'location','value': location},
+            {'label':'attribution','name':'attribution','value': attribution}
+        ]
+
+    def update(self, data):
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.title = data.get('title', '')
+        self.type = data.get('type', '')
+        self.role = data.get('role', '')
+        self.location = data.get('location', '')
+        self.attribution = data.get('attribution', '')
+        return super(Conference, self).update(data)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def title(self):
+        return self._get_value("title")
+    @title.setter
+    def title(self, value):
+        self._set_value("title", value)
+
+    @property
+    def type(self):
+        return self._get_value("type")
+    @type.setter
+    def type(self, value):
+        self._set_value("type", value)
+
+    @property
+    def role(self):
+        return self._get_value("role")
+    @role.setter
+    def role(self, value):
+        self._set_value("role", value)
+
+    @property
+    def location(self):
+        return self._get_value("location")
+    @location.setter
+    def location(self, value):
+        self._set_value("location", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)
 
 class CommsOverview(ResearcherObject):
     def __init__(self, researcher, index):
         super(CommsOverview, self).__init__("comms_overview", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        lectures = '' if new else obj.lectures
+        visits = '' if new else obj.visits
+        media = '' if new else obj.media
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'lectures','name':'lectures','value': lectures},
+            {'label':'visits','name':'visits','value': visits},
+            {'label':'media','name':'media','value': media}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.lectures = data.get('lectures', '')
+        self.visits = data.get('visits', '')
+        self.media = data.get('media', '')
+        return super(CommsOverview, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def lectures(self):
+        return self._get_value("lectures")
+    @lectures.setter
+    def lectures(self, value):
+        self._set_value("lectures", value)
+
+    @property
+    def visits(self):
+        return self._get_value("visits")
+    @visits.setter
+    def visits(self, value):
+        self._set_value("visits", value)
+
+    @property
+    def media(self):
+        return self._get_value("media")
+    @media.setter
+    def media(self, value):
+        self._set_value("media", value)
+
 class FundingRatio(ResearcherObject):
     def __init__(self, researcher, index):
         super(FundingRatio, self).__init__("funding_ratio", researcher, index)
 
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        year = '' if new else obj.year
+        percent = '' if new else obj.percent
+        return [
+            {'label':'year','name':'year','value': year},
+            {'label':'percent','name':'percent','value': percent}
+        ]
+
+    def update(self, data):
+        self.year = data.get('year', '')
+        self.percent = data.get('percent', '')
+        return super(FundingRatio, self).update(data)
+
+    @property
+    def year(self):
+        return self._get_value("year")
+    @year.setter
+    def year(self, value):
+        self._set_value("year", value)
+
+    @property
+    def percent(self):
+        return self._get_value("percent")
+    @percent.setter
+    def percent(self, value):
+        self._set_value("percent", value)
+
 class ResProject(ResearcherObject):
     def __init__(self, researcher, index):
         super(ResProject, self).__init__("project", researcher, index)
+
+    @staticmethod
+    def get_inputs(obj=None):
+        new = obj==None
+        name = '' if new else obj.name
+        start = '' if new else obj.start
+        end = '' if new else obj.end
+        type = '' if new else obj.type
+        topic = '' if new else obj.topic
+        target = '' if new else obj.target
+        attribution = '' if new else obj.attribution
+        return [
+            {'label':'name','name':'name','value': name},
+            {'label':'start','name':'start','value': start},
+            {'label':'end','name':'end','value': end},
+            {'label':'type','name':'type','value': type},
+            {'label':'topic','name':'topic','value': topic},
+            {'label':'target','name':'target','value': target},
+            {'label':'attribution','name':'type','value': attribution}
+        ]
+
+    def update(self, data):
+        self.name = data.get('name', '')
+        self.start = data.get('start', '')
+        self.end = data.get('end', '')
+        self.type = data.get('type', '')
+        self.topic = data.get('topic', '')
+        self.target = data.get('target', '')
+        self.attribution = data.get('attribution', '')
+        return super(ResProject, self).update(data)
+
+    @property
+    def name(self):
+        return self._get_value("name")
+    @name.setter
+    def name(self, value):
+        self._set_value("name", value)
+
+    @property
+    def start(self):
+        return self._get_value("start")
+    @start.setter
+    def start(self, value):
+        self._set_value("start", value)
+
+    @property
+    def end(self):
+        return self._get_value("end")
+    @end.setter
+    def end(self, value):
+        self._set_value("end", value)
+
+    @property
+    def type(self):
+        return self._get_value("type")
+    @type.setter
+    def type(self, value):
+        self._set_value("type", value)
+
+    @property
+    def topic(self):
+        return self._get_value("topic")
+    @topic.setter
+    def topic(self, value):
+        self._set_value("topic", value)
+
+    @property
+    def target(self):
+        return self._get_value("target")
+    @target.setter
+    def target(self, value):
+        self._set_value("target", value)
+
+    @property
+    def attribution(self):
+        return self._get_value("attribution")
+    @attribution.setter
+    def attribution(self, value):
+        self._set_value("attribution", value)

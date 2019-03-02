@@ -5,7 +5,15 @@ from accounts.models import *
 
 
 class EditProfileForm(UserChangeForm):
-    pass
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'password'
+        )
 
 class CenterForm(forms.ModelForm):
     class Meta:

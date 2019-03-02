@@ -8,18 +8,18 @@
     <h1>Login</h1>
     <form method="post">
         {% csrf_token %}
-        <div class="form-group">
-          <label for="id_username">Username:</label>
+        <div class="form-group text-left">
+          <label for="id_username">Username</label>
           <input type="text" class="form-control" name="username" maxlength="254" required /autofocus id="id_username"/>
         </div>
-        <div class="form-group">
-          <label for="id_password" >Password:</label>
+        <div class="form-group text-left">
+          <label for="id_password" >Password</label>
           <input type="password" class="form-control" name="password" required id="id_password"/>
-        </div>
+        </div><br>
         <button class="btn btn-success" type="submit">Login</button>
         <br><br>
         <p><u><a href="{% url 'accounts:reset_password' %}">Forgotten password?</a></u></p>
-          <br>
+
         <p><u><a href="{% url 'accounts:register' %}">Not yet registered? Create an account</a></u></p>
     </form>
     </div>

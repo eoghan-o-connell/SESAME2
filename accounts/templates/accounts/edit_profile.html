@@ -4,7 +4,9 @@
 <title>Edit Profile</title>
 
 {% block body %}
-<div class="container">
+<br>
+<h1 style="color:teal"> Edit profile</h1>
+<div class="container" style="margin-left:2px">
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}

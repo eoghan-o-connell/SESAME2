@@ -19,10 +19,10 @@
 .panel-title > a:focus  {
     text-decoration:none;
 }
-.panel-heading {
-
+section {
+    padding: 20px;
+    padding-left: 80px;
 }
-
 </style>
 <title>{{ researcher }}</title>
 {% endblock %}
@@ -33,472 +33,474 @@
         <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
     {% endif %}
     <h2>{{ researcher }}</h2>
+    {% if editing %}
+    <h3>Account</h3>
+    First name: {{ researcher.user.first_name }}<br>
+    Last name: {{ researcher.user.last_name }}<br>
+    Email: {{ researcher.user.email }}
+    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
+    <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
+
+    {% endif %}
     <p>
-        <a href="https://orcid.com/{{researcher.orcid}}">ORCID</a>
+        <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
     </p>
 </section>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-              Education Information ({{ profile.educations|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                    {% if editing %}<a>Add</a>{% endif %}
-                    {% if profile.educations %}
-                        <ul>
-                            {% for education in profile.educations %}
-                                <li>
-                                    {% if editing %}<a>Edit</a>{% endif %}
-                                    {{education.degree}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
+<div class="row">
+<div class="col-md-3">
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                     Education Information ({{ profile.educations|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                {% if editing %}<a href="education/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.educations %}
+                        {% if editing or not obj.is_private %}
+                        <li id="education_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="education/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
                         <p>No education records<p>
-                    {% endif %}
-                </div>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTwo">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-
-              Employment ({{ profile.employments|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body">
-                    {% if profile.employments %}
-                        <ul>
-                            {% for employment in profile.employments %}
-                                <li>
-                                    {{employment.company}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No employment records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThree">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-
-              Professinal societies ({{ profile.societies|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body">
-                    {% if profile.societies %}
-                        <ul>
-                            {% for society in profile.societies %}
-                                <li>
-                                    {{society.name}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No society records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFour">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-
-              Distinctions & awards ({{ profile.awards|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
-                <div class="panel-body">
-                    {% if profile.awards %}
-                        <ul>
-                            {% for award in profile.awards %}
-                                <li>
-                                    {{award.year}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No award records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFive">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-
-              Funding diversities ({{ profile.fundings|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
-                <div class="panel-body">
-                    {% if profile.fundings %}
-                        <ul>
-                            {% for funding in profile.fundings %}
-                                <li>
-                                    {{funding.start}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No funding records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSix">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-
-              Team members ({{ profile.team_members|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix">
-                <div class="panel-body">
-                    {% if profile.team_members %}
-                        <ul>
-                            {% for team_member in profile.team_members %}
-                                <li>
-                                    {{team_member.name}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No team member records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSeven">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-
-              Impacts ({{ profile.impacts|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseSeven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSeven">
-                <div class="panel-body">
-                    {% if profile.impacts %}
-                        <ul>
-                            {% for impact in profile.impacts %}
-                                <li>
-                                    {{impact.title}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No impact records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingEight">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-
-              Innovation & Commercialisation ({{ profile.innovations|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseEight" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEight">
-                <div class="panel-body">
-                    {% if profile.innovations %}
-                        <ul>
-                            {% for innovation in profile.innovations %}
-                                <li>
-                                    {{innovation.title}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No innovation records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingNine">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-
-              Publications ({{ profile.publications|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseNine" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNine">
-                <div class="panel-body">
-                    {% if profile.publications %}
-                        <ul>
-                            {% for publication in profile.publications %}
-                                <li>
-                                    {{publication.title}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No publication records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTen">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
-
-              Presentations ({{ profile.presentations|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseTen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTen">
-                <div class="panel-body">
-                    {% if profile.presentations %}
-                        <ul>
-                            {% for presentation in profile.presentations %}
-                                <li>
-                                    {{presentation.title}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No presentation records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingEleven">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="true" aria-controls="collapseEleven">
-
-              Acedemic collaborations ({{ profile.acedemic_collabs|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseEleven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEleven">
-                <div class="panel-body">
-                    {% if editing %}<a href="acedemic-collab/new">Add</a>{% endif %}
-                    {% if profile.acedemic_collabs %}
-                        <ul>
-                            {% for acedemic_collab in profile.acedemic_collabs %}
-                                <li id="acedemic_collab_{{ acedemic_collab.index }}">
-                                    {% if editing %}
-                                    <a href="acedemic-collab/{{ acedemic_collab.index }}">Edit</a>
-                                    {% endif %}
-                                    {{acedemic_collab.name}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No acedemic collaboration records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTwelve">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve" aria-expanded="true" aria-controls="collapseTwelve">
-
-              Non-acdedemic collaborations ({{ profile.non_acedemic_collabs|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseTwelve" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwelve">
-                <div class="panel-body">
-                    {% if profile.non_acedemic_collabs %}
-                        <ul>
-                            {% for non_acedemic_collab in profile.non_acedemic_collabs %}
-                                <li>
-                                    {{non_acedemic_collab.name}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No non-acedemic collaboration records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThirteen">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="true" aria-controls="collapseThirteen">
-
-              Conferences / workshops / seminars organized ({{ profile.conferences|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseThirteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThirteen">
-                <div class="panel-body">
-                    {% if profile.conferences %}
-                        <ul>
-                            {% for conference in profile.conferences %}
-                                <li>
-                                    {{conference.title}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No conference records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFourteen">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFourteen" aria-expanded="true" aria-controls="collapseFourteen">
-
-              Communications overview ({{ profile.comms_overviews|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseFourteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFourteen">
-                <div class="panel-body">
-                    {% if profile.comms_overviews %}
-                        <ul>
-                            {% for comms_overview in profile.comms_overviews %}
-                                <li>
-                                    {{comms_overview.year}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No communications overview records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFifteen">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFifteen" aria-expanded="true" aria-controls="collapseFifteen">
-
-              SFI Funding ratio ({{ profile.funding_ratios|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseFifteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFifteen">
-                <div class="panel-body">
-                    {% if profile.funding_ratios %}
-                        <ul>
-                            {% for funding_ratio in profile.funding_ratios %}
-                                <li>
-                                    {{funding_ratio.year}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No funding ratio records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSixteen">
-                 <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSixteen" aria-expanded="true" aria-controls="collapseSixteen">
-
-              Funding & Public Engagement ({{ profile.projects|length }})
-
-            </a>
-          </h4>
-
-            </div>
-            <div id="collapseSixteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSixteen">
-                <div class="panel-body">
-                    {% if profile.projects %}
-                        <ul>
-                            {% for project in profile.projects %}
-                                <li>
-                                    {{project.name}}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No funding & public engagement records<p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-      </div>
     </div>
-  </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                     Employment ({{ profile.employments|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                {% if editing %}<a href="employment/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.employments %}
+                        {% if editing or not obj.is_private %}
+                        <li id="employment_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="employment/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No employment records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                     Professional Societies (Membership) ({{ profile.societies|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                {% if editing %}<a href="society/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.societies %}
+                        {% if editing or not obj.is_private %}
+                        <li id="society_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="society/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No society records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFour">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                     Distinctions & awards ({{ profile.awards|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+            <div class="panel-body">
+                {% if editing %}<a href="award/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.awards %}
+                        {% if editing or not obj.is_private %}
+                        <li id="award_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="award/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No award records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFive">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                     Funding diversification ({{ profile.fundings|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+            <div class="panel-body">
+                {% if editing %}<a href="funding/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.fundings %}
+                        {% if editing or not obj.is_private %}
+                        <li id="funding_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="funding/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No funding records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSix">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                     Team members ({{ profile.team_members|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix">
+            <div class="panel-body">
+                {% if editing %}<a href="team_member/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.team_members %}
+                        {% if editing or not obj.is_private %}
+                        <li id="team_member_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="team_member/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No team member records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSeven">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                     Impacts ({{ profile.impacts|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseSeven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSeven">
+            <div class="panel-body">
+                {% if editing %}<a href="impact/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.impacts %}
+                        {% if editing or not obj.is_private %}
+                        <li id="impact_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="impact/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No impact records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingEight">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                     Innovation & Commercialisation ({{ profile.innovations|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseEight" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEight">
+            <div class="panel-body">
+                {% if editing %}<a href="innovation/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.innovations %}
+                        {% if editing or not obj.is_private %}
+                        <li id="innovation_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="innovation/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No innovation records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingNine">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                     Publications ({{ profile.publications|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseNine" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNine">
+            <div class="panel-body">
+                {% if editing %}<a href="publication/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.publications %}
+                        {% if editing or not obj.is_private %}
+                        <li id="publication_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="publication/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No publication records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTen">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
+                     Presentations ({{ profile.presentations|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseTen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTen">
+            <div class="panel-body">
+                {% if editing %}<a href="presentation/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.presentations %}
+                        {% if editing or not obj.is_private %}
+                        <li id="presentation_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="presentation/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No presentation records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingEleven">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="true" aria-controls="collapseEleven">
+                     Acedemic collaborations ({{ profile.acedemic_collabs|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseEleven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEleven">
+            <div class="panel-body">
+                {% if editing %}<a href="acedemic-collab/new">Add</a>{% endif %}
+                <ul>
+                    {% for acedemic_collab in profile.acedemic_collabs %}
+                        {% if editing or not acedemic_collab.is_private %}
+                        <li id="acedemic_collab_{{ acedemic_collab.index }}">
+                            {% if editing %}
+                            <a href="acedemic-collab/{{ acedemic_collab.index }}">Edit</a>
+                            {% endif %}
+                            {{acedemic_collab|safe}}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                    <p>No acedemic collaboration records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwelve">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve" aria-expanded="true" aria-controls="collapseTwelve">
+                     Non-acdedemic collaborations ({{ profile.non_acedemic_collabs|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseTwelve" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwelve">
+            <div class="panel-body">
+                {% if editing %}<a href="non_acedemic_collab/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.non_acedemic_collabs %}
+                        {% if editing or not obj.is_private %}
+                        <li id="non_acedemic_collab_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="non_acedemic_collab/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No non acedemic collab records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThirteen">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="true" aria-controls="collapseThirteen">
+                     Conferences / workshops / seminars organized ({{ profile.conferences|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseThirteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThirteen">
+            <div class="panel-body">
+                {% if editing %}<a href="conference/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.conferences %}
+                        {% if editing or not obj.is_private %}
+                        <li id="conference_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="conference/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No conference records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFourteen">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFourteen" aria-expanded="true" aria-controls="collapseFourteen">
+                     Communications overview ({{ profile.comms_overviews|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseFourteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFourteen">
+            <div class="panel-body">
+                {% if editing %}<a href="comms_overview/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.comms_overviews %}
+                        {% if editing or not obj.is_private %}
+                        <li id="comms_overview_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="comms_overview/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No communication overview records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFifteen">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFifteen" aria-expanded="true" aria-controls="collapseFifteen">
+                     SFI Funding ratio ({{ profile.funding_ratios|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseFifteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFifteen">
+            <div class="panel-body">
+                {% if editing %}<a href="funding_ratio/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.funding_ratios %}
+                        {% if editing or not obj.is_private %}
+                        <li id="funding_ratio_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="funding_ratio/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No SFI funding ratio records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSixteen">
+             <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseSixteen" aria-expanded="true" aria-controls="collapseSixteen">
+                     Funding & Public Engagement ({{ profile.projects|length }})
+                 </a>
+             </h4>
+        </div>
+        <div id="collapseSixteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSixteen">
+            <div class="panel-body">
+                {% if editing %}<a href="project/new">Add</a>{% endif %}
+                <ul>
+                    {% for obj in profile.projects %}
+                        {% if editing or not obj.is_private %}
+                        <li id="project_{{ obj.index }}">
+                            {% if editing %}
+                            <a href="project/{{ obj.index }}">Edit</a>
+                            {% endif %}
+                            {{ obj|safe }}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <p>No project records<p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}

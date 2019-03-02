@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         {% block head %}
-        <title>Base</title>
+        <title>Sesame</title>
         {% endblock head %}
         {% load static %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -27,7 +27,7 @@
     </head>
     <body>
 
-    <div class="container-fluid" style="padding:0px; height:90px; background-color:teal">
+    <div class="container-fluid" style="padding:0px; height:100px; background-color:teal">
 
         <nav class="navbar navbar-expand-lg navbar-dark">
 
@@ -84,7 +84,7 @@
               </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" method='GET' action="">
+        <form class="form-inline my-2 my-lg-0" method='GET' action="{% url 'home:nav_search' %}">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search" name='search'>
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
