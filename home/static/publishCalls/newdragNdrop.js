@@ -17,6 +17,7 @@ var title;
 var description;
 var grant;
 var call_id;
+var editing_mode_tag;
 var editing_mode;
 var captureFiles;
 var toggleButton;
@@ -50,7 +51,7 @@ function setup(){
     description = document.getElementById('description');
     grant = document.getElementById('grant');
     call_id = document.getElementById('_call_id');
-    editing_mode = document.getElementById('updating_call');
+    editing_mode_tag = document.getElementById('updating_call');
     summary = document.getElementById("summary");
     summaryHeading=document.getElementById('summaryHeading');
 
@@ -65,6 +66,9 @@ function setup(){
 
     toggleButton.addEventListener("click",checkSummary,false);
     uploadButton.addEventListener("click",uploadFiles,false);
+
+    editing_mode = editing_mode_tag.value;
+    console.log("Current editing mode  -- > " + editing_mode);
 
     // toggleButton.click();
 
@@ -133,7 +137,7 @@ function sndMul(file,xhr,formData){
     formData.append("title",title.value);
     formData.append("description",description.value);
     formData.append("grant",grant.value);
-    formData.append("editing_mode",editing_mode.value);
+    formData.append("editing_mode_tag",editing_mode);
     formData.append("_call_id",call_id.value);
     console.log("**********" + tag.value);
 }
@@ -182,15 +186,18 @@ function fileAdded(file){
  }
 
 function uploadFiles(ev){
-    if (form.checkValidity()){
-      if (dz.getQueuedFiles().length > 0){
-        captureFiles = dz.getQueuedFiles();
-        summaryGeneration();
-        dz.processQueue();
-      }
+
+    //trying to send the data without a file ( no updates ), should try and grab previous FILES
+    //and repopulae the dropzone instead
+
+        if (form.checkValidity()){
+          if (dz.getQueuedFiles().length > 0){
+            captureFiles = dz.getQueuedFiles();
+            summaryGeneration();
+            dz.processQueue();
+          }
+        }
     }
-    form.reportValidity();
-}
 
 
 
