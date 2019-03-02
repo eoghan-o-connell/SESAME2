@@ -123,6 +123,13 @@ def get_my_calls(request):
     except Reviewer.DoesNotExist:
         print("Not reviewer")
 
+def delete_proposal(request, proposal_id):
+    Proposal.objects.get(pk=int(proposal_id)).delete()
+    return redirect(reverse("home:my_calls"))
+
+def delete_call(request, call_id):
+    Call.objects.get(pk=int(call_id)).delete()
+    return redirect(reverse("home:my_calls"))
 
 def pub (request):
     categories = []
