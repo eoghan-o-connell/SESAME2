@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^ajax/autocomplete/$', views.autocomplete, name='ajax_autocomplete'),
     url(r'^nav_search$', views.nav_search, name='nav_search'),
     url(r'^add_to_center$', views.add_to_center, name='add_to_center'),
+    url(r'^update_proposal$', views.update_proposal, name='update_proposal'),
 ]
