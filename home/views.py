@@ -5,7 +5,9 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.views.static import serve
+from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from .forms import PublishForm
 from accounts.models import Call, Center, Proposal, Reviewer ,Funder, Researcher
@@ -31,7 +33,7 @@ class HomeView(TemplateView):
         return render(request, self.template_name, context)
 
 def view_center(request):
-    center_obj = Center.objects.filter(admin_id=request.user.id).values()
+    center_obj = Center.objects.filter(members=request.user.id)
     context = {'center_obj':center_obj}
     return render(request, 'home/view_center.html', context)
 
@@ -79,7 +81,7 @@ def get_call_view(request):
             with open("%s/%s"%(userFileDir,file.name),"wb+") as saveFile:
                 for line in file:
                     saveFile.write(line)
-                
+
         print(filenames)
         filename = ','.join(filenames)
 
@@ -335,3 +337,20 @@ def nav_search(request):
         #researcherQuerySet = Researcher.objects.filter(user__first_name__icontains=search_query) | Researcher.objects.filter(user__last_name__icontains=search_query)
         context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
         return render(request, 'home/nav_search.html', context)
+
+def add_to_center(request):
+    if request.method == 'GET':
+        user_email = request.GET.get('user_email', '')
+        center_name = request.GET.get('center', '')
+        centerObj = Center.objects.get(name=center_name)
+        center_obj = Center.objects.filter(admin_id=request.user.id).values() #for reloading page
+        context = {'center_obj':center_obj} #for reloading page
+        try:
+            userObj = User.objects.get(email=user_email)
+            centerObj.members.add(userObj.id)
+            centerObj.save()
+            context['result'] = 'success'
+            return render(request, 'home/view_center.html', context)
+        except ObjectDoesNotExist:
+            context['result']= 'failure'
+            return render(request, 'home/view_center.html', context)

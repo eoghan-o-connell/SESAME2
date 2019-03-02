@@ -14,5 +14,5 @@ urlpatterns = [
     url(r'^centers/create_center$', views.create_center, name='create_center'),
     url(r'^ajax/autocomplete/$', views.autocomplete, name='ajax_autocomplete'),
     url(r'^nav_search$', views.nav_search, name='nav_search'),
-
+    url(r'^add_to_center$', views.add_to_center, name='add_to_center'),
 ]
