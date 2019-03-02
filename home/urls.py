@@ -7,6 +7,8 @@ urlpatterns = [
 
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^publish_call$', views.pub, name='pub'),
+    url(r'^delete_call/(?P<call_id>\d+)$', views.delete_call, name='delete_call'),
+    url(r'^delete_proposal/(?P<proposal_id>\d+)$', views.delete_proposal, name='delete_proposal'),
     url(r'^call_view$', views.get_call_view, name='call_view'),
     url(r'^my_calls$', views.get_my_calls, name='my_calls'),
     url(r'^download_file$', views.download_file, name='download_file'),

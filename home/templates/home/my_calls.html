@@ -35,6 +35,7 @@
               <th> Deadline </th>
               <th> Target audience </th>
               <th></th>
+              <th></th>
           </tr>
           </thead>
           <tbody>
@@ -46,6 +47,7 @@
               <td id="s_deadline">{{ item.deadline }}</td>
               <td id="s_target">{{ item.target }}</td>
               <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
+              <td><a href="{% url 'home:delete_call' item.id %}" class="btn btn-danger">Delete</a></td>
           </tr>
           {% endfor %}
          </tbody>
@@ -62,6 +64,36 @@
               <th> Grant range </th>
               <th> Deadline </th>
               <th> Target audience </th>
+<<<<<<< HEAD
+              {% if proposals %}<th> Status </th><th></th>{% endif %}
+          </tr>
+          </thead>
+          <tbody>
+          {% if proposals %}
+              {% for item in proposals %}
+                  <tr>
+                      <td id="s_created">{{ item.call.created }}</td>
+                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.call.id }}"> {{ item.call.title }} </a></td>
+                      <td id="s_amount">{{ item.call.funds }}</td>
+                      <td id="s_deadline">{{ item.call.deadline }}</td>
+                      <td id="s_target">{{ item.call.target }}</td>
+                      <td>{{ item.status }}</td>
+                      <td><a href="{% url 'home:delete_proposal' item.id %}" class="btn btn-danger">Delete</a></td>
+                  </tr>
+              {% endfor %}
+          {% else %}
+              {% for item in my_call_table_data %}
+                  <tr>
+                      <td id="s_created">{{ item.created }}</td>
+                      <td id="s_title"><a href="{% url 'home:call_view' %}?call_id={{ item.id }}"> {{ item.title }} </a></td>
+                      <td id="s_amount">{{ item.funds }}</td>
+                      <td id="s_deadline">{{ item.deadline }}</td>
+                      <td id="s_target">{{ item.target }}</td>
+                      <td><a href="{% url 'home:pub' %}?call_id={{ item.id }}" class="btn btn-info">Edit</a></td>
+                  </tr>
+              {% endfor %}
+          {% endif %}
+=======
               <th> Status </th>
           </tr>
           </thead>
@@ -118,6 +150,7 @@
               </tr>
           {% endfor %}
 
+>>>>>>> 2e32b44c83e11c3627351f067b55b9934b9bb9bc
          </tbody>
 
         </table>
