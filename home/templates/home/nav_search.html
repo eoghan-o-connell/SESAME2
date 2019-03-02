@@ -2,54 +2,53 @@
 
 <head>
     {% block head %}
-
-    <meta charset="UTF-8">
     {% endblock %}
 </head>
 
 {% block body %}
+<br>
 <section id='tables'>
-  <table id='center-table'>
-    <thead>
-      <tr>
-        <th>Centers</th>
-      </tr>
-      <tr>
-        <th>Name</th>
-        <th> Date Created </th>
-        <th> More Info </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in centerQuerySet %}
-      <tr>
-        <td id="center-name">{{ item.name }}</td>
-        <td id='center-date'>{{ item.created }}</td>
-        <td id='center-info'>{{ item.info }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <table id='researcher-table'>
-    <thead>
-      <tr>
-        <th>Reasearchers</th>
-      </tr>
-      <tr>
-        <th> First Name </th>
-        <th> Last Name </th>
-        <th> Job Title </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in researcherQuerySet %}
-      <tr>
-        <td id='researcher-fname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.first_name }}</a></td>
-        <td id='researcher-lname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.last_name}}</a></td>
-        <td id='researcher-title'>{{ item.job_title }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="container">
+    <h2>Centers</h2>
+    <table id="center-table" class="table table-borderless" style="width:100%">
+      <thead style="background-color:teal; color:white;">
+        <tr>
+          <th>Name</th>
+          <th> Date Created </th>
+          <th> More Info </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in centerQuerySet %}
+        <tr>
+          <td id="center-name">{{ item.name }}</td>
+          <td id='center-date'>{{ item.created }}</td>
+          <td id='center-info'>{{ item.info }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    <h2>Researchers</h2>
+    <table id="researcher-table" class="table table-borderless" style="width:100%">
+      <thead style="background-color:teal; color:white;">
+        <tr>
+          <th> First Name </th>
+          <th> Last Name </th>
+          <th> Job Title </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in researcherQuerySet %}
+        <tr>
+          <td id='researcher-fname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.first_name }}</a></td>
+          <td id='researcher-lname'><a href="../../account/view-researcher/{{ item.user.id }}">{{ item.user.last_name}}</a></td>
+          <td id='researcher-title'>{{ item.job_title }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock %}
