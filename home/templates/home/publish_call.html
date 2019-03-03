@@ -35,9 +35,9 @@
             <div class="row">
               <div class="col-sm-6 offset-sm-3 text-center" style="background-color:#F5F5F5;">
                 {% if edit %}
-                    <h1 class="text-left">Edit call</h1>
+                    <h1>Edit call</h1>
                 {% else %}
-                    <h1 class="text-left">Publish call</h1>
+                    <h1>Publish call</h1>
                 {% endif %}
 
                 <br>
@@ -78,7 +78,7 @@
                                 <option value="{{ fund }}"> {{ fund }} </option>
                                 {% endfor %}
                             </select>
-                            <div class="container text-center">
+                            <div class ="container text-center">
                               <input name="editing_mode" name="editing_mode_tag" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
                               <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
                               <section id="dz">
@@ -96,7 +96,6 @@
                             </div>
                         </form>
                       </div>
-
                   </div>
             </section>
           </div>
