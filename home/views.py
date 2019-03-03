@@ -15,6 +15,7 @@ from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
+from django.contrib import messages
 
 
 host_name = "mysql.netsoc.co"
@@ -105,10 +106,12 @@ def get_call_view(request):
 
 def delete_proposal(request, proposal_id):
     Proposal.objects.get(pk=int(proposal_id)).delete()
+    messages.success(request, "Your proposal has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def delete_call(request, call_id):
     Call.objects.get(pk=int(call_id)).delete()
+    messages.success(request, "Your call has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def get_my_calls(request):
@@ -237,6 +240,8 @@ def pub (request):
 
            #Calling this fucntion below which I set up as the email fucntion
            email_users(request)
+
+           messages.success(request, 'Your new call has been published!')
 
            if not editing_mode:
                id = cursor.lastrowid
