@@ -98,6 +98,14 @@ def get_call_view(request):
 
     return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
 
+def delete_proposal(request, proposal_id):
+    Proposal.objects.get(pk=int(proposal_id)).delete()
+    return redirect(reverse("home:my_calls"))
+
+def delete_call(request, call_id):
+    Call.objects.get(pk=int(call_id)).delete()
+    return redirect(reverse("home:my_calls"))
+
 def get_my_calls(request):
     user = request.user
 
@@ -119,8 +127,9 @@ def get_my_calls(request):
 
     try:
         reviewer = user.reviewer
-        my_call_table_data = Proposal.objects.filter(reviewer_id=request.user.id).values()
-        context = {'my_call_table_data':my_call_table_data}
+        proposals = Proposal.objects.select_related('call').filter(reviewer_id=user.id)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
     except Reviewer.DoesNotExist:
         print("Not reviewer")
@@ -342,3 +351,38 @@ def nav_search(request):
             researcherQuerySet= researcherQuerySet.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word))
         context={'centerQuerySet':centerQuerySet, 'researcherQuerySet':researcherQuerySet}
         return render(request, 'home/nav_search.html', context)
+
+def add_to_center(request):
+    if request.method == 'GET':
+        user_email = request.GET.get('user_email', '')
+        center_name = request.GET.get('center', '')
+        centerObj = Center.objects.get(name=center_name)
+        center_obj = Center.objects.filter(admin_id=request.user.id).values() #for reloading page
+        context = {'center_obj':center_obj} #for reloading page
+        try:
+            userObj = User.objects.get(email=user_email)
+            centerObj.members.add(userObj.id)
+            centerObj.save()
+            context['result'] = 'success'
+            return render(request, 'home/view_center.html', context)
+        except ObjectDoesNotExist:
+            context['result']= 'failure'
+            return render(request, 'home/view_center.html', context)
+
+def update_proposal(request):
+    if request.method == 'GET':
+        proposal_status = request.GET.get('status', '')
+        if proposal_status == 'o':
+            proposal_status = 'p'
+        proposal_id = request.GET.get('id', '')
+        proposalObj = Proposal.objects.get(id=proposal_id)
+        proposals = Proposal.objects.select_related('call').filter(reviewer_id=request.user.id)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
+        try:
+            proposalObj.status = proposal_status
+            proposalObj.save()
+            return render(request, 'home/my_calls.html', context)
+
+        except ObjectDoesNotExist:
+            return render(request, 'home/my_calls.html')
