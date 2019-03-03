@@ -15,6 +15,7 @@ from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
+from django.contrib import messages
 import zipfile
 
 
@@ -43,6 +44,7 @@ def create_center(request):
         form = CenterForm(request.POST)
         if form.is_valid():
             form.save(admin=request.user)
+            messages.success(request, "Your center has been created!")
             return redirect(reverse('home:view_center'))
     else:
         form = CenterForm()
@@ -76,16 +78,24 @@ def get_call_view(request):
         call_obj = Call.objects.filter(pk=call_id).values()
         context = {'call_obj':call_obj}
 
-        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+        funder_id = call_obj[0]['funder_id']
+        print("FUNDER --- > ",funder_id)
+
+        user = str(request.user)
+        userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
         files.append(userFileDir)
+
+        print("FILES ",files)
 
     else:
         filenames = []
         call_id = request.POST.get('call_id', '').decode('utf-8')
 
-        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+        user = str(request.user)
+        userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
         if not os.path.isdir(userFileDir):
             os.makedirs(userFileDir)
+
 
         for key in request.FILES:
             file = request.FILES[key]
@@ -121,10 +131,12 @@ def get_call_view(request):
 
 def delete_proposal(request, proposal_id):
     Proposal.objects.get(pk=int(proposal_id)).delete()
+    messages.success(request, "Your proposal has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def delete_call(request, call_id):
     Call.objects.get(pk=int(call_id)).delete()
+    messages.success(request, "Your call has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def get_my_calls(request):
@@ -255,11 +267,13 @@ def pub (request):
            #Calling this fucntion below which I set up as the email fucntion
            email_users(request)
 
+           messages.success(request, 'Your new call has been published!')
+
            if not editing_mode:
                id = cursor.lastrowid
 
-               user = str(request.user)
-               userFileDir = "calls/%s-%s/calls"%(user.split("@")[0],id)
+               user = str(request.user.id)
+               userFileDir = "calls/%s-%s/calls"%(user,id)
 
                if not os.path.isdir(userFileDir):
                    os.makedirs(userFileDir)
@@ -385,10 +399,9 @@ def add_to_center(request):
             userObj = User.objects.get(email=user_email)
             centerObj.members.add(userObj.id)
             centerObj.save()
-            context['result'] = 'success'
+            messages.success(request, "User %s has been added to %s"%(user_email, center_name))
             return render(request, 'home/view_center.html', context)
         except ObjectDoesNotExist:
-            context['result']= 'failure'
             return render(request, 'home/view_center.html', context)
 
 def update_proposal(request):
@@ -404,6 +417,7 @@ def update_proposal(request):
         try:
             proposalObj.status = proposal_status
             proposalObj.save()
+            messages.success(request, "Your proposal status has been updated!")
             return render(request, 'home/my_calls.html', context)
 
         except ObjectDoesNotExist:
