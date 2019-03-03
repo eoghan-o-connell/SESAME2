@@ -78,20 +78,21 @@
                                 <option value="{{ fund }}"> {{ fund }} </option>
                                 {% endfor %}
                             </select>
-
-                            <input name="editing_mode" name="editing_mode_tag" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
-                            <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
-                            <section id="dz">
-                              <div id="dropbox" class="dropzone "></div><br>
-                            </section>
-                            {% if edit %}
-                            <h5> Please note: All changes will update the call globally</h5><br>
-                            <input type="submit" id="btn" class="btn btn-success btn-large" value="Submit changes"><br>
-                            {% else %}
-                            <button id="btn" type="button" class="btn btn-success btn-large">Publish Call</button><br>
-                            {% endif %}
-                            <div id="prog" class="progress">
-                              <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
+                            <div class="container text-center">
+                              <input name="editing_mode" name="editing_mode_tag" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
+                              <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
+                              <section id="dz">
+                                <div id="dropbox" class="dropzone "></div><br>
+                              </section>
+                              {% if edit %}
+                              <h5> Please note: All changes will update the call globally</h5><br>
+                              <input type="submit" id="btn" class="btn btn-success btn-large" value="Submit changes"><br>
+                              {% else %}
+                              <button id="btn" type="button" class="btn btn-success btn-large">Publish Call</button><br>
+                              {% endif %}
+                              <div id="prog" class="progress">
+                                <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
+                              </div>
                             </div>
                         </form>
                       </div>
