@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse, redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.views.static import serve
 from django.http import JsonResponse
@@ -31,7 +33,7 @@ class HomeView(TemplateView):
         return render(request, self.template_name, context)
 
 def view_center(request):
-    center_obj = Center.objects.filter(admin_id=request.user.id).values()
+    center_obj = Center.objects.filter(members=request.user.id)
     context = {'center_obj':center_obj}
     return render(request, 'home/view_center.html', context)
 
@@ -50,6 +52,7 @@ def download_file(request):
         filepath = request.GET.get("filename")
         return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
 
+
 def get_call_view(request):
     files = []
     call_obj = None
@@ -65,10 +68,11 @@ def get_call_view(request):
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
 
-
-        for file in os.listdir(userFileDir):
-            files.append(file)
-
+        try:
+            for file in os.listdir(userFileDir):
+                files.append(file)
+        except OSError:
+            pass
 
     else:
         filenames = []
