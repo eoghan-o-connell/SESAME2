@@ -73,14 +73,14 @@ section {
                     {% for obj in profile.educations %}
                         {% if editing or not obj.is_private %}
                         <li id="education_{{ obj.index }}">
-                            {% if editing %}
-                            <form action="education/{{ obj.index }}">
-                            <input class="btn btn-primary" type="submit" value="Edit" />
-                            </form>
-
-                            {% endif %}
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="education/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No education records<p>
