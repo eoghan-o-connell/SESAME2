@@ -128,8 +128,9 @@ def get_my_calls(request):
 
     try:
         reviewer = user.reviewer
-        my_call_table_data = Proposal.objects.filter(reviewer_id=request.user.id).values()
-        context = {'my_call_table_data':my_call_table_data}
+        proposals = Proposal.objects.select_related('call').filter(reviewer_id=user.id)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
     except Reviewer.DoesNotExist:
         print("Not reviewer")
