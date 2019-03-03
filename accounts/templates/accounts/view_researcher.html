@@ -57,6 +57,15 @@ ul{list-style-type:none;}
 {% block body %}
 
 <section>
+    <div class="col-xs-12">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            <center>{{ message }}</center>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
     {% if profile.profile_picture %}
         <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
     {% endif %}

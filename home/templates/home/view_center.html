@@ -10,6 +10,15 @@
 <br>
 
 <div class="container">
+    <div class="col-xs-12">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            <center>{{ message }}</center>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
   <h1>Centers</h1>
   {% if result %}
     {% if result == 'success' %}
@@ -39,8 +48,8 @@
         {% if item.admin_id == user.id %}
         <td>
           <form class="add_user form-inline" action="{% url 'home:add_to_center' %}" method="get">
-            <input type="text" class="form-control" style="width:85%" name="user_email" placeholder="User Email">
-            <button class="btn btn-success" style="margin-left:10px" type="submit">Add</button>
+            <input type="text" class="form-control" style="width:80%" name="user_email" placeholder="User Email">
+            <button class="btn btn-success" style="margin-left:5px" type="submit">Add</button>
             <input type="hidden" name="center" value="{{ item.name }}">
           </form>
         </td>

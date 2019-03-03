@@ -16,25 +16,35 @@
         {% endblock %}
     </head>
     <body>
+        <div class="col-xs-12">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <center>{{ message }}</center>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
         {% block body %}
-        <main>
-            <button  style="visibility:hidden" id="collapsingButton" class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapser" aria-expanded="false" aria-controls="collapse">
+
+           <button  style="visibility:hidden" id="collapsingButton" class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapser" aria-expanded="false" aria-controls="collapse">
                 Publishing a call? click here!
             </button>
+
+          <div class="container">
             <div class="row">
               <div class="col-sm-6 offset-sm-3 text-center" style="background-color:#F5F5F5;">
                 {% if edit %}
-
-                    <h1 class="text-left">
-                        Edit call
-                    </h1>
+                    <h1 class="text-left">Edit call</h1>
                 {% else %}
-                    <h2>Publish call</h2>
+                    <h1 class="text-left">Publish call</h1>
                 {% endif %}
+
                 <br>
                 <section id="form" style="width:100%">
                     <div class="collapse show" id="collapser">
                       <div class="well" >
+
                         <form id="checkForm" style="width:100%" class="text-left">
                             <label for="eligibility">Select target audience</label>
                             <select class="custom-select" id="tag" name="eligibility">
@@ -89,8 +99,10 @@
             </section>
           </div>
         </div>
+      </div>
 
-      <section id="summary" style="visibility:hidden">
+      <div class="container">
+        <section id="summary" style="visibility:hidden">
           <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
             <p> Here is a quick summary of your publication. </p>
             <table id="example" class="table table-borderless" style="width:100%">
@@ -113,7 +125,7 @@
             </table>
             <button name="edit" value="edit"/>
         </section>
-        </main>
+      </div>
         {% endblock %}
     </body>
 {% else  %}

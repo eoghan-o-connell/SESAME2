@@ -15,6 +15,7 @@ from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
+from django.contrib import messages
 import zipfile
 
 
@@ -43,6 +44,7 @@ def create_center(request):
         form = CenterForm(request.POST)
         if form.is_valid():
             form.save(admin=request.user)
+            messages.success(request, "Your center has been created!")
             return redirect(reverse('home:view_center'))
     else:
         form = CenterForm()
@@ -135,10 +137,12 @@ def get_call_view(request):
 
 def delete_proposal(request, proposal_id):
     Proposal.objects.get(pk=int(proposal_id)).delete()
+    messages.success(request, "Your proposal has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def delete_call(request, call_id):
     Call.objects.get(pk=int(call_id)).delete()
+    messages.success(request, "Your call has been deleted!")
     return redirect(reverse("home:my_calls"))
 
 def get_my_calls(request):
@@ -268,6 +272,8 @@ def pub (request):
 
            #Calling this fucntion below which I set up as the email fucntion
            email_users(request)
+
+           messages.success(request, 'Your new call has been published!')
 
            if not editing_mode:
                id = cursor.lastrowid
@@ -399,10 +405,9 @@ def add_to_center(request):
             userObj = User.objects.get(email=user_email)
             centerObj.members.add(userObj.id)
             centerObj.save()
-            context['result'] = 'success'
+            messages.success(request, "User %s has been added to %s"%(user_email, center_name))
             return render(request, 'home/view_center.html', context)
         except ObjectDoesNotExist:
-            context['result']= 'failure'
             return render(request, 'home/view_center.html', context)
 
 def update_proposal(request):
@@ -418,6 +423,7 @@ def update_proposal(request):
         try:
             proposalObj.status = proposal_status
             proposalObj.save()
+            messages.success(request, "Your proposal status has been updated!")
             return render(request, 'home/my_calls.html', context)
 
         except ObjectDoesNotExist:
