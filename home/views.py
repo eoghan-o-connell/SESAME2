@@ -79,13 +79,6 @@ def get_call_view(request):
         context = {'call_obj':call_obj}
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
-
-        # try:
-        #     for file in os.listdir(userFileDir):
-        #         location = "%s/%s" % (userFileDir,file)
-        #         files.append(location)
-        # except OSError:
-        #     pass
         files.append(userFileDir)
 
     else:
@@ -229,12 +222,13 @@ def pub (request):
 
        db_query = """
 
-           INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location, )
+           INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location )
            VALUES ("%s","%s","%s","%s","%s","%s","%s","%s");
 
        """ %(eligibility,date_string,funder_id,title,description,deadline,grant,filename)
 
        print("$"*50)
+       print(db_query)
 
        if editing_mode:
           db_query = """

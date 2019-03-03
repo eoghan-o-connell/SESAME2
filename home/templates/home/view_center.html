@@ -47,11 +47,13 @@
         <td>{{ item.admin_id }} </td>
         {% if item.admin_id == user.id %}
         <td>
-          <form class="add_user" action="{% url 'home:add_to_center' %}" method="get">
-            <input type="text" class="form-control" name="user_email" placeholder="User Email">
+          <form class="add_user form-inline" action="{% url 'home:add_to_center' %}" method="get">
+            <input type="text" class="form-control" style="width:85%" name="user_email" placeholder="User Email">
+            <button class="btn btn-success" style="margin-left:10px" type="submit">Add</button>
             <input type="hidden" name="center" value="{{ item.name }}">
           </form>
         </td>
+
         {% endif %}
     </tr>
       {% endfor %}
