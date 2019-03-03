@@ -66,6 +66,7 @@ def edit_profile(request):
 
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your profile was updated!')
             return redirect(reverse('accounts:view_profile'))
     else:
         form = EditProfileForm(instance=request.user)
