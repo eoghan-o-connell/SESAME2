@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+{% load static %}
 <style media="screen">
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
 .panel-title > a:before {
@@ -34,62 +35,25 @@ section {
     background-color: silver;
     margin: 0.5em;
 }
-.object td{
-    vertical-align: text-top;
-    padding-right: 1em;
-}
-.col-md-3{
-    max-width:100% !important;
-    flex-basis:100% !important;
-}
-.panel-body li{
-    background-color: lightblue;
-    padding: 0.5em;
-    border-radius: 0.5em;
-}
-ul{list-style-type:none;}
-.panel-body > a{
-    padding-left:3em;
-}
 </style>
 <title>{{ researcher }}</title>
 {% endblock %}
 {% block body %}
+<br>
+<div class="container" style="background-color:#F5F5F5">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <h2>{{ researcher }}</h2>
+      {% if editing %}
+      <h5>Email: {{ researcher.user.email }}</h5>
 
-<section>
-    <div class="col-xs-12">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success" role="alert">
-            <center>{{ message }}</center>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-    {% if profile.profile_picture %}
-        <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
-    {% endif %}
-    <h2>{{ researcher }}</h2>
-    {% if editing %}
-    <h3>Account</h3>
-    First name: {{ researcher.user.first_name }}<br>
-    Last name: {{ researcher.user.last_name }}<br>
-    Email: {{ researcher.user.email }}<br>
-    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
-    <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
-
-    {% endif %}
-    <p>
-        <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
-    </p>
-</section>
-
-<div class="container">
-<div class="row">
-<div class="col-md-3">
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
+      {% endif %}
+      <h5>
+          <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
+      </h5><br>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
              <h4 class="panel-title">
                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                      Education Information ({{ profile.educations|length }})
@@ -102,11 +66,11 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.educations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="education_{{ obj.index }}">
-                            {{ obj|safe }}
+                        <li id="education_{{ obj.index }}">
                             {% if editing %}
                             <a href="education/{{ obj.index }}">Edit</a>
                             {% endif %}
+                            {{ obj|safe }}
                         </li>
                         {% endif %}
                     {% empty %}
@@ -130,7 +94,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.employments %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="employment_{{ obj.index }}">
+                        <li id="employment_{{ obj.index }}">
                             {% if editing %}
                             <a href="employment/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -158,7 +122,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.societies %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="society_{{ obj.index }}">
+                        <li id="society_{{ obj.index }}">
                             {% if editing %}
                             <a href="society/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -186,7 +150,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.awards %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="award_{{ obj.index }}">
+                        <li id="award_{{ obj.index }}">
                             {% if editing %}
                             <a href="award/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -214,7 +178,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.fundings %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="funding_{{ obj.index }}">
+                        <li id="funding_{{ obj.index }}">
                             {% if editing %}
                             <a href="funding/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -242,7 +206,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.team_members %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="team_member_{{ obj.index }}">
+                        <li id="team_member_{{ obj.index }}">
                             {% if editing %}
                             <a href="team_member/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -270,7 +234,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.impacts %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="impact_{{ obj.index }}">
+                        <li id="impact_{{ obj.index }}">
                             {% if editing %}
                             <a href="impact/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -298,7 +262,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.innovations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="innovation_{{ obj.index }}">
+                        <li id="innovation_{{ obj.index }}">
                             {% if editing %}
                             <a href="innovation/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -326,7 +290,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.publications %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="publication_{{ obj.index }}">
+                        <li id="publication_{{ obj.index }}">
                             {% if editing %}
                             <a href="publication/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -354,7 +318,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.presentations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="presentation_{{ obj.index }}">
+                        <li id="presentation_{{ obj.index }}">
                             {% if editing %}
                             <a href="presentation/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -382,7 +346,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for acedemic_collab in profile.acedemic_collabs %}
                         {% if editing or not acedemic_collab.is_private %}
-                        <li class="object" id="acedemic_collab_{{ acedemic_collab.index }}">
+                        <li id="acedemic_collab_{{ acedemic_collab.index }}">
                             {% if editing %}
                             <a href="acedemic-collab/{{ acedemic_collab.index }}">Edit</a>
                             {% endif %}
@@ -410,7 +374,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.non_acedemic_collabs %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="non_acedemic_collab_{{ obj.index }}">
+                        <li id="non_acedemic_collab_{{ obj.index }}">
                             {% if editing %}
                             <a href="non_acedemic_collab/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -418,7 +382,7 @@ ul{list-style-type:none;}
                         </li>
                         {% endif %}
                     {% empty %}
-                        <p>No non-acedemic collaboration records<p>
+                        <p>No non acedemic collab records<p>
                     {% endfor %}
                 </ul>
             </div>
@@ -438,7 +402,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.conferences %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="conference_{{ obj.index }}">
+                        <li id="conference_{{ obj.index }}">
                             {% if editing %}
                             <a href="conference/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -466,7 +430,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.comms_overviews %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="comms_overview_{{ obj.index }}">
+                        <li id="comms_overview_{{ obj.index }}">
                             {% if editing %}
                             <a href="comms_overview/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -494,7 +458,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.funding_ratios %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="funding_ratio_{{ obj.index }}">
+                        <li id="funding_ratio_{{ obj.index }}">
                             {% if editing %}
                             <a href="funding_ratio/{{ obj.index }}">Edit</a>
                             {% endif %}
@@ -522,7 +486,7 @@ ul{list-style-type:none;}
                 <ul>
                     {% for obj in profile.projects %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="project_{{ obj.index }}">
+                        <li id="project_{{ obj.index }}">
                             {% if editing %}
                             <a href="project/{{ obj.index }}">Edit</a>
                             {% endif %}
