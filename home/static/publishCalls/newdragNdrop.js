@@ -182,11 +182,11 @@ function uploadFiles(ev){
 
     //trying to send the data without a file ( no updates ), should try and grab previous FILES
     //and repopulae the dropzone instead
-    if (editing_mode && dz.getQueuedFiles().length == 0){
+    if (editing_mode == "True" && dz.getQueuedFiles().length == 0){
+        console.log("WTF");
         console.log("Hmm");
         console.log(ev);
         form.submit();
-        dz.uploadFiles([]);
         console.log("after");
     }
     else{
