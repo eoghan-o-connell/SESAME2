@@ -13,6 +13,7 @@ from accounts.forms import CenterForm, ProposalForm
 import MySQLdb as _db
 import os
 import datetime
+import zipfile
 
 
 host_name = "mysql.netsoc.co"
@@ -48,7 +49,15 @@ def create_center(request):
 def download_file(request):
     if request.method == "GET":
         filepath = request.GET.get("filename")
-        return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+        zipName = "zipped.zip"
+        zipFileName = "%s/%s" % (filepath,zipName)
+        zip = zipfile.ZipFile(zipFileName,"w")
+        for file in os.listdir(filepath):
+             if file!=zipName:
+                 fullPath = "%s/%s"%(filepath,file)
+                 zip.write(fullPath,os.path.basename(file),zipfile.ZIP_DEFLATED)
+        zip.close()
+        return serve(request, os.path.basename(zipFileName), os.path.dirname(zipFileName))
 
 
 def get_call_view(request):
@@ -66,11 +75,13 @@ def get_call_view(request):
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
 
-        try:
-            for file in os.listdir(userFileDir):
-                files.append(file)
-        except OSError:
-            pass
+        # try:
+        #     for file in os.listdir(userFileDir):
+        #         location = "%s/%s" % (userFileDir,file)
+        #         files.append(location)
+        # except OSError:
+        #     pass
+        files.append(userFileDir)
 
     else:
         filenames = []
