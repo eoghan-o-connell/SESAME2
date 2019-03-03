@@ -40,17 +40,18 @@ section {
 {% endblock %}
 {% block body %}
 <br>
-<div class="container" style="background-color:#F5F5F5">
+<div class="container">
   <div class="row">
-    <div class="col-md-6 offset-3">
-      <h2>{{ researcher }}</h2>
-      {% if editing %}
-      <h5>Email: {{ researcher.user.email }}</h5>
-
-      {% endif %}
-      <h5>
+    <div class="col-md-6 offset-3" style="background-color:#F5F5F5">
+      <div class="text-center">
+        <h2>{{ researcher }}</h2>
+        {% if editing %}
+        <h5>Email: {{ researcher.user.email }}</h5>
+        {% endif %}
+        <h5>
           <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
-      </h5><br>
+        </h5><br>
+        </div>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
@@ -62,13 +63,21 @@ section {
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
-                {% if editing %}<a href="education/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="education/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form>
+                {% endif %}
+                <div class ="container">
                 <ul>
                     {% for obj in profile.educations %}
                         {% if editing or not obj.is_private %}
                         <li id="education_{{ obj.index }}">
                             {% if editing %}
-                            <a href="education/{{ obj.index }}">Edit</a>
+                            <form action="education/{{ obj.index }}">
+                            <input class="btn btn-primary" type="submit" value="Edit" />
+                            </form>
+
                             {% endif %}
                             {{ obj|safe }}
                         </li>
@@ -77,6 +86,7 @@ section {
                         <p>No education records<p>
                     {% endfor %}
                 </ul>
+                </div>
             </div>
         </div>
     </div>
