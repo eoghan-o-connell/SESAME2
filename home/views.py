@@ -66,8 +66,11 @@ def get_call_view(request):
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
 
-        for file in os.listdir(userFileDir):
-            files.append(file)
+        try:
+            for file in os.listdir(userFileDir):
+                files.append(file)
+        except OSError:
+            pass
 
     else:
         filenames = []
