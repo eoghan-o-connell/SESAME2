@@ -302,6 +302,9 @@ def pub (request):
        finally:
            connection.close()
 
+       print("CALL STUFF")
+       return redirect(reverse("home:my_calls"))
+
     if request.method == 'GET':
         try:
             connection = _db.connect(host=host_name,
@@ -365,11 +368,8 @@ def pub (request):
             connection.close()
 
     form = PublishForm()
+    return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
-    if not editing_mode:
-        return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
-    else:
-        return redirect(reverse("home:my_calls"))
 
 
 def email_users(request):
