@@ -120,6 +120,7 @@ def add_education(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_education().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#education_%i' % (researcher_id, obj.index))
 
 def edit_education(request, researcher_id, index):
@@ -137,6 +138,7 @@ def edit_education(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.educations[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#educations_%i" % (researcher_id, index))
 
 def add_employment(request, researcher_id):
@@ -152,6 +154,7 @@ def add_employment(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_employment().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#employment_%i' % (researcher_id, obj.index))
 
 def edit_employment(request, researcher_id, index):
@@ -169,6 +172,7 @@ def edit_employment(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.employments[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#employment_%i" % (researcher_id, index))
 
 def add_society(request, researcher_id):
@@ -184,6 +188,7 @@ def add_society(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_society().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#society_%i' % (researcher_id, obj.index))
 
 def edit_society(request, researcher_id, index):
@@ -201,6 +206,7 @@ def edit_society(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.societies[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#society_%i" % (researcher_id, index))
 
 def add_award(request, researcher_id):
@@ -216,6 +222,7 @@ def add_award(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_award().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#award_%i' % (researcher_id, obj.index))
 
 def edit_award(request, researcher_id, index):
@@ -233,6 +240,7 @@ def edit_award(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.awards[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#award_%i" % (researcher_id, index))
 
 def add_funding(request, researcher_id):
@@ -248,6 +256,7 @@ def add_funding(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#funding_%i' % (researcher_id, obj.index))
 
 def edit_funding(request, researcher_id, index):
@@ -265,6 +274,7 @@ def edit_funding(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.awards[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#funding_%i" % (researcher_id, index))
 
 def add_team_member(request, researcher_id):
@@ -280,6 +290,7 @@ def add_team_member(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_team_member().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#team_member_%i' % (researcher_id, obj.index))
 
 def edit_team_member(request, researcher_id, index):
@@ -297,6 +308,7 @@ def edit_team_member(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.team_members[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#team_members_%i" % (researcher_id, index))
 
 def add_impact(request, researcher_id):
@@ -312,6 +324,7 @@ def add_impact(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#impact_%i' % (researcher_id, obj.index))
 
 def edit_impact(request, researcher_id, index):
@@ -329,6 +342,7 @@ def edit_impact(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.impacts[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#impact_%i" % (researcher_id, index))
 
 def add_innovation(request, researcher_id):
@@ -344,6 +358,7 @@ def add_innovation(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_innovation().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#innovation_%i' % (researcher_id, obj.index))
 
 def edit_innovation(request, researcher_id, index):
@@ -361,6 +376,7 @@ def edit_innovation(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.innovations[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#innovation_%i" % (researcher_id, index))
 
 def add_publication(request, researcher_id):
@@ -376,6 +392,7 @@ def add_publication(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_publication().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#publication_%i' % (researcher_id, obj.index))
 
 def edit_publication(request, researcher_id, index):
@@ -393,6 +410,7 @@ def edit_publication(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.publications[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#publication_%i" % (researcher_id, index))
 
 def add_presentation(request, researcher_id):
@@ -408,6 +426,7 @@ def add_presentation(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_presentation().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#presentation_%i' % (researcher_id, obj.index))
 
 def edit_presentation(request, researcher_id, index):
@@ -425,6 +444,7 @@ def edit_presentation(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.presentations[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#presentation_%i" % (researcher_id, index))
 
 def add_acedemic_collab(request, researcher_id):
@@ -440,6 +460,7 @@ def add_acedemic_collab(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_acedemic_collab().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#acedemic_collab_%i' % (researcher_id, obj.index))
 
 def edit_acedemic_collab(request, researcher_id, index):
@@ -457,6 +478,7 @@ def edit_acedemic_collab(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.acedemic_collabs[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#acedemic_collab_%i" % (researcher_id, index))
 
 def add_non_acedemic_collab(request, researcher_id):
@@ -472,6 +494,7 @@ def add_non_acedemic_collab(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_education().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#education_%i' % (researcher_id, obj.index))
 
 def edit_non_acedemic_collab(request, researcher_id, index):
@@ -489,6 +512,7 @@ def edit_non_acedemic_collab(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.non_acedemic_collabs[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#non_acedemic_collab_%i" % (researcher_id, index))
 
 def add_conference(request, researcher_id):
@@ -504,6 +528,7 @@ def add_conference(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_conference().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#conference_%i' % (researcher_id, obj.index))
 
 def edit_conference(request, researcher_id, index):
@@ -521,6 +546,7 @@ def edit_conference(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.conferences[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#conference_%i" % (researcher_id, index))
 
 def add_comms_overview(request, researcher_id):
@@ -536,6 +562,7 @@ def add_comms_overview(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_comms_overview().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#comms_overview_%i' % (researcher_id, obj.index))
 
 def edit_comms_overview(request, researcher_id, index):
@@ -553,6 +580,7 @@ def edit_comms_overview(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.comms_overviews[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#comms_overview_%i" % (researcher_id, index))
 
 def add_funding_ratio(request, researcher_id):
@@ -567,6 +595,7 @@ def add_funding_ratio(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_funding_ratio().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#funding_ratio_%i' % (researcher_id, obj.index))
 
 def edit_funding_ratio(request, researcher_id, index):
@@ -584,6 +613,7 @@ def edit_funding_ratio(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.funding_ratios[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#funding_ratio_%i" % (researcher_id, index))
 
 def add_project(request, researcher_id):
@@ -598,6 +628,7 @@ def add_project(request, researcher_id):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.new_project().update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect('/account/view-researcher/%i#project_%i' % (researcher_id, obj.index))
 
 def edit_project(request, researcher_id, index):
@@ -615,4 +646,5 @@ def edit_project(request, researcher_id, index):
         return render(request, 'accounts/form.html', attributes)
     else:
         obj = request.user.researcher.profile.projects[index].update(request.POST)
+        messages.success(request, 'Your researcher  profile has been updated!')
         return redirect("/account/view-researcher/%i#project_%i" % (researcher_id, index))

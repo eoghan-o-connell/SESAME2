@@ -19,7 +19,7 @@
         </div>
       <div class="row">
         <div class="col-sm-10">
-            {% if proposals %}
+            {% if user.reviewer or user.researcher %}
             <h1>My Proposals</h1>
             {% else %}
             <h1>My Calls</h1>
