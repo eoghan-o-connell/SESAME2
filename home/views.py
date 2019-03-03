@@ -50,6 +50,7 @@ def download_file(request):
         filepath = request.GET.get("filename")
         return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
 
+
 def get_call_view(request):
     files = []
     call_obj = None
@@ -65,10 +66,8 @@ def get_call_view(request):
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
 
-
         for file in os.listdir(userFileDir):
             files.append(file)
-
 
     else:
         filenames = []
