@@ -17,6 +17,11 @@ import os
 import datetime
 from django.contrib import messages
 import zipfile
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.contrib.auth.models import User
+from accounts.models import Researcher
 
 
 host_name = "mysql.netsoc.co"
@@ -201,6 +206,8 @@ def pub (request):
 
        value = request.POST.get("editing_mode")
 
+       email_users(request, title, grant, eligibility)
+
        print(request.POST.items())
 
        if value == "True":
@@ -371,9 +378,17 @@ def pub (request):
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
 
+def email_users(request,title,grant,eligibility):
 
-def email_users(request):
-    print("Here Ben!")
+    emails = [researcher.user.email for researcher in Researcher.objects.all()]
+
+    email_subject = 'New Call Published'
+    from_email = settings.DEFAULT_FROM_EMAIL
+
+    contact_message = 'New call published on SESAME. {0} with grant of {1}, {2}.'.format(title, grant, eligibility)
+    for address in emails:
+        to_address = [address]
+        send_mail(email_subject, contact_message, from_email, to_address)
 
 
 def autocomplete(request):
