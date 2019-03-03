@@ -76,16 +76,24 @@ def get_call_view(request):
         call_obj = Call.objects.filter(pk=call_id).values()
         context = {'call_obj':call_obj}
 
-        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+        funder_id = call_obj[0]['funder_id']
+        print("FUNDER --- > ",funder_id)
+
+        user = str(request.user)
+        userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
         files.append(userFileDir)
+
+        print("FILES ",files)
 
     else:
         filenames = []
         call_id = request.POST.get('call_id', '').decode('utf-8')
 
-        userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
+        user = str(request.user)
+        userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
         if not os.path.isdir(userFileDir):
             os.makedirs(userFileDir)
+
 
         for key in request.FILES:
             file = request.FILES[key]
@@ -258,8 +266,8 @@ def pub (request):
            if not editing_mode:
                id = cursor.lastrowid
 
-               user = str(request.user)
-               userFileDir = "calls/%s-%s/calls"%(user.split("@")[0],id)
+               user = str(request.user.id)
+               userFileDir = "calls/%s-%s/calls"%(user,id)
 
                if not os.path.isdir(userFileDir):
                    os.makedirs(userFileDir)
