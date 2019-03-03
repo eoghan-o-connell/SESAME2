@@ -11,7 +11,11 @@
     <title>{{ title }}</title>
 {% endblock %}
 {% block body %}
+<br>
 <div class="container">
+  <div class="row">
+    <div class="col-sm-4 offset offset-sm-4 text-center" style="background-color:#F5F5F5; border:2px solid teal;">
+         
     <h2>{{ title }}</h2>
     <div id="errors">
         {% for error in errors %}
@@ -23,15 +27,16 @@
         <table>
             <tr>
                 <td><label for="is_private">Is private</label></td>
-                <td><input type="checkbox" name="is_private" {% if is_private %}checked{% endif %}></td>
+                <td><input class="text-center"type="checkbox" name="is_private" {% if is_private %}checked{% endif %}></td>
             </tr>
             {% for input in inputs %}
                 <tr>
                     <td>
+
                         <label for="{{ input.name }}">{{ input.label }}</label>
                     </td>
                     <td>
-                        <input type="text" name="{{ input.name }}" value="{{ input.value }}">
+                        <input class="form-control" type="text" name="{{ input.name }}" value="{{ input.value }}">
                     </td>
                 </tr>
             {% endfor %}
