@@ -10,6 +10,15 @@
 <br>
 
 <div class="container">
+    <div class="col-xs-12">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            <center>{{ message }}</center>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
   <h1>Centers</h1>
   {% if result %}
     {% if result == 'success' %}
