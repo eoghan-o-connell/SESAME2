@@ -77,8 +77,10 @@
                       </section>
                       {% if edit %}
                       <h5> Please note: All changes will update the call globally</h5><br>
-                      {% endif %}
                       <button id="btn" type="button" class="btn btn-success btn-large">Submit changes</button><br>
+                      {% else %}
+                      <button id="btn" type="button" class="btn btn-success btn-large">Publish Call</button><br>
+                      {% endif %}
                       <div id="prog" class="progress">
                           <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
                       </div>
@@ -87,17 +89,20 @@
             </section>
           </div>
         </div>
-        <section id="summary" style="visibility:hidden">
-            <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
+
+      <section id="summary" style="visibility:hidden">
+          <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
             <p> Here is a quick summary of your publication. </p>
-            <table class="table">
+            <table id="example" class="table table-borderless" style="width:100%">
+              <thead style="background-color:teal; color:white;">
                 <tr>
                   <th> Title of call </th>
                   <th> Description </th>
                   <th> Grant amount </th>
                   <th> Deadline </th>
                   <th> Files uploaded </th>
-              </tr>
+                </tr>
+              </thead>
               <tr>
                   <td id="s_title"> </td>
                   <td id="s_desc"> </td>
