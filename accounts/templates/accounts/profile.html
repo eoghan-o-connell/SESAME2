@@ -3,7 +3,8 @@
 <title>Profile</title>
 
 {% block body %}
-<div class="container">
+<br>
+<div class="container" style="margin-left:2px">
     <div class="container">
         <div class="col-xs-12">
             {% if messages %}
@@ -14,12 +15,10 @@
             {% endfor %}
             {% endif %}
         </div>
-    <h1>Account</h1>
-    <p>First name: {{ user.first_name }}</p>
-    <p>Last name: {{ user.last_name }}</p>
-    <p>Email: {{ user.email }}</p>
-    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
-    <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
-</div>
+        <h1>Account details</h1>
+        <h5>First name:{{ user.first_name }}</h5>
+        <h5>Last name: {{ user.last_name }}</h5>
+        <h5>Email: {{ user.email }}</h5>
+    </div>
 
 {% endblock %}
