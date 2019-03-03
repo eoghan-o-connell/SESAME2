@@ -16,6 +16,7 @@ import MySQLdb as _db
 import os
 import datetime
 from django.contrib import messages
+import zipfile
 
 
 host_name = "mysql.netsoc.co"
@@ -49,9 +50,18 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def download_file(request):
+    print("downloading")
     if request.method == "GET":
         filepath = request.GET.get("filename")
-        return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+        zipName = "zipped.zip"
+        zipFileName = "%s/%s" % (filepath,zipName)
+        zip = zipfile.ZipFile(zipFileName,"w")
+        for file in os.listdir(filepath):
+             if file!=zipName:
+                 fullPath = "%s/%s"%(filepath,file)
+                 zip.write(fullPath,os.path.basename(file),zipfile.ZIP_DEFLATED)
+        zip.close()
+        return serve(request, os.path.basename(zipFileName), os.path.dirname(zipFileName))
 
 
 def get_call_view(request):
@@ -69,15 +79,16 @@ def get_call_view(request):
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
 
-        try:
-            for file in os.listdir(userFileDir):
-                files.append(file)
-        except OSError:
-            pass
+        # try:
+        #     for file in os.listdir(userFileDir):
+        #         location = "%s/%s" % (userFileDir,file)
+        #         files.append(location)
+        # except OSError:
+        #     pass
+        files.append(userFileDir)
 
     else:
         filenames = []
-
         call_id = request.POST.get('call_id', '').decode('utf-8')
 
         userFileDir = "calls/%s-%s/calls"%(str(request.user).split("@")[0],call_id)
@@ -91,15 +102,27 @@ def get_call_view(request):
                 for line in file:
                     saveFile.write(line)
 
-        print(filenames)
         filename = ','.join(filenames)
-
         id = request.user.id
         call_id = int(call_id)
 
-        print(id,call_id,filename)
+        connection = _db.connect(host=host_name,
+                         user=user_name,
+                         passwd=password,
+                         db=db_name)
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id)
+        result = "success"
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("""
+                select user_id from reviewers order by rand() limit 1
+            """)
+            reviewer_id = cursor.fetchall()[0][0]
+        except db.Error:
+            reviewer_id = None
+
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id)
         db.save()
 
     return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
@@ -205,7 +228,7 @@ def pub (request):
 
        db_query = """
 
-           INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location)
+           INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location, )
            VALUES ("%s","%s","%s","%s","%s","%s","%s","%s");
 
        """ %(eligibility,date_string,funder_id,title,description,deadline,grant,filename)
