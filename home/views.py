@@ -87,9 +87,13 @@ def get_call_view(request):
 
         print("FILES ",files)
 
+        return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
+
     else:
-        filenames = []
         call_id = request.POST.get('call_id', '').decode('utf-8')
+        call_obj = Call.objects.filter(pk=call_id).values()
+        funder_id = call_obj[0]['funder_id']
+        filenames = []
 
         user = str(request.user)
         userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
@@ -124,10 +128,12 @@ def get_call_view(request):
         except db.Error:
             reviewer_id = None
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id)
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id,status="P")
         db.save()
 
-    return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
+        #AIDAN HELP ME PLS IT WONT CHANGE PAGE HERE
+
+        return render(request, 'home/my_calls.html')
 
 def delete_proposal(request, proposal_id):
     Proposal.objects.get(pk=int(proposal_id)).delete()
