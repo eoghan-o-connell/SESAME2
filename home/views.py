@@ -183,6 +183,7 @@ def pub (request):
     editing_mode = False
     now = datetime.datetime.now()
     date_string = "%s-%s-%s"%(now.year,now.month,now.day)
+    call_id = None
 
     if request.method == "POST":
        now = datetime.datetime.now()
@@ -200,10 +201,13 @@ def pub (request):
 
        value = request.POST.get("editing_mode")
 
+       print(request.POST.items())
+
        if value == "True":
+           print("in editing mode man")
            editing_mode = True
 
-       _call_id = request.POST.get("_call_id")
+       call_id = request.POST.get("_call_id")
 
 
        #print(request.POST.items())
@@ -231,9 +235,6 @@ def pub (request):
 
        print(request.FILES.values())
 
-
-
-
        db_query = """
 
            INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location )
@@ -241,8 +242,7 @@ def pub (request):
 
        """ %(eligibility,date_string,funder_id,title,description,deadline,grant,filename)
 
-       print("$"*50)
-       print(db_query)
+       print("EDITING MODE --- > ",editing_mode)
 
        if editing_mode:
           db_query = """
@@ -257,7 +257,10 @@ def pub (request):
                   funds="%s"
               WHERE id = %d;
 
-          """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(_call_id))
+          """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(call_id))
+
+
+       print(db_query)
 
        try:                        #success page if given to db
            connection = _db.connect(host=host_name,
@@ -319,7 +322,7 @@ def pub (request):
             """)
 
             for row in cursor.fetchall():
-                categories.append(row[0])
+                categories.append(row[0].strip("\n"))
 
             call_id = request.GET.get("call_id")
 
@@ -344,7 +347,14 @@ def pub (request):
 
                 funds.remove(fund)
 
-                categories.remove(str(edit_info[0]))
+                print("WTF CATEGORIES --- > ",categories)
+                print(str(edit_info[0]))
+
+                string = str(edit_info[0]).strip()
+                unicode_string = unicode(string, "utf-8")
+
+                if unicode_string in categories:
+                    categories.remove(unicode_string)
                 edit_info.append(call_id)
 
         except _db.Error as e:
@@ -355,7 +365,12 @@ def pub (request):
             connection.close()
 
     form = PublishForm()
-    return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
+
+    if not editing_mode:
+        return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
+    else:
+        return redirect(reverse("home:my_calls"))
+
 
 def email_users(request):
     print("Here Ben!")
