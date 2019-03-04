@@ -133,7 +133,7 @@ def get_call_view(request):
         except db.Error:
             reviewer_id = None
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id,status="P")
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id,status="p")
         db.save()
 
         #AIDAN HELP ME PLS IT WONT CHANGE PAGE HERE
@@ -156,15 +156,16 @@ def get_my_calls(request):
     try:
         funder = user.funder
         my_call_table_data = Call.objects.filter(funder_id=user.id).values()
-        context = {'my_call_table_data':my_call_table_data}
+        context = {'my_call_table_data':my_call_table_data,'type':'funder'}
         return render(request, 'home/my_calls.html', context)
     except Funder.DoesNotExist:
         print("Not funder")
 
     try:
         researcher = user.researcher
-        my_call_table_data = [prop.call for prop in Proposal.objects.select_related('call').filter(user=user)]
-        context = {'my_call_table_data':my_call_table_data}
+        proposals = Proposal.objects.select_related('call').filter(user=user)
+        my_call_table_data = [prop.call for prop in proposals]
+        context = {'my_call_table_data':my_call_table_data, 'type':'researcher', 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
     except Researcher.DoesNotExist:
         print("Not researcher")
@@ -173,7 +174,7 @@ def get_my_calls(request):
         reviewer = user.reviewer
         proposals = Proposal.objects.select_related('call').filter(reviewer_id=user.id)
         my_call_table_data = [prop.call for prop in proposals]
-        context = {'my_call_table_data':my_call_table_data, 'proposals':proposals}
+        context = {'my_call_table_data':my_call_table_data, 'type':'reviewer', 'proposals':proposals}
         return render(request, 'home/my_calls.html', context)
     except Reviewer.DoesNotExist:
         print("Not reviewer")
