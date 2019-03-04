@@ -25,6 +25,8 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6 offset-sm-3 text-center" style="background-color:#F5F5F5;">
+                <div class="collapse show" id="collapser">
+                  <div class="well" >
                 {% if edit %}
                     <h1>Edit call</h1>
                 {% else %}
@@ -33,8 +35,6 @@
 
                 <br>
                 <section id="form" style="width:100%">
-                    <div class="collapse show" id="collapser">
-                      <div class="well" >
 
                         <form id="checkForm" style="width:100%" class="text-left" method="POST" action="/home/publish_call">
                             {% csrf_token %}
@@ -94,9 +94,16 @@
       </div>
 
       <div class="container">
-        <section id="summary" style="visibility:hidden">
-          <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
-            <p> Here is a quick summary of your publication. </p>
+        <div class="row">
+          <div class="col-md-6 offset-3">
+            <div class="text-center">
+              <section id="summary" style="visibility:hidden">
+                <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
+                  <p> Here is a quick summary of your publication. </p>
+          </div>
+        </div>
+      </div>
+
             <table id="example" class="table table-borderless" style="width:100%">
               <thead style="background-color:teal; color:white;">
                 <tr>
@@ -115,7 +122,6 @@
                   <td id="s_call_pdf"> </td>
               </tr>
             </table>
-            <button name="edit" value="edit"/>
         </section>
       </div>
         {% endblock %}
