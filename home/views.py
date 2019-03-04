@@ -280,9 +280,6 @@ def pub (request):
 
            cursor.execute(db_query)
 
-           #Calling this fucntion below which I set up as the email fucntion
-           email_users(request)
-
            messages.success(request, 'Your new call has been published!')
 
            if not editing_mode:
