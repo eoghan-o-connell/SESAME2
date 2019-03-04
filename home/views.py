@@ -280,8 +280,6 @@ def pub (request):
 
            cursor.execute(db_query)
 
-           messages.success(request, 'Your new call has been published!')
-
            if not editing_mode:
                id = cursor.lastrowid
 
