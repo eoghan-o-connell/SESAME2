@@ -453,7 +453,7 @@ def add_acedemic_collab(request, researcher_id):
         return HttpResponseForbidden()
     if request.method == 'GET':
         attributes = {
-            'title' : 'New Acededemic Collaboration',
+            'title' : 'New Academic Collaboration',
             'is_private' : True,
             'inputs' : AcedemicCollab.get_inputs()
         }
@@ -471,7 +471,7 @@ def edit_acedemic_collab(request, researcher_id, index):
     if request.method == 'GET':
         obj = request.user.researcher.profile.acedemic_collabs[index]
         attributes = {
-            'title' : 'Edit Acededemic Collaboration',
+            'title' : 'Edit Academic Collaboration',
             'is_private' : obj.is_private,
             'inputs' : AcedemicCollab.get_inputs(obj)
         }
@@ -487,7 +487,7 @@ def add_non_acedemic_collab(request, researcher_id):
         return HttpResponseForbidden()
     if request.method == 'GET':
         attributes = {
-            'title' : 'New Non-Acededemic Collaboration',
+            'title' : 'New Non-Academic Collaboration',
             'is_private' : True,
             'inputs' : NonAcedemicCollab.get_inputs()
         }
@@ -505,7 +505,7 @@ def edit_non_acedemic_collab(request, researcher_id, index):
     if request.method == 'GET':
         obj = request.user.researcher.profile.non_acedemic_collabs[index]
         attributes = {
-            'title' : 'Edit Non-Acededemic Collaboration',
+            'title' : 'Edit Non-Academic Collaboration',
             'is_private' : obj.is_private,
             'inputs' : NonAcedemicCollab.get_inputs(obj)
         }
@@ -521,7 +521,7 @@ def add_conference(request, researcher_id):
         return HttpResponseForbidden()
     if request.method == 'GET':
         attributes = {
-            'title' : 'New Acededemic Collaboration',
+            'title' : 'New Academic Collaboration',
             'is_private' : True,
             'inputs' : Conference.get_inputs()
         }
