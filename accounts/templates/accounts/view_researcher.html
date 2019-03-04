@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+{% load static %}
 <style media="screen">
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
 .panel-title > a:before {
@@ -34,62 +35,26 @@ section {
     background-color: silver;
     margin: 0.5em;
 }
-.object td{
-    vertical-align: text-top;
-    padding-right: 1em;
-}
-.col-md-3{
-    max-width:100% !important;
-    flex-basis:100% !important;
-}
-.panel-body li{
-    background-color: lightblue;
-    padding: 0.5em;
-    border-radius: 0.5em;
-}
-ul{list-style-type:none;}
-.panel-body > a{
-    padding-left:3em;
-}
 </style>
 <title>{{ researcher }}</title>
 {% endblock %}
 {% block body %}
-
-<section>
-    <div class="col-xs-12">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success" role="alert">
-            <center>{{ message }}</center>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-    {% if profile.profile_picture %}
-        <img alt="This researcher's profile picture" height=50 width=50 src="{{profile.profile_picture.url}}"/>
-    {% endif %}
-    <h2>{{ researcher }}</h2>
-    {% if editing %}
-    <h3>Account</h3>
-    First name: {{ researcher.user.first_name }}<br>
-    Last name: {{ researcher.user.last_name }}<br>
-    Email: {{ researcher.user.email }}<br>
-    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-warning">Edit Account Details</a>
-    <a href="{% url 'accounts:change_password' %}" class="btn btn-danger">Change Password</a>
-
-    {% endif %}
-    <p>
-        <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
-    </p>
-</section>
-
+<br>
 <div class="container">
-<div class="row">
-<div class="col-md-3">
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
+  <div class="row">
+    <div class="col-md-6 offset-3" style="background-color:#F5F5F5">
+      <div class="text-center">
+        <br><h2>{{ researcher }}</h2>
+        {% if editing %}
+        <h5>Email: {{ researcher.user.email }}</h5>
+        {% endif %}
+        <h5>
+          <a href="https://orcid.org/{{researcher.orcid}}">ORCID</a>
+        </h5><br>
+        </div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
              <h4 class="panel-title">
                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                      Education Information ({{ profile.educations|length }})
@@ -98,21 +63,29 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
-                {% if editing %}<a href="education/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="education/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form><br>
+                {% endif %}
+                <div class ="container">
                 <ul>
                     {% for obj in profile.educations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="education_{{ obj.index }}">
+                        <li id="education_{{ obj.index }}">
                             {{ obj|safe }}
-                            {% if editing %}
-                            <a href="education/{{ obj.index }}">Edit</a>
-                            {% endif %}
                         </li>
+                        {% if editing %}
+                        <form action="education/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No education records<p>
                     {% endfor %}
                 </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -126,16 +99,22 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
             <div class="panel-body">
-                {% if editing %}<a href="employment/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="employment/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form><br>
+                {% endif %}
                 <ul>
                     {% for obj in profile.employments %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="employment_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="employment/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="employment_{{ obj.index }}">
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="employment/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No employment records<p>
@@ -154,16 +133,22 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
             <div class="panel-body">
-                {% if editing %}<a href="society/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="society/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form><br>
+                {% endif %}
                 <ul>
                     {% for obj in profile.societies %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="society_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="society/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="society_{{ obj.index }}">
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="society/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No society records<p>
@@ -182,16 +167,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
             <div class="panel-body">
-                {% if editing %}<a href="award/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="award/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form><br>
+                {% endif %}
                 <ul>
                     {% for obj in profile.awards %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="award_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="award/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="award_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="award/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No award records<p>
@@ -210,16 +202,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
             <div class="panel-body">
-                {% if editing %}<a href="funding/new">Add</a>{% endif %}
+                {% if editing %}
+                <form action="funding/new">
+                <input class="btn btn-success" type="submit" value="Add" />
+                </form><br>
+                {% endif %}
                 <ul>
                     {% for obj in profile.fundings %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="funding_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="funding/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="funding_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="funding/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No funding records<p>
@@ -238,16 +237,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix">
             <div class="panel-body">
-                {% if editing %}<a href="team_member/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="team_member/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.team_members %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="team_member_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="team_member/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="team_member_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="team_member/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No team member records<p>
@@ -266,16 +272,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseSeven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSeven">
             <div class="panel-body">
-                {% if editing %}<a href="impact/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="impact/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.impacts %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="impact_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="impact/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="impact_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="impact/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No impact records<p>
@@ -294,16 +307,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseEight" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEight">
             <div class="panel-body">
-                {% if editing %}<a href="innovation/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="innovation/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.innovations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="innovation_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="innovation/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="innovation_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="innovation/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No innovation records<p>
@@ -322,16 +342,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseNine" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNine">
             <div class="panel-body">
-                {% if editing %}<a href="publication/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="publication/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.publications %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="publication_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="publication/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="publication_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="publication/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No publication records<p>
@@ -350,16 +377,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseTen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTen">
             <div class="panel-body">
-                {% if editing %}<a href="presentation/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="presentation/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.presentations %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="presentation_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="presentation/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="presentation_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="presentation/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No presentation records<p>
@@ -378,16 +412,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseEleven" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEleven">
             <div class="panel-body">
-                {% if editing %}<a href="acedemic-collab/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="academic-collab/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for acedemic_collab in profile.acedemic_collabs %}
                         {% if editing or not acedemic_collab.is_private %}
-                        <li class="object" id="acedemic_collab_{{ acedemic_collab.index }}">
-                            {% if editing %}
-                            <a href="acedemic-collab/{{ acedemic_collab.index }}">Edit</a>
-                            {% endif %}
+                        <li id="acedemic_collab_{{ acedemic_collab.index }}">
+
                             {{acedemic_collab|safe}}
                         </li>
+                        {% if editing %}
+                        <form action="acedemic-collab/{{ acedemic_collab.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                     <p>No acedemic collaboration records<p>
@@ -406,19 +447,26 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseTwelve" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwelve">
             <div class="panel-body">
-                {% if editing %}<a href="non_acedemic_collab/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="non_academic_collab/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.non_acedemic_collabs %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="non_acedemic_collab_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="non_acedemic_collab/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="non_acedemic_collab_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="non_acedemic_collab_{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
-                        <p>No non-acedemic collaboration records<p>
+                        <p>No non acedemic collab records<p>
                     {% endfor %}
                 </ul>
             </div>
@@ -434,16 +482,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseThirteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThirteen">
             <div class="panel-body">
-                {% if editing %}<a href="conference/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="conference/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.conferences %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="conference_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="conference/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="conference_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="conference/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No conference records<p>
@@ -462,16 +517,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseFourteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFourteen">
             <div class="panel-body">
-                {% if editing %}<a href="comms_overview/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="comms_overview/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.comms_overviews %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="comms_overview_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="comms_overview/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="comms_overview_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="comms_overview/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No communication overview records<p>
@@ -490,16 +552,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseFifteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFifteen">
             <div class="panel-body">
-                {% if editing %}<a href="funding_ratio/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="funding_ratio/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.funding_ratios %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="funding_ratio_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="funding_ratio/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="funding_ratio_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="funding_ratio/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No SFI funding ratio records<p>
@@ -518,16 +587,23 @@ ul{list-style-type:none;}
         </div>
         <div id="collapseSixteen" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSixteen">
             <div class="panel-body">
-                {% if editing %}<a href="project/new">Add</a>{% endif %}
+              {% if editing %}
+              <form action="project/new">
+              <input class="btn btn-success" type="submit" value="Add" />
+              </form><br>
+              {% endif %}
                 <ul>
                     {% for obj in profile.projects %}
                         {% if editing or not obj.is_private %}
-                        <li class="object" id="project_{{ obj.index }}">
-                            {% if editing %}
-                            <a href="project/{{ obj.index }}">Edit</a>
-                            {% endif %}
+                        <li id="project_{{ obj.index }}">
+
                             {{ obj|safe }}
                         </li>
+                        {% if editing %}
+                        <form action="project/{{ obj.index }}">
+                        <input class="btn btn-primary" type="submit" value="Edit" />
+                        </form>
+                        {% endif %}
                         {% endif %}
                     {% empty %}
                         <p>No project records<p>

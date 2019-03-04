@@ -35,9 +35,9 @@
             <div class="row">
               <div class="col-sm-6 offset-sm-3 text-center" style="background-color:#F5F5F5;">
                 {% if edit %}
-                    <h1 class="text-left">Edit call</h1>
+                    <h1>Edit call</h1>
                 {% else %}
-                    <h1 class="text-left">Publish call</h1>
+                    <h1>Publish call</h1>
                 {% endif %}
 
                 <br>
@@ -45,9 +45,10 @@
                     <div class="collapse show" id="collapser">
                       <div class="well" >
 
-                        <form id="checkForm" style="width:100%" class="text-left">
+                        <form id="checkForm" style="width:100%" class="text-left" method="POST" action="/home/publish_call">
+                            {% csrf_token %}
                             <label for="eligibility">Select target audience</label>
-                            <select class="custom-select" id="tag" name="eligibility">
+                            <select class="custom-select" id="tag" name="tag">
                                 {% if edit %}
                                 <option id="" value="{{ edit_info.0 }}">{{ edit_info.0 }}</option>
                                 {% endif %}
@@ -65,7 +66,7 @@
                             <textarea id="description" class="form-control" placeholder="Write brief call description here.. (optional)" rows="4" cols="50" name="description" form="checkForm">{{ edit_info.2 }}</textarea>
                         <!-- {{ form }} -->
                             <label for="deadline">Select deadline date </label>
-                            <input id="date" value="{{ edit_info.3 }}" type="date" class="custom-select" name="deadline" required>
+                            <input id="date" value="{{ edit_info.3 }}" type="date" class="custom-select" name="date" required>
                             <!-- <input id="grant" value={{ edit_info.4 }} name="grant" class="form-control is-invalid" type="number" placeholder="0"> -->
 
                             <label for="grant">Grant value</label>
@@ -77,24 +78,24 @@
                                 <option value="{{ fund }}"> {{ fund }} </option>
                                 {% endfor %}
                             </select>
-
-                            <input name="editing_mode" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
-                            <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
+                            <div class ="container text-center">
+                              <input name="editing_mode" name="editing_mode_tag" type="text" id="updating_call" value="{{ edit }}" style="visibility:hidden">
+                              <input name="_call_id" type="text" id="_call_id" value="{{ edit_info.6 }}" style="visibility:hidden">
+                              <section id="dz">
+                                <div id="dropbox" class="dropzone "></div><br>
+                              </section>
+                              {% if edit %}
+                              <h5> Please note: All changes will update the call globally</h5><br>
+                              <input type="submit" id="btn" class="btn btn-success btn-large" value="Submit changes"><br>
+                              {% else %}
+                              <button id="btn" type="button" class="btn btn-success btn-large">Publish Call</button><br>
+                              {% endif %}
+                              <div id="prog" class="progress">
+                                <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
+                              </div>
+                            </div>
                         </form>
                       </div>
-                      <section id="dz">
-                          <div id="dropbox" class="dropzone "></div><br>
-                      </section>
-                      {% if edit %}
-                      <h5> Please note: All changes will update the call globally</h5><br>
-                      <button id="btn" type="button" class="btn btn-success btn-large">Submit changes</button><br>
-                      {% else %}
-                      <button id="btn" type="button" class="btn btn-success btn-large">Publish Call</button><br>
-                      {% endif %}
-                      <div id="prog" class="progress">
-                          <div id="progress" class="progress-bar progress-bar-striped bg-info active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%"> 0% </div>
-                      </div>
-
                   </div>
             </section>
           </div>

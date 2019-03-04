@@ -17,6 +17,11 @@ import os
 import datetime
 from django.contrib import messages
 import zipfile
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.contrib.auth.models import User
+from accounts.models import Researcher
 
 
 host_name = "mysql.netsoc.co"
@@ -183,6 +188,7 @@ def pub (request):
     editing_mode = False
     now = datetime.datetime.now()
     date_string = "%s-%s-%s"%(now.year,now.month,now.day)
+    call_id = None
 
     if request.method == "POST":
        now = datetime.datetime.now()
@@ -200,10 +206,15 @@ def pub (request):
 
        value = request.POST.get("editing_mode")
 
+       email_users(request, title, grant, eligibility)
+
+       print(request.POST.items())
+
        if value == "True":
+           print("in editing mode man")
            editing_mode = True
 
-       _call_id = request.POST.get("_call_id")
+       call_id = request.POST.get("_call_id")
 
 
        #print(request.POST.items())
@@ -231,9 +242,6 @@ def pub (request):
 
        print(request.FILES.values())
 
-
-
-
        db_query = """
 
            INSERT INTO calls (target, created, funder_id, title, description, deadline,funds, file_location )
@@ -241,8 +249,7 @@ def pub (request):
 
        """ %(eligibility,date_string,funder_id,title,description,deadline,grant,filename)
 
-       print("$"*50)
-       print(db_query)
+       print("EDITING MODE --- > ",editing_mode)
 
        if editing_mode:
           db_query = """
@@ -257,7 +264,10 @@ def pub (request):
                   funds="%s"
               WHERE id = %d;
 
-          """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(_call_id))
+          """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(call_id))
+
+
+       print(db_query)
 
        try:                        #success page if given to db
            connection = _db.connect(host=host_name,
@@ -299,6 +309,9 @@ def pub (request):
        finally:
            connection.close()
 
+       print("CALL STUFF")
+       return redirect(reverse("home:my_calls"))
+
     if request.method == 'GET':
         try:
             connection = _db.connect(host=host_name,
@@ -319,7 +332,7 @@ def pub (request):
             """)
 
             for row in cursor.fetchall():
-                categories.append(row[0])
+                categories.append(row[0].strip("\n"))
 
             call_id = request.GET.get("call_id")
 
@@ -344,7 +357,14 @@ def pub (request):
 
                 funds.remove(fund)
 
-                categories.remove(str(edit_info[0]))
+                print("WTF CATEGORIES --- > ",categories)
+                print(str(edit_info[0]))
+
+                string = str(edit_info[0]).strip()
+                unicode_string = unicode(string, "utf-8")
+
+                if unicode_string in categories:
+                    categories.remove(unicode_string)
                 edit_info.append(call_id)
 
         except _db.Error as e:
@@ -357,8 +377,18 @@ def pub (request):
     form = PublishForm()
     return render(request, 'home/publish_call.html',{'form':form,'db':categories, 'edit_info':edit_info, 'edit':edit_toggle, 'funds':funds})
 
-def email_users(request):
-    print("Here Ben!")
+
+def email_users(request,title,grant,eligibility):
+
+    emails = [researcher.user.email for researcher in Researcher.objects.all()]
+
+    email_subject = 'New Call Published'
+    from_email = settings.DEFAULT_FROM_EMAIL
+
+    contact_message = 'New call published on SESAME. {0} with grant of {1}, {2}.'.format(title, grant, eligibility)
+    for address in emails:
+        to_address = [address]
+        send_mail(email_subject, contact_message, from_email, to_address)
 
 
 def autocomplete(request):

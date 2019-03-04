@@ -83,6 +83,7 @@ function setup(){
     }
 
     form = document.getElementById('checkForm');
+    form.addEventListener('submit',edit_submission,false);
 
     if (document.getElementById("dropbox")){
         dz = new Dropzone("div#dropbox", {
@@ -99,7 +100,6 @@ function setup(){
         url: "/home/publish_call",
         init: function() {
             this.on("totaluploadprogress",uploadInformation);
-            this.on("addedfile", fileAdded);
             this.on("successmultiple",success);
             this.on("sendingmultiple",sndMul);
             this.on("maxfilesexceeded", function(file) { this.removeFile(file); });
@@ -117,7 +117,6 @@ function checkSummary(){
 }
 
 function checkValidName(e){
-
     let element = elements[dict[e.srcElement.id]];
     let val = e.srcElement.value;
     if (val == ""){
@@ -178,29 +177,29 @@ function uploadInformation(progress,totalBytes,bytesSent){//, progress, bytesSen
     }
 }
 
-function fileAdded(file){
-  // file.previewElement.querySelector("img").src = newname;
-
-    // You could of course generate another image yourself here,
-    // and set it as a data url.
- }
 
 function uploadFiles(ev){
 
     //trying to send the data without a file ( no updates ), should try and grab previous FILES
     //and repopulae the dropzone instead
-
+    if (editing_mode == "True" && dz.getQueuedFiles().length == 0){
+        console.log("WTF");
+        console.log("Hmm");
+        console.log(ev);
+        form.submit();
+        console.log("after");
+    }
+    else{
         if (form.checkValidity()){
           if (dz.getQueuedFiles().length > 0){
             captureFiles = dz.getQueuedFiles();
-            summaryGeneration();
             dz.processQueue();
           }
         }
     }
+  }
 
-
-
-function summaryGeneration(){
-
+function edit_submission(ev){
+    ev.preventDefault();
+    uploadFiles(ev);
 }
