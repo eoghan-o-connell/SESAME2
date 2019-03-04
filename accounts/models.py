@@ -131,7 +131,7 @@ class Proposal(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     call = models.ForeignKey(Call, related_name='%(class)s_call', on_delete=models.CASCADE)
-    reviewer = models.OneToOneField(Reviewer, on_delete=models.SET_NULL, null=True)
+    reviewer = models.ForeignKey(Reviewer, on_delete=models.SET_NULL, null=True)
     proposal_document = models.FileField(upload_to=get_proposal_filename)
     _status = models.CharField(db_column="status", max_length=1, choices=PROPOSAL_CHOICES)
     date = models.DateField(auto_now_add=True)
