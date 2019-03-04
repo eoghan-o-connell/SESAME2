@@ -133,7 +133,7 @@ def get_call_view(request):
         except db.Error:
             reviewer_id = None
 
-        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id,status="p")
+        db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id)
         db.save()
 
         #AIDAN HELP ME PLS IT WONT CHANGE PAGE HERE

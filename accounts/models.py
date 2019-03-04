@@ -133,7 +133,7 @@ class Proposal(models.Model):
     call = models.ForeignKey(Call, related_name='%(class)s_call', on_delete=models.CASCADE)
     reviewer = models.ForeignKey(Reviewer, on_delete=models.SET_NULL, null=True)
     proposal_document = models.FileField(upload_to=get_proposal_filename)
-    _status = models.CharField(db_column="status", max_length=1, choices=PROPOSAL_CHOICES)
+    _status = models.CharField(db_column="status", default='p', max_length=1, choices=PROPOSAL_CHOICES)
     date = models.DateField(auto_now_add=True)
     @property
     def status(self):
