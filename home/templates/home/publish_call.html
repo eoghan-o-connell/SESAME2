@@ -102,37 +102,31 @@
         </div>
       </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 offset-3">
-            <div class="text-center">
+      <div class="container text-center">
               <section id="summary" style="visibility:hidden">
                 <h2 id="summaryHeading"> Thank you for submitting {{ user.first_name }}! </h2>
                   <p> Here is a quick summary of your publication. </p>
-          </div>
-        </div>
-      </div>
 
-            <table id="example" class="table table-borderless" style="width:100%">
-              <thead style="background-color:teal; color:white;">
-                <tr>
-                  <th> Title of call </th>
-                  <th> Description </th>
-                  <th> Grant amount </th>
-                  <th> Deadline </th>
-                  <th> Files uploaded </th>
-                </tr>
-              </thead>
-              <tr>
-                  <td id="s_title"> </td>
-                  <td id="s_desc"> </td>
-                  <td id="s_amount"> </td>
-                  <td id="s_deadline"> </td>
-                  <td id="s_call_pdf"> </td>
-              </tr>
-            </table>
-        </section>
-      </div>
+                <table id="example" class="table table-borderless" style="width:100%">
+                  <thead style="background-color:teal; color:white;">
+                    <tr>
+                      <th> Title of call </th>
+                      <th> Description </th>
+                      <th> Grant amount </th>
+                      <th> Deadline </th>
+                      <th> Files uploaded </th>
+                    </tr>
+                  </thead>
+                  <tr>
+                      <td id="s_title"> </td>
+                      <td id="s_desc"> </td>
+                      <td id="s_amount"> </td>
+                      <td id="s_deadline"> </td>
+                      <td id="s_call_pdf"> </td>
+                  </tr>
+                </table>
+              </section>
+          </div>
         {% endblock %}
     </body>
 {% else  %}
