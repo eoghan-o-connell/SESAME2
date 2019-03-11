@@ -3,9 +3,6 @@ window.onload = setup();
 var dz;
 var progressbar;
 
-//REMOVE BUTTON AND ACCEPT GET REQUEST .. spawn a link tag and re direct to same page
-
-
 var fname;
 var sname;
 var date;
@@ -37,7 +34,6 @@ var previousFname="";
 var previousLname="";
 var previous;
 var element;
-// var fnamePrevBool;
 
 function setup(){
     Dropzone.autoDiscover = false;
@@ -68,10 +64,7 @@ function setup(){
     uploadButton.addEventListener("click",uploadFiles,false);
 
     editing_mode = editing_mode_tag.value;
-    console.log("Current editing mode  -- > " + editing_mode);
-
-    // toggleButton.click();
-
+  
     elements = [fname,sname,title,grant];
 
     for (var i=0; i<elements.length; i++){
@@ -105,12 +98,10 @@ function setup(){
             this.on("maxfilesexceeded", function(file) { this.removeFile(file); });
         }
     });
-//        dz.createThumbnailFromUrl("pdf_thumbnail.webp","../pdf_thumbnail.webp");
   }
 }
 
 function checkSummary(){
-  console.log("click");
     if (summary.style.visibility=="visible"){
         summary.style.visibility="hidden";
     }
@@ -138,13 +129,10 @@ function sndMul(file,xhr,formData){
     formData.append("grant",grant.value);
     formData.append("editing_mode_tag",editing_mode);
     formData.append("_call_id",call_id.value);
-    console.log("**********" + tag.value);
 }
 
 function success(ev){
-    console.log("success!");
     dz.removeAllFiles();
-    console.log("removed all files");
     progressbar.style.width = 0 + "%";
     progressbar.innerHTML = 0 + "%";
     var s_title = document.getElementById('s_title');
@@ -158,7 +146,7 @@ function success(ev){
     s_amount.innerHTML = grant.value;
     s_deadline.innerHTML = date.value;
     let string = "";
-    console.log(captureFiles);
+  
     for (var i=0; i<captureFiles.length; i++){
        string += captureFiles[i].name + " ";
     }
@@ -179,15 +167,8 @@ function uploadInformation(progress,totalBytes,bytesSent){//, progress, bytesSen
 
 
 function uploadFiles(ev){
-
-    //trying to send the data without a file ( no updates ), should try and grab previous FILES
-    //and repopulae the dropzone instead
     if (editing_mode == "True" && dz.getQueuedFiles().length == 0){
-        console.log("WTF");
-        console.log("Hmm");
-        console.log(ev);
         form.submit();
-        console.log("after");
     }
     else{
         if (form.checkValidity()){
