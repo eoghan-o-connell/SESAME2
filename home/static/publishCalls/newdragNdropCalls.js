@@ -64,12 +64,10 @@ function checkValidName(e){
  function sndMul(file,xhr,formData){
        var urlParams = new URLSearchParams(window.location.search);
        var myParam = urlParams.get('call_id');
-       console.log("GRABBED PARAM = " + myParam);
        formData.append("call_id",call_id.value);
 }
 
 function success(ev){
-    console.log("success!");
     dz.removeAllFiles();
     console.log("removed all files");
     progressbar.style.width = 0 + "%";
