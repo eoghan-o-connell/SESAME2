@@ -56,7 +56,6 @@ def create_center(request):
     return render(request, 'home/create_center.html', {'form': form})
 
 def download_file(request):
-    print("downloading")
     if request.method == "GET":
         filepath = request.GET.get("filename")
         zipName = "zipped.zip"
@@ -74,24 +73,17 @@ def get_call_view(request):
     files = []
     call_obj = None
     call_id = None
-    print("OK RECEIVING SOMETHING")
     if request.method == 'GET':
         call_id = request.GET.get('call_id', '')
         call_obj = Call.objects.get(pk=call_id)
-        print("was a get request lol")
         call_id = request.GET.get('call_id', '')
         call_obj = Call.objects.filter(pk=call_id).values()
         context = {'call_obj':call_obj}
 
         funder_id = call_obj[0]['funder_id']
-        print("FUNDER --- > ",funder_id)
-
         user = str(request.user)
         userFileDir = "calls/%s-%s/calls"%(funder_id,call_id)
         files.append(userFileDir)
-
-        print("FILES ",files)
-
         return render(request, 'home/call_view.html', {'call_obj':call_obj,"link_obj":files,"call_id":call_id})
 
     else:
@@ -135,9 +127,6 @@ def get_call_view(request):
 
         db = Proposal(proposal_document=filename,call_id=call_id,user_id=id,reviewer_id=reviewer_id)
         db.save()
-
-        #AIDAN HELP ME PLS IT WONT CHANGE PAGE HERE
-
         return render(request, 'home/my_calls.html')
 
 def delete_proposal(request, proposal_id):
@@ -194,8 +183,6 @@ def pub (request):
     if request.method == "POST":
        now = datetime.datetime.now()
        date_string = "%s-%s-%s"%(now.year,now.month,now.day)
-
-       print(request.user)
        fname = request.POST.get("fname")
        sname = request.POST.get("sname")
        eligibility = request.POST.get("tag")
@@ -208,40 +195,20 @@ def pub (request):
        value = request.POST.get("editing_mode")
 
        email_users(request, title, grant, eligibility)
-
-       print(request.POST.items())
-
+        
        if value == "True":
            print("in editing mode man")
            editing_mode = True
 
        call_id = request.POST.get("_call_id")
-
-
-       #print(request.POST.items())
-       # for key in request.FILES:
-       #     file = request.FILES[key]
-       #     with open("/home/users/nadehh/django-uploads/%s"%(file.name),"wb+") as saveFile:
-       #         for line in file:
-       #             saveFile.write(line)
-       #         print("File has been saved")
-
-
        filenames = []
-
-
+        
        for key in request.FILES:
            file = str(request.FILES[key])
            print(file)
            filenames.append(file)
 
-       print(filenames)
-
        filename = ', '.join(filenames)
-
-       print("FILE NAMES SENT FROM CONCATENATION --- > ",filename)
-
-       print(request.FILES.values())
 
        db_query = """
 
@@ -249,8 +216,6 @@ def pub (request):
            VALUES ("%s","%s","%s","%s","%s","%s","%s","%s");
 
        """ %(eligibility,date_string,funder_id,title,description,deadline,grant,filename)
-
-       print("EDITING MODE --- > ",editing_mode)
 
        if editing_mode:
           db_query = """
@@ -267,10 +232,7 @@ def pub (request):
 
           """ %(eligibility,date_string,int(funder_id),title,description,deadline,grant,int(call_id))
 
-
-       print(db_query)
-
-       try:                        #success page if given to db
+       try:                        
            connection = _db.connect(host=host_name,
                             user=user_name,
                             passwd=password,
@@ -304,8 +266,7 @@ def pub (request):
 
        finally:
            connection.close()
-
-       print("CALL STUFF")
+            
        return redirect(reverse("home:my_calls"))
 
     if request.method == 'GET':
@@ -315,10 +276,6 @@ def pub (request):
                              passwd=password,
                              db=db_name)
 
-            print("#"*64 + "\n")
-            print("%-25s %32s" % ("Connected to database:",db_info_string))
-            print("%-25s %32s\n" % ("Established cursor:",db_info_string))
-            print("#"*64)
             result = "success"
             cursor = connection.cursor()
             cursor.execute("""
@@ -348,13 +305,7 @@ def pub (request):
                     edit_info[3] = str(edit_info[3])
 
                 fund = edit_info[4].decode('utf-8')
-
-                print("FUNDS -- > ", fund)
-
                 funds.remove(fund)
-
-                print("WTF CATEGORIES --- > ",categories)
-                print(str(edit_info[0]))
 
                 string = str(edit_info[0]).strip()
                 unicode_string = unicode(string, "utf-8")
